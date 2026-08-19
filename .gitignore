@@ -3,3 +3,14 @@ node_modules/
 dist/
 build/
 *.log
+
+# Environnement & secrets (Supabase, etc.)
+.env
+.env.*
+!.env.example
+
+# Éditeurs & OS
+.DS_Store
+.vscode/
+.idea/
+*.tsbuildinfo
