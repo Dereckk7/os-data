@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="DATA OS — le système d'exploitation de votre entreprise. Votre entreprise, enfin connectée." />
+    <title>DATA OS — Votre entreprise, enfin connectée</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      /* Anti-flash : pose le thème avant le premier rendu React. */
+      (function () {
+        try {
+          var t = localStorage.getItem("dataos.theme.v1") || "light";
+          if (t !== "dark" && t !== "light" && t !== "system" && t !== "comfort") t = "light";
+          var resolved = t;
+          if (t === "system") {
+            resolved = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          } else if (t === "comfort") {
+            resolved = "dark";
+          }
+          var root = document.documentElement;
+          root.dataset.theme = resolved;
+          if (t === "comfort") root.dataset.comfort = "true";
+          root.style.backgroundColor = resolved === "light" ? "#f8f9fa" : "#08090b";
+        } catch (e) { /* noop */ }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+node_modules/
+.next/
+dist/
+build/
+*.log
+
+# Environnement & secrets — ne jamais pousser
+.env
+.env.*
+!.env.example
+
+# Éditeurs & OS
+.DS_Store
+.vscode/
+.idea/
+*.tsbuildinfo
