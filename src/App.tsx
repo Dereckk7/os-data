@@ -1,5 +1,120 @@
+import { useEffect, type ReactNode } from "react";
+import { HashRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import {
+  AuthProvider, ApprovalsProvider, getOnboarded, SourcesProvider, useAuth,
+} from "./lib/services";
+import { PrefsProvider, ThemeProvider } from "./lib/theme";
+import { Toaster } from "./components/toast";
+import AmbientDataBackground from "./components/background";
+import { AppShell } from "./components/navigation";
+
+import Login from "./pages/Login";
+import Onboarding from "./pages/Onboarding";
+import Dashboard from "./pages/Dashboard";
+import Requests from "./pages/Requests";
+import RequestDetail from "./pages/RequestDetail";
+import Clients from "./pages/Clients";
+import ClientDetail from "./pages/ClientDetail";
+import Agents from "./pages/Agents";
+import AgentDetail from "./pages/AgentDetail";
+import Operations from "./pages/Operations";
+import Insights from "./pages/Insights";
+import Reports from "./pages/Reports";
+import Sources from "./pages/Sources";
+import Integrations from "./pages/Integrations";
+import Documents from "./pages/Documents";
+import Activity from "./pages/Activity";
+import Cowork from "./pages/Cowork";
+import Tasks from "./pages/Tasks";
+import Planning from "./pages/Planning";
+import Validation from "./pages/Validation";
+import Settings from "./pages/Settings";
+
+function RequireAuth({ children }: { children: ReactNode }) {
+  const { user, booting } = useAuth();
+  const location = useLocation();
+
+  if (booting) {
+    return (
+      <div className="relative z-10 grid min-h-screen place-items-center">
+        <div className="flex flex-col items-center gap-4">
+          <span className="pulse-dot num text-[10px] uppercase tracking-[0.24em] text-cream/35">
+            Initialisation du système
+          </span>
+        </div>
+      </div>
+    );
+  }
+  if (!user) return <Navigate to="/login" replace />;
+  if (!getOnboarded() && location.pathname !== "/onboarding") return <Navigate to="/onboarding" replace />;
+  return <>{children}</>;
+}
+
+function OnboardingGate() {
+  const { user } = useAuth();
+  if (user && getOnboarded()) return <Navigate to="/dashboard" replace />;
+  return <Onboarding />;
+}
+
 export default function App() {
+  useEffect(() => {
+    document.title = "DATA OS — Votre entreprise, enfin connectée";
+  }, []);
+
   return (
-    <div/>
+    <ThemeProvider>
+      <PrefsProvider>
+        <AuthProvider>
+          <SourcesProvider>
+            <ApprovalsProvider>
+              <HashRouter>
+                <AmbientDataBackground />
+                <Toaster />
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route
+                    path="/onboarding"
+                    element={
+                      <RequireAuth>
+                        <OnboardingGate />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    element={
+                      <RequireAuth>
+                        <AppShell />
+                      </RequireAuth>
+                    }
+                  >
+                    <Route index element={<Navigate to="/dashboard" replace />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/requests" element={<Requests />} />
+                    <Route path="/requests/:id" element={<RequestDetail />} />
+                    <Route path="/clients" element={<Clients />} />
+                    <Route path="/clients/:id" element={<ClientDetail />} />
+                    <Route path="/agents" element={<Agents />} />
+                    <Route path="/agents/:id" element={<AgentDetail />} />
+                    <Route path="/operations" element={<Operations />} />
+                    <Route path="/insights" element={<Insights />} />
+                    <Route path="/reports" element={<Reports />} />
+                    <Route path="/sources" element={<Sources />} />
+                    <Route path="/integrations" element={<Integrations />} />
+                    <Route path="/documents" element={<Documents />} />
+                    <Route path="/activity" element={<Activity />} />
+                    <Route path="/cowork" element={<Cowork />} />
+                    <Route path="/tasks" element={<Tasks />} />
+                    <Route path="/planning" element={<Planning />} />
+                    <Route path="/validation" element={<Validation />} />
+                    <Route path="/settings" element={<Settings />} />
+                  </Route>
+                  <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                </Routes>
+              </HashRouter>
+            </ApprovalsProvider>
+          </SourcesProvider>
+        </AuthProvider>
+      </PrefsProvider>
+    </ThemeProvider>
   );
 }
