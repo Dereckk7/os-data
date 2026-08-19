@@ -1,0 +1,6 @@
+.dot-field-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}

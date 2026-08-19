@@ -4,7 +4,7 @@ dist/
 build/
 *.log
 
-# Environnement & secrets (Supabase, etc.)
+# Environnement & secrets — ne jamais pousser
 .env
 .env.*
 !.env.example
