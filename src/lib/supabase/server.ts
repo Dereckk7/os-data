@@ -1,14 +1,7 @@
 /**
- * Accès serveur Supabase (service role) — pour les opérations sensibles
- * depuis une edge function. La clé service ne doit jamais être exposée
- * côté navigateur.
+ * ⚠️ Sécurité — Aucune clé service_role ne doit exister côté navigateur.
+ * Les opérations privilégiées passent EXCLUSIVEMENT par les Edge Functions
+ * Supabase (déjà déployées), qui détiennent la clé service côté serveur.
+ * Ce module est volontairement vide pour empêcher toute fuite dans le bundle.
  */
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-
-const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const serviceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY as string | undefined;
-
-export const serverClient: SupabaseClient | null =
-  url && serviceKey
-    ? createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } })
-    : null;
+export const serverClient = null;

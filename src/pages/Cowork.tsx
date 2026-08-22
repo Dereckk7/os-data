@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowUp, Check, MessageSquare, ShieldCheck, X } from "lucide-react";
 import { mockClients, mockRequests } from "../lib/mock";
-import { cn, fmtMoney } from "../lib/services";
+import { cn, fmtMoney, coworkAsk } from "../lib/services";
 import type { CoworkKind, CoworkMessage } from "../lib/types";
 import { GlassBadge } from "../components/glass";
 import { Sparkline } from "../components/charts";
@@ -160,6 +160,74 @@ function ActionChips({ onChip }: { onChip: (label: string) => void }) {
   );
 }
 
+
+function mapPromptToTool(prompt: string): { tool: string; params: Record<string, unknown> } | null {
+  const p = prompt.toLowerCase();
+  const today = new Date().toISOString().slice(0, 10);
+  const d30 = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+  if (p.includes("retard")) return { tool: "sla_depasses", params: {} };
+  if (p.includes("client") || p.includes("vip")) return { tool: "top_clients_par_depense", params: { periode_debut: d30, periode_fin: today } };
+  if (p.includes("rapport")) return { tool: "generer_rapport", params: { debut: d30, fin: today } };
+  if (p.includes("analyse") || p.includes("demande") || p.includes("complétion") || p.includes("completion")) return { tool: "taux_completion_demandes", params: { periode_debut: d30, periode_fin: today } };
+  return null;
+}
+
+const fmtCell = (v: unknown): string =>
+  typeof v === "number" ? new Intl.NumberFormat("fr-FR").format(v) : v == null ? "" : String(v);
+
+function DataBlock({ data, source }: { data: unknown; source?: string }) {
+  const chip = source ? (
+    <p className="num mt-2 text-[8.5px] uppercase tracking-[0.12em] text-champagne-300/70">source : {source.replace(/^core\./, "")}</p>
+  ) : null;
+
+  if (Array.isArray(data) && data.length > 0 && typeof data[0] === "object" && data[0] !== null) {
+    const cols = Object.keys(data[0] as object).slice(0, 5);
+    return (
+      <div className="mt-3">
+        <div className="overflow-hidden rounded-[11px] border border-white/[0.07]">
+          <table className="w-full text-left">
+            <thead>
+              <tr>{cols.map((c) => (
+                <th key={c} className="px-3 py-2 text-[8.5px] font-medium uppercase tracking-[0.08em] text-cream/35">{c}</th>
+              ))}</tr>
+            </thead>
+            <tbody>
+              {(data as Record<string, unknown>[]).slice(0, 8).map((row, i) => (
+                <tr key={i} className="border-t border-white/[0.05]">
+                  {cols.map((c) => (<td key={c} className="num px-3 py-2 text-[11px] text-cream/75">{fmtCell(row[c])}</td>))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {chip}
+      </div>
+    );
+  }
+
+  if (Array.isArray(data) && data.length === 0) {
+    return (<div className="mt-3"><p className="text-xs text-cream/50">Aucun résultat sur cette période.</p>{chip}</div>);
+  }
+
+  if (data && typeof data === "object") {
+    const entries = Object.entries(data as Record<string, unknown>).filter(([, v]) => typeof v === "string" || typeof v === "number");
+    return (
+      <div className="mt-3">
+        <div className="grid grid-cols-2 gap-2">
+          {entries.slice(0, 6).map(([k, v]) => (
+            <div key={k} className="rounded-[11px] border border-white/[0.07] bg-white/[0.02] p-3">
+              <p className="text-[8.5px] uppercase tracking-[0.1em] text-cream/30">{k.replace(/_/g, " ")}</p>
+              <p className="num mt-1 text-[15px] font-semibold">{fmtCell(v)}</p>
+            </div>
+          ))}
+        </div>
+        {chip}
+      </div>
+    );
+  }
+  return <div className="mt-3">{chip}</div>;
+}
+
 export default function Cowork() {
   const [messages, setMessages] = useState<CoworkMessage[]>([]);
   const [input, setInput] = useState("");
@@ -173,19 +241,31 @@ export default function Cowork() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, thinking]);
 
-  const send = (text: string, fromHistory = false) => {
+  const send = async (text: string, fromHistory = false) => {
     const clean = text.trim();
     if (!clean || thinking) return;
     if (fromHistory) setActiveItem(text);
     setInput("");
     setMessages((m) => [...m, { id: `u-${Date.now()}`, role: "user", kind: "text", text: clean, at: now() }]);
     setThinking(true);
+
+    // Appel réel au Data OS (Edge Function cowork-ask, outils bornés + traçabilité).
+    const mapped = mapPromptToTool(clean);
+    const res = mapped ? await coworkAsk({ tool: mapped.tool, params: mapped.params }) : await coworkAsk({ question: clean });
+    if (res && res.resolved && res.data !== undefined) {
+      setMessages((m) => [...m, { id: `os-${Date.now()}`, role: "os", kind: "data", text: res.answer || "Voici ce que le Data OS a trouvé :", data: res.data, source: res.source, at: now() }]);
+      setThinking(false);
+      emitPulse(0.5);
+      return;
+    }
+
+    // Repli : démonstration locale si le back n'est pas joignable / question non couverte.
     const reply = replyFor(clean);
     window.setTimeout(() => {
       setMessages((m) => [...m, { id: `os-${Date.now()}`, role: "os", kind: reply.kind, text: reply.text, at: now() }]);
       setThinking(false);
       emitPulse(0.5);
-    }, 1100);
+    }, 700);
   };
 
   const onChip = (label: string) => {
@@ -291,6 +371,7 @@ export default function Cowork() {
                     )}
                     <div className={cn("max-w-[86%] rounded-[14px] px-4 py-3", m.role === "user" ? "bg-cream text-ink-950" : "lcard")}>
                       <p className={cn("text-[13px] leading-relaxed", m.role === "os" && "text-cream/80")}>{m.text}</p>
+                      {m.kind === "data" && <DataBlock data={m.data} source={m.source} />}
                       {m.kind === "analysis" && <AnalysisBlock />}
                       {m.kind === "late" && <LateBlock onOpen={(id) => navigate(`/requests/${id}`)} />}
                       {m.kind === "clients" && <ClientsBlock onOpen={(id) => navigate(`/clients/${id}`)} />}

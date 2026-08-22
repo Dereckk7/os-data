@@ -136,5 +136,5 @@ export interface OpsCardData {
   workingIds: string[]; dueIn: number; urgent?: boolean;
 }
 
-export type CoworkKind = "analysis" | "report" | "late" | "clients" | "text";
-export interface CoworkMessage { id: string; role: "user" | "os"; kind: CoworkKind; text: string; at: string; }
+export type CoworkKind = "analysis" | "report" | "late" | "clients" | "text" | "data";
+export interface CoworkMessage { id: string; role: "user" | "os"; kind: CoworkKind; text: string; at: string; data?: unknown; source?: string; }
