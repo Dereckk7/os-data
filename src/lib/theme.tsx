@@ -4,7 +4,7 @@
  * taille du texte. Persisté en localStorage — remplaçable par les
  * préférences utilisateur Supabase.
  */
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 export type ThemeMode = "dark" | "light" | "system" | "comfort";
 export type ResolvedTheme = "dark" | "light";
@@ -36,21 +36,30 @@ function resolveMode(mode: ThemeMode): { resolved: ResolvedTheme; comfort: boole
 
 let themeAnimTimer: number | null = null;
 
-function applyTheme(resolved: ResolvedTheme, comfort: boolean) {
+function applyTheme(resolved: ResolvedTheme, comfort: boolean, animate = true) {
   const root = document.documentElement;
 
-  /* Pose une classe transitoire pour fondre les couleurs en douceur. */
-  root.classList.add("theme-anim");
-  if (themeAnimTimer !== null) window.clearTimeout(themeAnimTimer);
-  themeAnimTimer = window.setTimeout(() => {
-    root.classList.remove("theme-anim");
-    themeAnimTimer = null;
-  }, 420);
+  /* Crossfade des couleurs uniquement sur changement réel de thème —
+     jamais au montage initial (sinon les transitions d'entrée de l'app
+     sont court-circuitées). La classe est retirée sitôt le fondu fini. */
+  if (animate && !prefersReducedMotionRaw()) {
+    root.classList.add("theme-anim");
+    if (themeAnimTimer !== null) window.clearTimeout(themeAnimTimer);
+    themeAnimTimer = window.setTimeout(() => {
+      root.classList.remove("theme-anim");
+      themeAnimTimer = null;
+    }, 400);
+  }
 
   root.dataset.theme = resolved;
   if (comfort) root.dataset.comfort = "true";
   else delete root.dataset.comfort;
   root.style.backgroundColor = resolved === "light" ? "#f8f9fa" : "#08090b";
+}
+
+function prefersReducedMotionRaw(): boolean {
+  try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+  catch { return false; }
 }
 
 interface ThemeContextValue { mode: ThemeMode; resolved: ResolvedTheme; setMode: (m: ThemeMode) => void; }
@@ -59,16 +68,19 @@ const ThemeContext = createContext<ThemeContextValue>({ mode: "light", resolved:
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [mode, setModeState] = useState<ThemeMode>(readStoredTheme);
   const [resolved, setResolved] = useState<ResolvedTheme>(() => resolveMode(mode).resolved);
+  const firstRun = useRef(true);
 
   useEffect(() => {
+    const animate = !firstRun.current;
+    firstRun.current = false;
     const { resolved: r, comfort } = resolveMode(mode);
-    applyTheme(r, comfort);
+    applyTheme(r, comfort, animate);
     setResolved(r);
     if (mode !== "system") return;
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     const onChange = () => {
       const { resolved: rr, comfort: cc } = resolveMode("system");
-      applyTheme(rr, cc);
+      applyTheme(rr, cc, true);
       setResolved(rr);
     };
     mq.addEventListener("change", onChange);

@@ -134,7 +134,7 @@ export default function Requests() {
       </Reveal>
 
       <AnimatePresence mode="wait" initial={false}>
-      <FadeSwitch k={view}>
+      <FadeSwitch key={view} k={view}>
       {requestsQ.loading ? (
         <div className="space-y-2.5">
           {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-[62px]" />)}
