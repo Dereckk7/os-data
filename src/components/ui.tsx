@@ -2,23 +2,34 @@
  * Composants transverses : reveal, skeletons, états vides/erreur,
  * toggles, avatars, timeline, nombres animés, statuts d'agents…
  */
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { motion } from "framer-motion";
-import { AlertTriangle, Inbox } from "lucide-react";
-import { cn } from "../lib/services";
-import { prefersReducedMotion } from "../lib/theme";
-import type { ActivityEvent, AgentStatus, Priority, RequestStatus, Tone } from "../lib/types";
-import { GlassBadge, GlassButton } from "./glass";
+import { motion } from 'framer-motion';
+import { AlertTriangle, Inbox } from 'lucide-react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
+
+import { cn } from '../lib/services';
+import { prefersReducedMotion } from '../lib/theme';
+import type { ActivityEvent, AgentStatus, Priority, RequestStatus, Tone } from '../lib/types';
+import { GlassBadge, GlassButton } from './glass';
 
 export const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /* ————— Révélation au scroll ————— */
-export function Reveal({ children, delay = 0, y = 8, className }: { children: ReactNode; delay?: number; y?: number; className?: string }) {
+export function Reveal({
+  children,
+  delay = 0,
+  y = 8,
+  className,
+}: {
+  children: ReactNode;
+  delay?: number;
+  y?: number;
+  className?: string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
+      viewport={{ once: true, margin: '-30px' }}
       transition={{ duration: 0.5, delay, ease: EASE }}
       className={className}
     >
@@ -33,14 +44,26 @@ export function AnimatedNumber({ value, className }: { value: string; className?
   const prev = useRef(value);
 
   useEffect(() => {
-    if (prev.current === value) { setDisplay(value); return; }
+    if (prev.current === value) {
+      setDisplay(value);
+      return;
+    }
     prev.current = value;
-    if (prefersReducedMotion()) { setDisplay(value); return; }
+    if (prefersReducedMotion()) {
+      setDisplay(value);
+      return;
+    }
     const m = value.match(/^([\d\s.,]+)(.*)$/);
-    if (!m) { setDisplay(value); return; }
-    const target = parseFloat(m[1].replace(/[\s.,]/g, ""));
+    if (!m) {
+      setDisplay(value);
+      return;
+    }
+    const target = parseFloat(m[1].replace(/[\s.,]/g, ''));
     const suffix = m[2];
-    if (Number.isNaN(target)) { setDisplay(value); return; }
+    if (Number.isNaN(target)) {
+      setDisplay(value);
+      return;
+    }
     const start = performance.now();
     const dur = 420;
     let raf = 0;
@@ -59,20 +82,28 @@ export function AnimatedNumber({ value, className }: { value: string; className?
 }
 
 /* ————— Icône à tracé animé ————— */
-export function AnimatedIcon({ children, trigger = "hover", delay = 0, className }: {
-  children: ReactNode; trigger?: "hover" | "mount"; delay?: number; className?: string;
+export function AnimatedIcon({
+  children,
+  trigger = 'hover',
+  delay = 0,
+  className,
+}: {
+  children: ReactNode;
+  trigger?: 'hover' | 'mount';
+  delay?: number;
+  className?: string;
 }) {
   const [key, setKey] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (trigger !== "mount" || prefersReducedMotion()) return;
+    if (trigger !== 'mount' || prefersReducedMotion()) return;
     const t = window.setTimeout(() => setKey((k) => k + 1), delay * 1000);
     return () => window.clearTimeout(t);
   }, [trigger, delay]);
 
   const onEnter = () => {
-    if (trigger !== "hover" || prefersReducedMotion()) return;
+    if (trigger !== 'hover' || prefersReducedMotion()) return;
     setKey((k) => k + 1);
   };
 
@@ -80,7 +111,7 @@ export function AnimatedIcon({ children, trigger = "hover", delay = 0, className
     if (key === 0 || prefersReducedMotion()) return;
     const root = ref.current;
     if (!root) return;
-    const paths = Array.from(root.querySelectorAll("path, circle, line, polyline, rect"));
+    const paths = Array.from(root.querySelectorAll('path, circle, line, polyline, rect'));
     paths.forEach((p, i) => {
       const el = p as SVGGeometryElement;
       try {
@@ -88,27 +119,34 @@ export function AnimatedIcon({ children, trigger = "hover", delay = 0, className
         if (!len) return;
         el.style.strokeDasharray = String(len);
         el.style.strokeDashoffset = String(len);
-        el.style.transition = "none";
+        el.style.transition = 'none';
         requestAnimationFrame(() => {
           el.style.transition = `stroke-dashoffset 0.5s cubic-bezier(0.22,1,0.36,1) ${i * 0.04}s`;
-          el.style.strokeDashoffset = "0";
+          el.style.strokeDashoffset = '0';
         });
-      } catch { /* noop */ }
+      } catch {
+        /* noop */
+      }
     });
     const total = 600 + paths.length * 40 + delay * 1000;
     const t = window.setTimeout(() => {
       paths.forEach((p) => {
         const el = p as SVGGeometryElement;
-        el.style.strokeDasharray = "";
-        el.style.strokeDashoffset = "";
-        el.style.transition = "";
+        el.style.strokeDasharray = '';
+        el.style.strokeDashoffset = '';
+        el.style.transition = '';
       });
     }, total);
     return () => window.clearTimeout(t);
   }, [key, delay]);
 
   return (
-    <span ref={ref} className={cn("inline-flex", className)} onMouseEnter={onEnter} aria-hidden="true">
+    <span
+      ref={ref}
+      className={cn('inline-flex', className)}
+      onMouseEnter={onEnter}
+      aria-hidden="true"
+    >
       {children}
     </span>
   );
@@ -116,15 +154,25 @@ export function AnimatedIcon({ children, trigger = "hover", delay = 0, className
 
 /* ————— Skeletons ————— */
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn("skeleton", className)} aria-hidden="true" />;
+  return <div className={cn('skeleton', className)} aria-hidden="true" />;
 }
 
 /* ————— États vides / erreur ————— */
-export function EmptyState({ icon, title, desc, action, className }: {
-  icon?: ReactNode; title: string; desc?: string; action?: ReactNode; className?: string;
+export function EmptyState({
+  icon,
+  title,
+  desc,
+  action,
+  className,
+}: {
+  icon?: ReactNode;
+  title: string;
+  desc?: string;
+  action?: ReactNode;
+  className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col items-center px-6 py-14 text-center", className)}>
+    <div className={cn('flex flex-col items-center px-6 py-14 text-center', className)}>
       <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-white/[0.08] bg-white/[0.03] text-cream/40">
         {icon ?? <Inbox size={18} strokeWidth={1.5} />}
       </span>
@@ -135,47 +183,93 @@ export function EmptyState({ icon, title, desc, action, className }: {
   );
 }
 
-export function ErrorState({ title, desc, onRetry, className }: {
-  title: string; desc?: string; onRetry?: () => void; className?: string;
+export function ErrorState({
+  title,
+  desc,
+  onRetry,
+  className,
+}: {
+  title: string;
+  desc?: string;
+  onRetry?: () => void;
+  className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col items-center px-6 py-14 text-center", className)}>
+    <div className={cn('flex flex-col items-center px-6 py-14 text-center', className)}>
       <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-ember/25 bg-ember/10 text-[#e28d85]">
         <AlertTriangle size={18} strokeWidth={1.5} />
       </span>
       <p className="mt-4 text-[15px] font-semibold">{title}</p>
       {desc && <p className="mt-1.5 max-w-sm text-[13px] leading-relaxed text-cream/50">{desc}</p>}
-      {onRetry && <GlassButton variant="soft" size="sm" className="mt-5" onClick={onRetry}>Réessayer</GlassButton>}
+      {onRetry && (
+        <GlassButton variant="soft" size="sm" className="mt-5" onClick={onRetry}>
+          Réessayer
+        </GlassButton>
+      )}
     </div>
   );
 }
 
 /* ————— Toggle ————— */
-export function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label?: string }) {
+export function Toggle({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  label?: string;
+}) {
   return (
     <button
-      type="button" role="switch" aria-checked={checked} aria-label={label}
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
       onClick={() => onChange(!checked)}
-      className={cn("relative h-[22px] w-10 shrink-0 rounded-full border transition-colors duration-300", checked ? "border-jade/40 bg-jade/35" : "border-white/[0.1] bg-white/[0.06]")}
+      className={cn(
+        'relative h-[22px] w-10 shrink-0 rounded-full border transition-colors duration-300',
+        checked ? 'border-jade/40 bg-jade/35' : 'border-white/[0.1] bg-white/[0.06]'
+      )}
     >
-      <span className={cn("absolute top-1/2 h-[16px] w-[16px] -translate-y-1/2 rounded-full transition-all duration-300", checked ? "left-[21px] bg-jade" : "left-[3px] bg-cream/45")} />
+      <span
+        className={cn(
+          'absolute top-1/2 h-[16px] w-[16px] -translate-y-1/2 rounded-full transition-all duration-300',
+          checked ? 'left-[21px] bg-jade' : 'left-[3px] bg-cream/45'
+        )}
+      />
     </button>
   );
 }
 
 /* ————— Avatar ————— */
 const avatarPalette = [
-  "bg-champagne-500/15 text-champagne-300 border-champagne-500/25",
-  "bg-jade/12 text-jade border-jade/25",
-  "bg-saffron/12 text-saffron border-saffron/25",
-  "bg-ink-600/40 text-cream/70 border-white/10",
-  "bg-ember/12 text-[#e28d85] border-ember/25",
+  'bg-champagne-500/15 text-champagne-300 border-champagne-500/25',
+  'bg-jade/12 text-jade border-jade/25',
+  'bg-saffron/12 text-saffron border-saffron/25',
+  'bg-ink-600/40 text-cream/70 border-white/10',
+  'bg-ember/12 text-[#e28d85] border-ember/25',
 ];
-export function Avatar({ initials, name = "", size = 32, className }: { initials: string; name?: string; size?: number; className?: string }) {
-  const idx = Math.abs([...name].reduce((acc, c) => acc + c.charCodeAt(0), 0)) % avatarPalette.length;
+export function Avatar({
+  initials,
+  name = '',
+  size = 32,
+  className,
+}: {
+  initials: string;
+  name?: string;
+  size?: number;
+  className?: string;
+}) {
+  const idx =
+    Math.abs([...name].reduce((acc, c) => acc + c.charCodeAt(0), 0)) % avatarPalette.length;
   return (
     <span
-      className={cn("grid shrink-0 place-items-center rounded-full border font-semibold", avatarPalette[idx], className)}
+      className={cn(
+        'grid shrink-0 place-items-center rounded-full border font-semibold',
+        avatarPalette[idx],
+        className
+      )}
       style={{ width: size, height: size, fontSize: Math.round(size * 0.34) }}
       aria-hidden="true"
     >
@@ -186,34 +280,53 @@ export function Avatar({ initials, name = "", size = 32, className }: { initials
 
 /* ————— Badges métier ————— */
 const statusTone: Record<RequestStatus, Tone> = {
-  "En recherche": "gold", "À valider": "warning", "En attente client": "neutral",
-  "Confirmée": "success", "En retard": "danger", "Traitée": "neutral",
+  'En recherche': 'gold',
+  'À valider': 'warning',
+  'En attente client': 'neutral',
+  Confirmée: 'success',
+  'En retard': 'danger',
+  Traitée: 'neutral',
 };
 export function StatusBadge({ status, pulse }: { status: RequestStatus; pulse?: boolean }) {
   return (
-    <GlassBadge tone={statusTone[status]} dot pulse={pulse && (status === "En recherche" || status === "En retard")}>
+    <GlassBadge
+      tone={statusTone[status]}
+      dot
+      pulse={pulse && (status === 'En recherche' || status === 'En retard')}
+    >
       {status}
     </GlassBadge>
   );
 }
 
-const priorityTone: Record<Priority, Tone> = { Critique: "danger", Haute: "warning", Normale: "neutral", Basse: "neutral" };
+const priorityTone: Record<Priority, Tone> = {
+  Critique: 'danger',
+  Haute: 'warning',
+  Normale: 'neutral',
+  Basse: 'neutral',
+};
 export function PriorityBadge({ priority }: { priority: Priority }) {
   return <GlassBadge tone={priorityTone[priority]}>{priority}</GlassBadge>;
 }
 
 /* ————— Statuts d'agents ————— */
 const agentStatusMeta: Record<AgentStatus, { tone: Tone; symbol: string; label: string }> = {
-  "Opérationnel": { tone: "success", symbol: "●", label: "Actif" },
-  "En veille": { tone: "neutral", symbol: "Ⅱ", label: "En pause" },
-  "Maintenance": { tone: "neutral", symbol: "Ⅱ", label: "En pause" },
-  "En attente": { tone: "warning", symbol: "○", label: "En attente" },
-  "Erreur": { tone: "danger", symbol: "!", label: "Attention" },
+  Opérationnel: { tone: 'success', symbol: '●', label: 'Actif' },
+  'En veille': { tone: 'neutral', symbol: 'Ⅱ', label: 'En pause' },
+  Maintenance: { tone: 'neutral', symbol: 'Ⅱ', label: 'En pause' },
+  'En attente': { tone: 'warning', symbol: '○', label: 'En attente' },
+  Erreur: { tone: 'danger', symbol: '!', label: 'Attention' },
 };
-export function AgentStatusBadge({ status, withSymbol = true }: { status: AgentStatus; withSymbol?: boolean }) {
+export function AgentStatusBadge({
+  status,
+  withSymbol = true,
+}: {
+  status: AgentStatus;
+  withSymbol?: boolean;
+}) {
   const m = agentStatusMeta[status];
   return (
-    <GlassBadge tone={m.tone} dot={status === "Opérationnel"} pulse={status === "Opérationnel"}>
+    <GlassBadge tone={m.tone} dot={status === 'Opérationnel'} pulse={status === 'Opérationnel'}>
       {withSymbol && <span className="text-[9px] leading-none">{m.symbol}</span>}
       {m.label}
     </GlassBadge>
@@ -221,21 +334,41 @@ export function AgentStatusBadge({ status, withSymbol = true }: { status: AgentS
 }
 
 /* ————— Segmented control ————— */
-export function SegmentedControl<T extends string>({ options, value, onChange, className, size = "md" }: {
-  options: { value: T; label: string; icon?: ReactNode }[]; value: T; onChange: (v: T) => void;
-  className?: string; size?: "sm" | "md";
+export function SegmentedControl<T extends string>({
+  options,
+  value,
+  onChange,
+  className,
+  size = 'md',
+}: {
+  options: { value: T; label: string; icon?: ReactNode }[];
+  value: T;
+  onChange: (v: T) => void;
+  className?: string;
+  size?: 'sm' | 'md';
 }) {
   return (
-    <div role="tablist" className={cn("inline-flex items-center gap-0.5 rounded-[12px] border border-white/[0.07] bg-white/[0.03] p-1", className)}>
+    <div
+      role="tablist"
+      className={cn(
+        'inline-flex items-center gap-0.5 rounded-[12px] border border-white/[0.07] bg-white/[0.03] p-1',
+        className
+      )}
+    >
       {options.map((o) => {
         const active = o.value === value;
         return (
           <button
-            key={o.value} role="tab" aria-selected={active} onClick={() => onChange(o.value)}
+            key={o.value}
+            role="tab"
+            aria-selected={active}
+            onClick={() => onChange(o.value)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-[9px] font-medium transition-all duration-200",
-              size === "sm" ? "h-7 px-2.5 text-[11px]" : "h-8 px-3 text-xs",
-              active ? "bg-cream text-ink-950 shadow-[0_2px_10px_rgba(0,0,0,0.15)]" : "text-cream/45 hover:text-cream/80"
+              'inline-flex items-center gap-1.5 rounded-[9px] font-medium transition-all duration-200',
+              size === 'sm' ? 'h-7 px-2.5 text-[11px]' : 'h-8 px-3 text-xs',
+              active
+                ? 'bg-cream text-ink-950 shadow-[0_2px_10px_rgba(0,0,0,0.15)]'
+                : 'text-cream/45 hover:text-cream/80'
             )}
           >
             {o.icon}
@@ -248,28 +381,57 @@ export function SegmentedControl<T extends string>({ options, value, onChange, c
 }
 
 /* ————— Timeline d'activité ————— */
-export function ActivityFeed({ events, className }: { events: ActivityEvent[]; className?: string }) {
+export function ActivityFeed({
+  events,
+  className,
+}: {
+  events: ActivityEvent[];
+  className?: string;
+}) {
   return (
-    <ol className={cn("space-y-0", className)}>
+    <ol className={cn('space-y-0', className)}>
       {events.map((e, i) => (
         <li key={e.id} className="grid grid-cols-[52px_14px_1fr] gap-x-1">
-          <span className={cn("num pt-[3px] text-right text-[10.5px] leading-5", e.live ? "text-jade" : "text-cream/40")}>{e.time}</span>
+          <span
+            className={cn(
+              'num pt-[3px] text-right text-[10.5px] leading-5',
+              e.live ? 'text-jade' : 'text-cream/40'
+            )}
+          >
+            {e.time}
+          </span>
           <span className="relative flex justify-center">
             <span
               className={cn(
-                "z-10 mt-[7px] h-[7px] w-[7px] rounded-full border",
-                e.live ? "border-jade/60 bg-jade pulse-dot" : e.agent ? "border-champagne-500/50 bg-champagne-500/25" : "border-white/20 bg-white/[0.07]"
+                'z-10 mt-[7px] h-[7px] w-[7px] rounded-full border',
+                e.live
+                  ? 'border-jade/60 bg-jade pulse-dot'
+                  : e.agent
+                    ? 'border-champagne-500/50 bg-champagne-500/25'
+                    : 'border-white/20 bg-white/[0.07]'
               )}
             />
-            {i < events.length - 1 && <span className="absolute top-0 bottom-0 w-px bg-white/[0.07]" aria-hidden />}
+            {i < events.length - 1 && (
+              <span className="absolute top-0 bottom-0 w-px bg-white/[0.07]" aria-hidden />
+            )}
           </span>
-          <span className={cn("block", i < events.length - 1 ? "pb-4" : "pb-0.5")}>
-            <span className={cn("block text-[13px] font-medium leading-5", e.live && "text-cream")}>
+          <span className={cn('block', i < events.length - 1 ? 'pb-4' : 'pb-0.5')}>
+            <span className={cn('block text-[13px] font-medium leading-5', e.live && 'text-cream')}>
               {e.title}
-              {e.live && <span className="num ml-2 align-middle text-[9px] uppercase tracking-[0.14em] text-jade/80">direct</span>}
+              {e.live && (
+                <span className="num ml-2 align-middle text-[9px] uppercase tracking-[0.14em] text-jade/80">
+                  direct
+                </span>
+              )}
             </span>
-            {e.desc && <span className="mt-0.5 block text-xs leading-relaxed text-cream/45">{e.desc}</span>}
-            {e.agent && <span className="num mt-1 block text-[9.5px] uppercase tracking-[0.12em] text-cream/30">{e.agent}</span>}
+            {e.desc && (
+              <span className="mt-0.5 block text-xs leading-relaxed text-cream/45">{e.desc}</span>
+            )}
+            {e.agent && (
+              <span className="num mt-1 block text-[9.5px] uppercase tracking-[0.12em] text-cream/30">
+                {e.agent}
+              </span>
+            )}
           </span>
         </li>
       ))}

@@ -4,8 +4,9 @@
  * ambiante. Static en reduced-motion ; densité réduite sur mobile.
  * Couleurs fournies par l'app (thème) — jamais imposées ici.
  */
-import { memo, useEffect, useRef } from "react";
-import "./DotField.css";
+import './DotField.css';
+
+import { memo, useEffect, useRef } from 'react';
 
 const TWO_PI = Math.PI * 2;
 
@@ -28,7 +29,16 @@ export interface DotFieldProps {
   style?: React.CSSProperties;
 }
 
-interface Dot { ax: number; ay: number; sx: number; sy: number; vx: number; vy: number; x: number; y: number; }
+interface Dot {
+  ax: number;
+  ay: number;
+  sx: number;
+  sy: number;
+  vx: number;
+  vy: number;
+  x: number;
+  y: number;
+}
 
 const DotField = memo(function DotField({
   dotRadius = 1.2,
@@ -40,12 +50,12 @@ const DotField = memo(function DotField({
   glowRadius = 140,
   sparkle = false,
   waveAmplitude = 0,
-  gradientFrom = "rgba(244,241,232,0.14)",
-  gradientTo = "rgba(201,178,124,0.04)",
-  glowColor = "rgba(201,178,124,0.08)",
+  gradientFrom = 'rgba(244,241,232,0.14)',
+  gradientTo = 'rgba(201,178,124,0.04)',
+  glowColor = 'rgba(201,178,124,0.08)',
   opacity = 1,
   staticMode = false,
-  className = "",
+  className = '',
   style,
 }: DotFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -60,16 +70,38 @@ const DotField = memo(function DotField({
   const drawOnceRef = useRef<(() => void) | null>(null);
   const glowIdRef = useRef(`dot-field-glow-${Math.random().toString(36).slice(2, 9)}`);
 
-  const propsRef = useRef({ dotRadius, dotSpacing, cursorRadius, cursorForce, bulgeOnly, bulgeStrength, sparkle, waveAmplitude, gradientFrom, gradientTo });
-  propsRef.current = { dotRadius, dotSpacing, cursorRadius, cursorForce, bulgeOnly, bulgeStrength, sparkle, waveAmplitude, gradientFrom, gradientTo };
+  const propsRef = useRef({
+    dotRadius,
+    dotSpacing,
+    cursorRadius,
+    cursorForce,
+    bulgeOnly,
+    bulgeStrength,
+    sparkle,
+    waveAmplitude,
+    gradientFrom,
+    gradientTo,
+  });
+  propsRef.current = {
+    dotRadius,
+    dotSpacing,
+    cursorRadius,
+    cursorForce,
+    bulgeOnly,
+    bulgeStrength,
+    sparkle,
+    waveAmplitude,
+    gradientFrom,
+    gradientTo,
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const maybeCtx = canvas.getContext("2d", { alpha: true });
+    const maybeCtx = canvas.getContext('2d', { alpha: true });
     if (!maybeCtx) return;
     const ctx: CanvasRenderingContext2D = maybeCtx;
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const coarse = window.matchMedia('(pointer: coarse)').matches;
     const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1.25 : 1.75);
     let resizeTimer = 0;
 
@@ -131,7 +163,7 @@ const DotField = memo(function DotField({
 
     let frameCount = 0;
     let gradCache: CanvasGradient | null = null;
-    let gradKey = "";
+    let gradKey = '';
 
     function tick() {
       rafRef.current = requestAnimationFrame(tick);
@@ -152,8 +184,8 @@ const DotField = memo(function DotField({
       glowOpacity.current += (eng - glowOpacity.current) * 0.08;
       const glowEl = glowRef.current;
       if (glowEl) {
-        glowEl.setAttribute("cx", String(m.x));
-        glowEl.setAttribute("cy", String(m.y));
+        glowEl.setAttribute('cx', String(m.x));
+        glowEl.setAttribute('cy', String(m.y));
         glowEl.style.opacity = String(glowOpacity.current);
       }
 
@@ -235,7 +267,10 @@ const DotField = memo(function DotField({
 
     drawOnceRef.current = () => {
       const dots = dotsRef.current;
-      for (let i = 0; i < dots.length; i++) { dots[i].sx = dots[i].ax; dots[i].sy = dots[i].ay; }
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].sx = dots[i].ax;
+        dots[i].sy = dots[i].ay;
+      }
       const { w, h } = sizeRef.current;
       if (!ctx || w === 0) return;
       ctx.clearRect(0, 0, w, h);
@@ -253,14 +288,14 @@ const DotField = memo(function DotField({
     };
 
     doResize();
-    window.addEventListener("resize", resize);
+    window.addEventListener('resize', resize);
 
     let speedInterval = 0;
     if (staticMode) {
       drawOnceRef.current();
     } else {
       speedInterval = window.setInterval(updateMouseSpeed, 20);
-      if (!coarse) window.addEventListener("mousemove", onMouseMove, { passive: true });
+      if (!coarse) window.addEventListener('mousemove', onMouseMove, { passive: true });
       rafRef.current = requestAnimationFrame(tick);
     }
 
@@ -273,8 +308,8 @@ const DotField = memo(function DotField({
       cancelAnimationFrame(rafRef.current);
       window.clearInterval(speedInterval);
       window.clearTimeout(resizeTimer);
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', onMouseMove);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [staticMode]);
@@ -284,10 +319,25 @@ const DotField = memo(function DotField({
   }, [dotRadius, dotSpacing]);
 
   return (
-    <div className={`dot-field-container ${className}`} style={{ opacity, ...style }} aria-hidden="true">
-      <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />
+    <div
+      className={`dot-field-container ${className}`}
+      style={{ opacity, ...style }}
+      aria-hidden="true"
+    >
+      <canvas
+        ref={canvasRef}
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+      />
       {!staticMode && (
-        <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+        <svg
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+          }}
+        >
           <defs>
             <radialGradient id={glowIdRef.current}>
               <stop offset="0%" stopColor={glowColor} />
@@ -296,9 +346,11 @@ const DotField = memo(function DotField({
           </defs>
           <circle
             ref={glowRef}
-            cx="-9999" cy="-9999" r={glowRadius}
+            cx="-9999"
+            cy="-9999"
+            r={glowRadius}
             fill={`url(#${glowIdRef.current})`}
-            style={{ opacity: 0, willChange: "opacity" }}
+            style={{ opacity: 0, willChange: 'opacity' }}
           />
         </svg>
       )}

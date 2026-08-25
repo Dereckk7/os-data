@@ -1,33 +1,47 @@
-import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowUpRight, Search } from "lucide-react";
-import { cn, useAgents } from "../lib/services";
-import type { AgentStatus } from "../lib/types";
-import { GlassSurface } from "../components/glass";
-import { AgentGlyph } from "../components/icons";
-import { AgentStatusBadge, AnimatedNumber, EmptyState, Reveal, Skeleton } from "../components/ui";
+import { ArrowUpRight, Search } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-type StatusFilter = "Tous" | "Actifs" | "En pause" | "En attente" | "Attention";
-const STATUS_FILTERS: StatusFilter[] = ["Tous", "Actifs", "En pause", "En attente", "Attention"];
+import { GlassSurface } from '../components/glass';
+import { AgentGlyph } from '../components/icons';
+import { AgentStatusBadge, AnimatedNumber, EmptyState, Reveal, Skeleton } from '../components/ui';
+import { cn, useAgents } from '../lib/services';
+import type { AgentStatus } from '../lib/types';
+
+type StatusFilter = 'Tous' | 'Actifs' | 'En pause' | 'En attente' | 'Attention';
+const STATUS_FILTERS: StatusFilter[] = ['Tous', 'Actifs', 'En pause', 'En attente', 'Attention'];
 
 const matchesFilter = (status: AgentStatus, f: StatusFilter): boolean => {
-  if (f === "Tous") return true;
-  if (f === "Actifs") return status === "Opérationnel";
-  if (f === "En pause") return status === "En veille" || status === "Maintenance";
-  if (f === "En attente") return status === "En attente";
-  return status === "Erreur";
+  if (f === 'Tous') return true;
+  if (f === 'Actifs') return status === 'Opérationnel';
+  if (f === 'En pause') return status === 'En veille' || status === 'Maintenance';
+  if (f === 'En attente') return status === 'En attente';
+  return status === 'Erreur';
 };
 
-export function AgentTile({ agentId, tint, active, error, size = "md" }: {
-  agentId: string; tint: string; active: boolean; error: boolean; size?: "md" | "lg";
+export function AgentTile({
+  agentId,
+  tint,
+  active,
+  error,
+  size = 'md',
+}: {
+  agentId: string;
+  tint: string;
+  active: boolean;
+  error: boolean;
+  size?: 'md' | 'lg';
 }) {
   return (
     <span
-      className={cn("agent-tile relative grid shrink-0 place-items-center rounded-[12px] border transition-all duration-300", size === "lg" ? "h-12 w-12 rounded-[14px]" : "h-10 w-10")}
-      style={{ "--tint": tint } as React.CSSProperties}
+      className={cn(
+        'agent-tile relative grid shrink-0 place-items-center rounded-[12px] border transition-all duration-300',
+        size === 'lg' ? 'h-12 w-12 rounded-[14px]' : 'h-10 w-10'
+      )}
+      style={{ '--tint': tint } as React.CSSProperties}
     >
-      <span className={cn(active && "agent-breathe", error && "agent-err")}>
-        <AgentGlyph agentId={agentId} size={size === "lg" ? 20 : 17} strokeWidth={1.5} />
+      <span className={cn(active && 'agent-breathe', error && 'agent-err')}>
+        <AgentGlyph agentId={agentId} size={size === 'lg' ? 20 : 17} strokeWidth={1.5} />
       </span>
       {active && <span className="agent-ring" aria-hidden />}
     </span>
@@ -36,24 +50,29 @@ export function AgentTile({ agentId, tint, active, error, size = "md" }: {
 
 export default function Agents() {
   const agentsQ = useAgents(550);
-  const [filter, setFilter] = useState<StatusFilter>("Tous");
-  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<StatusFilter>('Tous');
+  const [query, setQuery] = useState('');
   const navigate = useNavigate();
 
   const filtered = useMemo(() => {
     let out = agentsQ.data.filter((a) => matchesFilter(a.status, filter));
     const q = query.trim().toLowerCase();
-    if (q) out = out.filter((a) => a.name.toLowerCase().includes(q) || a.role.toLowerCase().includes(q));
+    if (q)
+      out = out.filter((a) => a.name.toLowerCase().includes(q) || a.role.toLowerCase().includes(q));
     return out;
   }, [agentsQ.data, filter, query]);
 
-  const counts = useMemo(() => ({
-    Tous: agentsQ.data.length,
-    Actifs: agentsQ.data.filter((a) => a.status === "Opérationnel").length,
-    "En pause": agentsQ.data.filter((a) => a.status === "En veille" || a.status === "Maintenance").length,
-    "En attente": agentsQ.data.filter((a) => a.status === "En attente").length,
-    Attention: agentsQ.data.filter((a) => a.status === "Erreur").length,
-  }), [agentsQ.data]);
+  const counts = useMemo(
+    () => ({
+      Tous: agentsQ.data.length,
+      Actifs: agentsQ.data.filter((a) => a.status === 'Opérationnel').length,
+      'En pause': agentsQ.data.filter((a) => a.status === 'En veille' || a.status === 'Maintenance')
+        .length,
+      'En attente': agentsQ.data.filter((a) => a.status === 'En attente').length,
+      Attention: agentsQ.data.filter((a) => a.status === 'Erreur').length,
+    }),
+    [agentsQ.data]
+  );
 
   return (
     <div className="space-y-5">
@@ -71,13 +90,20 @@ export default function Agents() {
 
       <Reveal delay={0.06}>
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Filtrer par statut">
+          <div
+            className="flex flex-wrap items-center gap-1.5"
+            role="group"
+            aria-label="Filtrer par statut"
+          >
             {STATUS_FILTERS.map((f) => (
               <button
-                key={f} onClick={() => setFilter(f)}
+                key={f}
+                onClick={() => setFilter(f)}
                 className={cn(
-                  "h-9 rounded-full border px-4 text-xs font-medium transition-all duration-200",
-                  filter === f ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-white/[0.08] bg-white/[0.02] text-cream/55 hover:border-white/[0.15] hover:text-cream/85"
+                  'h-9 rounded-full border px-4 text-xs font-medium transition-all duration-200',
+                  filter === f
+                    ? 'border-cream/30 bg-cream/[0.08] text-cream'
+                    : 'border-white/[0.08] bg-white/[0.02] text-cream/55 hover:border-white/[0.15] hover:text-cream/85'
                 )}
               >
                 {f}
@@ -86,10 +112,19 @@ export default function Agents() {
             ))}
           </div>
           <div className="relative w-full lg:w-64">
-            <Search size={14} strokeWidth={1.6} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-cream/35" />
-            <label htmlFor="agent-search" className="sr-only">Rechercher un agent</label>
+            <Search
+              size={14}
+              strokeWidth={1.6}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-cream/35"
+            />
+            <label htmlFor="agent-search" className="sr-only">
+              Rechercher un agent
+            </label>
             <input
-              id="agent-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)}
+              id="agent-search"
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Rechercher un agent…"
               className="h-10 w-full rounded-[11px] border border-white/[0.08] bg-white/[0.03] pl-9 pr-3 text-[13px] text-cream outline-none transition-all placeholder:text-cream/30 hover:border-white/[0.14] focus:border-cream/35"
             />
@@ -99,11 +134,16 @@ export default function Agents() {
 
       {agentsQ.loading ? (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-[230px]" />)}
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-[230px]" />
+          ))}
         </div>
       ) : filtered.length === 0 ? (
         <GlassSurface>
-          <EmptyState title="Aucun agent dans cet état." desc="Modifiez le filtre ou la recherche — vos agents restent opérationnels en arrière-plan." />
+          <EmptyState
+            title="Aucun agent dans cet état."
+            desc="Modifiez le filtre ou la recherche — vos agents restent opérationnels en arrière-plan."
+          />
         </GlassSurface>
       ) : (
         <>
@@ -113,14 +153,19 @@ export default function Agents() {
                 <button
                   onClick={() => navigate(`/agents/${a.id}`)}
                   className={cn(
-                    "glass glass-sweep group flex h-full w-full flex-col p-5 text-left transition-all duration-200",
-                    "hover:-translate-y-[2px] hover:border-white/[0.14] hover:bg-white/[0.032]",
-                    (a.status === "En veille" || a.status === "Maintenance") && "opacity-80"
+                    'glass glass-sweep group flex h-full w-full flex-col p-5 text-left transition-all duration-200',
+                    'hover:-translate-y-[2px] hover:border-white/[0.14] hover:bg-white/[0.032]',
+                    (a.status === 'En veille' || a.status === 'Maintenance') && 'opacity-80'
                   )}
                   aria-label={`Détails de ${a.name}`}
                 >
                   <span className="flex items-start justify-between gap-3">
-                    <AgentTile agentId={a.id} tint={a.tint} active={a.status === "Opérationnel"} error={a.status === "Erreur"} />
+                    <AgentTile
+                      agentId={a.id}
+                      tint={a.tint}
+                      active={a.status === 'Opérationnel'}
+                      error={a.status === 'Erreur'}
+                    />
                     <AgentStatusBadge status={a.status} />
                   </span>
                   <span className="mt-4 block">
@@ -129,19 +174,33 @@ export default function Agents() {
                   </span>
                   <span className="mt-4 grid grid-cols-2 gap-3 border-t border-white/[0.06] pt-3.5">
                     <span>
-                      <span className="block text-[17px] font-semibold leading-none"><AnimatedNumber value={String(a.actionsToday)} /></span>
-                      <span className="mt-1 block text-[9.5px] uppercase tracking-[0.1em] text-cream/35">tâches aujourd'hui</span>
+                      <span className="block text-[17px] font-semibold leading-none">
+                        <AnimatedNumber value={String(a.actionsToday)} />
+                      </span>
+                      <span className="mt-1 block text-[9.5px] uppercase tracking-[0.1em] text-cream/35">
+                        tâches aujourd'hui
+                      </span>
                     </span>
                     <span>
-                      <span className="num block text-[17px] font-semibold leading-none">{a.accuracy}%</span>
-                      <span className="mt-1 block text-[9.5px] uppercase tracking-[0.1em] text-cream/35">réussite</span>
+                      <span className="num block text-[17px] font-semibold leading-none">
+                        {a.accuracy}%
+                      </span>
+                      <span className="mt-1 block text-[9.5px] uppercase tracking-[0.1em] text-cream/35">
+                        réussite
+                      </span>
                     </span>
                   </span>
                   <span className="mt-3.5 flex items-center justify-between border-t border-white/[0.06] pt-3">
-                    <span className="num text-[9.5px] uppercase tracking-[0.12em] text-cream/30">Dernière activité · {a.lastActivity}</span>
+                    <span className="num text-[9.5px] uppercase tracking-[0.12em] text-cream/30">
+                      Dernière activité · {a.lastActivity}
+                    </span>
                     <span className="flex items-center gap-1 text-[11px] font-medium text-cream/55 transition-colors duration-200 group-hover:text-cream">
                       Voir l'activité
-                      <ArrowUpRight size={12} strokeWidth={1.75} className="transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px" />
+                      <ArrowUpRight
+                        size={12}
+                        strokeWidth={1.75}
+                        className="transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px"
+                      />
                     </span>
                   </span>
                 </button>
@@ -154,14 +213,26 @@ export default function Agents() {
               <Reveal key={a.id} delay={0.03 * i}>
                 <button
                   onClick={() => navigate(`/agents/${a.id}`)}
-                  className={cn("glass glass-sweep flex w-full items-center gap-4 p-4 text-left transition-all duration-200 active:scale-[0.995]", (a.status === "En veille" || a.status === "Maintenance") && "opacity-80")}
+                  className={cn(
+                    'glass glass-sweep flex w-full items-center gap-4 p-4 text-left transition-all duration-200 active:scale-[0.995]',
+                    (a.status === 'En veille' || a.status === 'Maintenance') && 'opacity-80'
+                  )}
                   aria-label={`Détails de ${a.name}`}
                 >
-                  <AgentTile agentId={a.id} tint={a.tint} active={a.status === "Opérationnel"} error={a.status === "Erreur"} />
+                  <AgentTile
+                    agentId={a.id}
+                    tint={a.tint}
+                    active={a.status === 'Opérationnel'}
+                    error={a.status === 'Erreur'}
+                  />
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[14px] font-semibold tracking-tight">{a.name}</span>
+                    <span className="block truncate text-[14px] font-semibold tracking-tight">
+                      {a.name}
+                    </span>
                     <span className="block truncate text-[11.5px] text-cream/50">{a.role}</span>
-                    <span className="num mt-1.5 block text-[10.5px] text-cream/40">{a.actionsToday} tâches · {a.accuracy}% · {a.lastActivity}</span>
+                    <span className="num mt-1.5 block text-[10.5px] text-cream/40">
+                      {a.actionsToday} tâches · {a.accuracy}% · {a.lastActivity}
+                    </span>
                   </span>
                   <span className="flex shrink-0 flex-col items-end gap-2">
                     <AgentStatusBadge status={a.status} withSymbol={false} />

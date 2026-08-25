@@ -1,33 +1,34 @@
-import { useState, type FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
-import { getOnboarded, useAuth } from "../lib/services";
-import { GlassButton, GlassInput, GlassSurface } from "../components/glass";
-import { GoogleIcon, MicrosoftIcon, Wordmark } from "../components/icons";
-import { EASE } from "../components/ui";
-import { toast } from "../components/toast";
-import { ThemeTogglerButton } from "../components/theme-toggle";
+import { motion } from 'framer-motion';
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
+import { type FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { GlassButton, GlassInput, GlassSurface } from '../components/glass';
+import { GoogleIcon, MicrosoftIcon, Wordmark } from '../components/icons';
+import { ThemeTogglerButton } from '../components/theme-toggle';
+import { toast } from '../components/toast';
+import { EASE } from '../components/ui';
+import { getOnboarded, useAuth } from '../lib/services';
 
 export default function Login() {
   const { signIn } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("marie@maison-ekwata.com");
-  const [password, setPassword] = useState("••••••••");
+  const [email, setEmail] = useState('marie@maison-ekwata.com');
+  const [password, setPassword] = useState('••••••••');
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setLoading(true);
     try {
       await signIn(email, password);
-      toast.success("Connexion réussie", { description: "Bienvenue sur votre DATA OS." });
-      navigate(getOnboarded() ? "/dashboard" : "/onboarding", { replace: true });
+      toast.success('Connexion réussie', { description: 'Bienvenue sur votre DATA OS.' });
+      navigate(getOnboarded() ? '/dashboard' : '/onboarding', { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Connexion impossible.");
+      setError(err instanceof Error ? err.message : 'Connexion impossible.');
     } finally {
       setLoading(false);
     }
@@ -38,7 +39,7 @@ export default function Login() {
       <ThemeTogglerButton
         variant="ghost"
         direction="counterclockwise"
-        modes={["light", "dark", "comfort", "system"]}
+        modes={['light', 'dark', 'comfort', 'system']}
         className="absolute right-4 top-4 sm:right-6 sm:top-6"
       />
       <motion.div
@@ -47,7 +48,9 @@ export default function Login() {
         transition={{ duration: 0.5, ease: EASE }}
         className="w-full max-w-md"
       >
-        <div className="mb-8 flex justify-center"><Wordmark size={30} /></div>
+        <div className="mb-8 flex justify-center">
+          <Wordmark size={30} />
+        </div>
         <GlassSurface className="p-7 sm:p-8">
           <h1 className="text-[22px] font-semibold tracking-tight">Connexion</h1>
           <p className="mt-1.5 font-serif text-[15px] italic text-cream/70">
@@ -56,23 +59,44 @@ export default function Login() {
 
           <form onSubmit={submit} className="mt-6 space-y-4">
             <GlassInput
-              label="Email professionnel" type="email" autoComplete="email" required
+              label="Email professionnel"
+              type="email"
+              autoComplete="email"
+              required
               icon={<Mail size={15} strokeWidth={1.6} />}
-              value={email} onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="vous@entreprise.com"
             />
             <GlassInput
-              label="Mot de passe" type={showPw ? "text" : "password"} autoComplete="current-password" required
+              label="Mot de passe"
+              type={showPw ? 'text' : 'password'}
+              autoComplete="current-password"
+              required
               icon={<Lock size={15} strokeWidth={1.6} />}
-              value={password} onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               right={
-                <button type="button" onClick={() => setShowPw((v) => !v)} aria-label={showPw ? "Masquer le mot de passe" : "Afficher le mot de passe"} className="text-cream/40 transition-colors hover:text-cream">
-                  {showPw ? <EyeOff size={15} strokeWidth={1.6} /> : <Eye size={15} strokeWidth={1.6} />}
+                <button
+                  type="button"
+                  onClick={() => setShowPw((v) => !v)}
+                  aria-label={showPw ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                  className="text-cream/40 transition-colors hover:text-cream"
+                >
+                  {showPw ? (
+                    <EyeOff size={15} strokeWidth={1.6} />
+                  ) : (
+                    <Eye size={15} strokeWidth={1.6} />
+                  )}
                 </button>
               }
             />
-            {error && <p className="rounded-[9px] border border-ember/30 bg-ember/[0.08] px-3 py-2 text-xs text-[#e28d85]">{error}</p>}
+            {error && (
+              <p className="rounded-[9px] border border-ember/30 bg-ember/[0.08] px-3 py-2 text-xs text-[#e28d85]">
+                {error}
+              </p>
+            )}
             <GlassButton variant="primary" size="lg" full loading={loading} type="submit">
               Continuer
             </GlassButton>
@@ -86,13 +110,17 @@ export default function Login() {
 
           <div className="grid grid-cols-3 gap-2">
             {[
-              { label: "Google", icon: <GoogleIcon size={15} /> },
-              { label: "Microsoft", icon: <MicrosoftIcon size={15} /> },
-              { label: "SSO", icon: <span className="num text-[10px] font-semibold">SSO</span> },
+              { label: 'Google', icon: <GoogleIcon size={15} /> },
+              { label: 'Microsoft', icon: <MicrosoftIcon size={15} /> },
+              { label: 'SSO', icon: <span className="num text-[10px] font-semibold">SSO</span> },
             ].map((p) => (
               <button
                 key={p.label}
-                onClick={() => toast.neutral("SSO simulé", { description: `${p.label} — disponible en production.` })}
+                onClick={() =>
+                  toast.neutral('SSO simulé', {
+                    description: `${p.label} — disponible en production.`,
+                  })
+                }
                 className="flex h-10 items-center justify-center gap-2 rounded-[11px] border border-white/[0.08] bg-white/[0.03] text-xs font-medium text-cream/75 transition-all duration-200 hover:border-white/[0.16] hover:text-cream"
               >
                 {p.icon} {p.label}

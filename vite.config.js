@@ -12,4 +12,19 @@ export default defineConfig({
       port: 3000,
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['react', 'react-dom'],
+          'router': ['react-router-dom'],
+          'charts': ['recharts'],
+          'animations': ['framer-motion'],
+          'ui': ['@radix-ui/react-collapsible', '@radix-ui/react-dropdown-menu', '@radix-ui/react-separator', '@radix-ui/react-tooltip'],
+          'dnd': ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000,
+  },
 });

@@ -1,16 +1,21 @@
-import { useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight, Mail, MessageCircle, Phone, Sparkles, Users } from "lucide-react";
-import { mockClients, mockRequests } from "../lib/mock";
-import { cn, fmtMoney, useClients } from "../lib/services";
-import type { Segment, Tone } from "../lib/types";
-import { GlassBadge, GlassButton, GlassPanel, GlassSurface } from "../components/glass";
-import { ActivityFeed, Avatar, ErrorState, Reveal, Skeleton, StatusBadge } from "../components/ui";
-import { riskTone } from "./Clients";
-import { toast } from "../components/toast";
+import { ArrowLeft, ArrowUpRight, Mail, MessageCircle, Phone, Sparkles, Users } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
-const segmentTone: Record<Segment, Tone> = { VIP: "gold", "Fidèle": "neutral", Nouveau: "success", "À risque": "danger" };
-const channelIcon = { WhatsApp: MessageCircle, Email: Mail, Appel: Phone, "Réunion": Users } as const;
+import { GlassBadge, GlassButton, GlassPanel, GlassSurface } from '../components/glass';
+import { toast } from '../components/toast';
+import { ActivityFeed, Avatar, ErrorState, Reveal, Skeleton, StatusBadge } from '../components/ui';
+import { mockClients, mockRequests } from '../lib/mock';
+import { cn, fmtMoney, useClients } from '../lib/services';
+import type { Segment, Tone } from '../lib/types';
+
+const segmentTone: Record<Segment, Tone> = {
+  VIP: 'gold',
+  Fidèle: 'neutral',
+  Nouveau: 'success',
+  'À risque': 'danger',
+};
+const channelIcon = { WhatsApp: MessageCircle, Email: Mail, Appel: Phone, Réunion: Users } as const;
 
 export default function ClientDetail() {
   const { id } = useParams<{ id: string }>();
@@ -33,21 +38,32 @@ export default function ClientDetail() {
     );
   }
   if (!client) {
-    return <GlassSurface><ErrorState title="Client introuvable" desc="Cette fiche n'existe pas ou a été fusionnée." onRetry={() => navigate("/clients")} /></GlassSurface>;
+    return (
+      <GlassSurface>
+        <ErrorState
+          title="Client introuvable"
+          desc="Cette fiche n'existe pas ou a été fusionnée."
+          onRetry={() => navigate('/clients')}
+        />
+      </GlassSurface>
+    );
   }
 
   const planAction = (label: string, agent: string, actionId: string) => {
     setActed((prev) => ({ ...prev, [actionId]: true }));
-    toast.gold("Action planifiée", {
+    toast.gold('Action planifiée', {
       description: `${label} — transmise à ${agent}.`,
-      action: { label: "Voir les tâches", onClick: () => navigate("/tasks") },
+      action: { label: 'Voir les tâches', onClick: () => navigate('/tasks') },
     });
   };
 
   return (
     <div className="space-y-4">
       <Reveal>
-        <Link to="/clients" className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-cream/50 transition-colors hover:text-cream">
+        <Link
+          to="/clients"
+          className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-cream/50 transition-colors hover:text-cream"
+        >
           <ArrowLeft size={14} strokeWidth={1.75} /> Clients
         </Link>
       </Reveal>
@@ -60,32 +76,60 @@ export default function ClientDetail() {
               <div>
                 <div className="flex flex-wrap items-center gap-2">
                   <h1 className="text-[21px] font-semibold tracking-tight">{client.name}</h1>
-                  <GlassBadge tone={segmentTone[client.segment]} dot={client.segment === "VIP"}>{client.segment}</GlassBadge>
-                  <GlassBadge tone={client.state === "Actif" ? "success" : client.state === "Inactif" ? "neutral" : "danger"}>{client.state}</GlassBadge>
+                  <GlassBadge tone={segmentTone[client.segment]} dot={client.segment === 'VIP'}>
+                    {client.segment}
+                  </GlassBadge>
+                  <GlassBadge
+                    tone={
+                      client.state === 'Actif'
+                        ? 'success'
+                        : client.state === 'Inactif'
+                          ? 'neutral'
+                          : 'danger'
+                    }
+                  >
+                    {client.state}
+                  </GlassBadge>
                 </div>
-                <p className="num mt-1.5 text-[11px] text-cream/45">{client.email} · {client.phone}</p>
+                <p className="num mt-1.5 text-[11px] text-cream/45">
+                  {client.email} · {client.phone}
+                </p>
                 <p className="mt-1 text-[12px] text-cream/45">
-                  {client.city} · client depuis {client.since} · suivi par <span className="text-cream/70">{client.owner}</span>
+                  {client.city} · client depuis {client.since} · suivi par{' '}
+                  <span className="text-cream/70">{client.owner}</span>
                 </p>
               </div>
             </div>
             <div className="text-right">
               <p className="card-eyebrow">Valeur client</p>
-              <p className="num mt-1.5 text-[24px] font-semibold tracking-tight text-champagne-300">{fmtMoney(client.value)}</p>
-              <p className="num mt-1 text-[9.5px] uppercase tracking-[0.12em] text-cream/30">cumulée depuis {client.since}</p>
+              <p className="num mt-1.5 text-[24px] font-semibold tracking-tight text-champagne-300">
+                {fmtMoney(client.value)}
+              </p>
+              <p className="num mt-1 text-[9.5px] uppercase tracking-[0.12em] text-cream/30">
+                cumulée depuis {client.since}
+              </p>
             </div>
           </div>
 
           <div className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-[13px] border border-white/[0.06] bg-white/[0.05] sm:grid-cols-4">
             {[
-              { k: "Demandes", v: String(client.requestsCount), cls: "" },
-              { k: "Réservations", v: String(client.bookingsCount), cls: "" },
-              { k: "Satisfaction", v: `${client.satisfaction}%`, cls: "text-jade" },
-              { k: "Risque", v: client.risk, cls: client.risk === "Élevé" ? "text-[#e28d85]" : client.risk === "Modéré" ? "text-saffron" : "text-jade" },
+              { k: 'Demandes', v: String(client.requestsCount), cls: '' },
+              { k: 'Réservations', v: String(client.bookingsCount), cls: '' },
+              { k: 'Satisfaction', v: `${client.satisfaction}%`, cls: 'text-jade' },
+              {
+                k: 'Risque',
+                v: client.risk,
+                cls:
+                  client.risk === 'Élevé'
+                    ? 'text-[#e28d85]'
+                    : client.risk === 'Modéré'
+                      ? 'text-saffron'
+                      : 'text-jade',
+              },
             ].map((s) => (
               <div key={s.k} className="bg-ink-900/70 px-4 py-3">
                 <p className="text-[9.5px] uppercase tracking-[0.12em] text-cream/35">{s.k}</p>
-                <p className={cn("num mt-1 text-[15px] font-semibold", s.cls)}>{s.v}</p>
+                <p className={cn('num mt-1 text-[15px] font-semibold', s.cls)}>{s.v}</p>
               </div>
             ))}
           </div>
@@ -95,25 +139,40 @@ export default function ClientDetail() {
       <div className="grid gap-4 lg:grid-cols-12">
         <div className="space-y-4 lg:col-span-7">
           <Reveal delay={0.1}>
-            <GlassPanel eyebrow="Historique" title="Événements récents"><ActivityFeed events={client.history} /></GlassPanel>
+            <GlassPanel eyebrow="Historique" title="Événements récents">
+              <ActivityFeed events={client.history} />
+            </GlassPanel>
           </Reveal>
           <Reveal delay={0.14}>
             <GlassPanel eyebrow="Demandes" title={`${clientRequests.length} demandes liées`}>
               {clientRequests.length === 0 ? (
-                <p className="py-4 text-center text-xs text-cream/40">Aucune demande associée à ce client.</p>
+                <p className="py-4 text-center text-xs text-cream/40">
+                  Aucune demande associée à ce client.
+                </p>
               ) : (
                 <ul className="divide-y divide-white/[0.05]">
                   {clientRequests.map((r) => (
                     <li key={r.id}>
-                      <Link to={`/requests/${r.id}`} className="group flex items-center justify-between gap-3 py-3 transition-colors hover:bg-white/[0.02] first:pt-0 last:pb-0">
+                      <Link
+                        to={`/requests/${r.id}`}
+                        className="group flex items-center justify-between gap-3 py-3 transition-colors hover:bg-white/[0.02] first:pt-0 last:pb-0"
+                      >
                         <span className="min-w-0">
                           <span className="block truncate text-[13px] font-medium">{r.title}</span>
-                          <span className="num mt-0.5 block text-[9.5px] text-cream/35">{r.ref} · {r.time}</span>
+                          <span className="num mt-0.5 block text-[9.5px] text-cream/35">
+                            {r.ref} · {r.time}
+                          </span>
                         </span>
                         <span className="flex shrink-0 items-center gap-3">
-                          <span className="num hidden text-[12px] font-semibold sm:block">{r.amountLabel}</span>
+                          <span className="num hidden text-[12px] font-semibold sm:block">
+                            {r.amountLabel}
+                          </span>
                           <StatusBadge status={r.status} />
-                          <ArrowUpRight size={13} strokeWidth={1.75} className="text-cream/25 transition-colors group-hover:text-cream" />
+                          <ArrowUpRight
+                            size={13}
+                            strokeWidth={1.75}
+                            className="text-cream/25 transition-colors group-hover:text-cream"
+                          />
                         </span>
                       </Link>
                     </li>
@@ -137,7 +196,9 @@ export default function ClientDetail() {
                           <span className="text-[12.5px] font-medium">{cm.channel}</span>
                           <span className="num shrink-0 text-[9.5px] text-cream/35">{cm.date}</span>
                         </span>
-                        <span className="mt-0.5 block text-xs leading-relaxed text-cream/50">{cm.summary}</span>
+                        <span className="mt-0.5 block text-xs leading-relaxed text-cream/50">
+                          {cm.summary}
+                        </span>
                       </span>
                     </li>
                   );
@@ -153,7 +214,11 @@ export default function ClientDetail() {
               <ul className="space-y-3">
                 {client.aiInsights.map((ins, i) => (
                   <li key={i} className="flex items-start gap-2.5">
-                    <Sparkles size={13} strokeWidth={1.6} className="mt-0.5 shrink-0 text-champagne-300" />
+                    <Sparkles
+                      size={13}
+                      strokeWidth={1.6}
+                      className="mt-0.5 shrink-0 text-champagne-300"
+                    />
                     <span className="text-[12.5px] leading-relaxed text-cream/65">{ins}</span>
                   </li>
                 ))}
@@ -166,13 +231,35 @@ export default function ClientDetail() {
                 {client.recommendedActions.map((a) => {
                   const done = acted[a.id];
                   return (
-                    <div key={a.id} className={cn("flex items-center justify-between gap-3 rounded-[12px] border p-3 transition-all duration-300", done ? "border-jade/25 bg-jade/[0.05]" : "border-white/[0.07] bg-white/[0.015] hover:border-white/[0.15]")}>
+                    <div
+                      key={a.id}
+                      className={cn(
+                        'flex items-center justify-between gap-3 rounded-[12px] border p-3 transition-all duration-300',
+                        done
+                          ? 'border-jade/25 bg-jade/[0.05]'
+                          : 'border-white/[0.07] bg-white/[0.015] hover:border-white/[0.15]'
+                      )}
+                    >
                       <span className="min-w-0">
-                        <span className="block text-[12.5px] font-medium leading-snug">{a.label}</span>
-                        <span className="num mt-1 block text-[9px] uppercase tracking-[0.12em] text-cream/30">{a.agent}</span>
+                        <span className="block text-[12.5px] font-medium leading-snug">
+                          {a.label}
+                        </span>
+                        <span className="num mt-1 block text-[9px] uppercase tracking-[0.12em] text-cream/30">
+                          {a.agent}
+                        </span>
                       </span>
-                      {done ? <GlassBadge tone="success" dot>Planifiée</GlassBadge> : (
-                        <GlassButton size="sm" variant="gold" onClick={() => planAction(a.label, a.agent, a.id)}>Planifier</GlassButton>
+                      {done ? (
+                        <GlassBadge tone="success" dot>
+                          Planifiée
+                        </GlassBadge>
+                      ) : (
+                        <GlassButton
+                          size="sm"
+                          variant="gold"
+                          onClick={() => planAction(a.label, a.agent, a.id)}
+                        >
+                          Planifier
+                        </GlassButton>
                       )}
                     </div>
                   );
@@ -180,8 +267,15 @@ export default function ClientDetail() {
               </div>
               <div className="mt-4 border-t border-white/[0.06] pt-3.5">
                 <GlassButton
-                  variant="soft" size="sm" full iconLeft={<MessageCircle size={13} strokeWidth={1.6} />}
-                  onClick={() => toast.neutral("Conversation ouverte", { description: `Fil ${client.name} chargé depuis WhatsApp Business.` })}
+                  variant="soft"
+                  size="sm"
+                  full
+                  iconLeft={<MessageCircle size={13} strokeWidth={1.6} />}
+                  onClick={() =>
+                    toast.neutral('Conversation ouverte', {
+                      description: `Fil ${client.name} chargé depuis WhatsApp Business.`,
+                    })
+                  }
                 >
                   Ouvrir la conversation
                 </GlassButton>

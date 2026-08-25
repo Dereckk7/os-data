@@ -3,8 +3,9 @@
  * Lente au repos (premium posé), légère accélération au survol.
  * GPU-friendly (transform/opacity uniquement), coupée en reduced-motion.
  */
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { prefersReducedMotion } from "../lib/theme";
+import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from 'react';
+
+import { prefersReducedMotion } from '../lib/theme';
 
 interface BorderBeamPanelProps {
   beams?: number;
@@ -21,13 +22,13 @@ interface BorderBeamPanelProps {
 
 export function BorderBeamPanel({
   beams = 1,
-  colors = ["#D4AF37"],
+  colors = ['#D4AF37'],
   idleSpeed = 25,
   hoverSpeed = 150,
   glow = true,
   radius = 16,
   thickness = 1.5,
-  className = "",
+  className = '',
   style,
   children,
 }: BorderBeamPanelProps) {
@@ -53,8 +54,9 @@ export function BorderBeamPanel({
       speedRef.current += (target - speedRef.current) * 0.08;
       beamRefs.current.forEach((el, i) => {
         if (!el) return;
-        posRef.current[i] = ((posRef.current[i] ?? -i * (360 / beams)) + (speedRef.current * dt) / 1000) % 360;
-        el.style.setProperty("--beam-angle", `${posRef.current[i]}deg`);
+        posRef.current[i] =
+          ((posRef.current[i] ?? -i * (360 / beams)) + (speedRef.current * dt) / 1000) % 360;
+        el.style.setProperty('--beam-angle', `${posRef.current[i]}deg`);
       });
       raf = requestAnimationFrame(tick);
     };
@@ -65,14 +67,14 @@ export function BorderBeamPanel({
   const beamStyle = (i: number): CSSProperties => {
     const color = colors[i % colors.length];
     const base: CSSProperties = {
-      position: "absolute",
+      position: 'absolute',
       inset: 0,
       borderRadius: radius,
       padding: thickness,
-      pointerEvents: "none",
-      WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-      WebkitMaskComposite: "xor",
-      maskComposite: "exclude",
+      pointerEvents: 'none',
+      WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+      WebkitMaskComposite: 'xor',
+      maskComposite: 'exclude',
       background: `conic-gradient(from var(--beam-angle, ${-i * (360 / beams)}deg), transparent 0deg, transparent ${300 - i * 20}deg, ${color} ${345 - i * 10}deg, transparent 360deg)`,
     };
     if (glow) base.filter = `drop-shadow(0 0 6px ${color}66)`;
@@ -90,7 +92,9 @@ export function BorderBeamPanel({
         Array.from({ length: beams }).map((_, i) => (
           <div
             key={i}
-            ref={(el) => { beamRefs.current[i] = el; }}
+            ref={(el) => {
+              beamRefs.current[i] = el;
+            }}
             style={beamStyle(i)}
             aria-hidden="true"
           />
@@ -99,9 +103,14 @@ export function BorderBeamPanel({
         <div
           aria-hidden="true"
           style={{
-            position: "absolute", inset: 0, borderRadius: radius, padding: thickness, pointerEvents: "none",
-            WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            WebkitMaskComposite: "xor", maskComposite: "exclude",
+            position: 'absolute',
+            inset: 0,
+            borderRadius: radius,
+            padding: thickness,
+            pointerEvents: 'none',
+            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+            WebkitMaskComposite: 'xor',
+            maskComposite: 'exclude',
             background: `conic-gradient(from 210deg, transparent 0deg, transparent 250deg, ${colors[0]}88 300deg, transparent 360deg)`,
           }}
         />

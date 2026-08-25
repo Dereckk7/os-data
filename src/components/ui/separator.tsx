@@ -1,18 +1,19 @@
-import * as React from "react";
-import * as SeparatorPrimitive from "@radix-ui/react-separator";
-import { cn } from "../../lib/services";
+import * as SeparatorPrimitive from '@radix-ui/react-separator';
+import * as React from 'react';
+
+import { cn } from '../../lib/services';
 
 export const Separator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root>
->(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => (
+>(({ className, orientation = 'horizontal', decorative = true, ...props }, ref) => (
   <SeparatorPrimitive.Root
     ref={ref}
     decorative={decorative}
     orientation={orientation}
     className={cn(
-      "shrink-0 bg-[color-mix(in_srgb,var(--color-cream)_10%,transparent)]",
-      orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
+      'shrink-0 bg-[color-mix(in_srgb,var(--color-cream)_10%,transparent)]',
+      orientation === 'horizontal' ? 'h-px w-full' : 'h-full w-px',
       className
     )}
     {...props}

@@ -1,34 +1,38 @@
-import { useEffect, type ReactNode } from "react";
-import { HashRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
-import {
-  AuthProvider, ApprovalsProvider, getOnboarded, SourcesProvider, useAuth,
-} from "./lib/services";
-import { PrefsProvider, ThemeProvider } from "./lib/theme";
-import { Toaster } from "./components/toast";
-import AmbientDataBackground from "./components/background";
-import { AppShell } from "./components/navigation";
+import { type ReactNode, useEffect } from 'react';
+import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
-import Login from "./pages/Login";
-import Onboarding from "./pages/Onboarding";
-import Dashboard from "./pages/Dashboard";
-import Requests from "./pages/Requests";
-import RequestDetail from "./pages/RequestDetail";
-import Clients from "./pages/Clients";
-import ClientDetail from "./pages/ClientDetail";
-import Agents from "./pages/Agents";
-import AgentDetail from "./pages/AgentDetail";
-import Operations from "./pages/Operations";
-import Insights from "./pages/Insights";
-import Reports from "./pages/Reports";
-import Sources from "./pages/Sources";
-import Integrations from "./pages/Integrations";
-import Documents from "./pages/Documents";
-import Activity from "./pages/Activity";
-import Cowork from "./pages/Cowork";
-import Tasks from "./pages/Tasks";
-import Planning from "./pages/Planning";
-import Validation from "./pages/Validation";
-import Settings from "./pages/Settings";
+import AmbientDataBackground from './components/background';
+import { AppShell } from './components/navigation';
+import { Toaster } from './components/toast';
+import {
+  ApprovalsProvider,
+  AuthProvider,
+  getOnboarded,
+  SourcesProvider,
+  useAuth,
+} from './lib/services';
+import { PrefsProvider, ThemeProvider } from './lib/theme';
+import Activity from './pages/Activity';
+import AgentDetail from './pages/AgentDetail';
+import Agents from './pages/Agents';
+import ClientDetail from './pages/ClientDetail';
+import Clients from './pages/Clients';
+import Cowork from './pages/Cowork';
+import Dashboard from './pages/Dashboard';
+import Documents from './pages/Documents';
+import Insights from './pages/Insights';
+import Integrations from './pages/Integrations';
+import Login from './pages/Login';
+import Onboarding from './pages/Onboarding';
+import Operations from './pages/Operations';
+import Planning from './pages/Planning';
+import Reports from './pages/Reports';
+import RequestDetail from './pages/RequestDetail';
+import Requests from './pages/Requests';
+import Settings from './pages/Settings';
+import Sources from './pages/Sources';
+import Tasks from './pages/Tasks';
+import Validation from './pages/Validation';
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { user, booting } = useAuth();
@@ -46,7 +50,8 @@ function RequireAuth({ children }: { children: ReactNode }) {
     );
   }
   if (!user) return <Navigate to="/login" replace />;
-  if (!getOnboarded() && location.pathname !== "/onboarding") return <Navigate to="/onboarding" replace />;
+  if (!getOnboarded() && location.pathname !== '/onboarding')
+    return <Navigate to="/onboarding" replace />;
   return <>{children}</>;
 }
 
@@ -58,7 +63,7 @@ function OnboardingGate() {
 
 export default function App() {
   useEffect(() => {
-    document.title = "DATA OS — Votre entreprise, enfin connectée";
+    document.title = 'DATA OS — Votre entreprise, enfin connectée';
   }, []);
 
   return (
