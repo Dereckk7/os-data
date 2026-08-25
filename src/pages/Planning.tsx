@@ -62,7 +62,7 @@ export default function Planning() {
       </Reveal>
 
       <AnimatePresence mode="wait" initial={false}>
-      <FadeSwitch k={view}>
+      <FadeSwitch key={view} k={view}>
       {requestsQ.loading ? (
         <Skeleton className="h-96" />
       ) : view === "Jour" ? (

@@ -102,7 +102,7 @@ export default function AgentDetail() {
       </Reveal>
 
       <AnimatePresence mode="wait" initial={false}>
-      <FadeSwitch k={tab}>
+      <FadeSwitch key={tab} k={tab}>
         {tab === "Vue d'ensemble" && (
           <div className="grid gap-4 lg:grid-cols-12">
             <GlassPanel eyebrow="Capacités" title="Ce que fait cet agent" className="lg:col-span-7">
