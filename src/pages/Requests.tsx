@@ -9,7 +9,7 @@ import { TypeIcon } from "../components/icons";
 import { Avatar, EmptyState, FadeSwitch, PriorityBadge, Reveal, SegmentedControl, Skeleton, StatusBadge } from "../components/ui";
 import { WorkCard, type WorkTone } from "../components/workcard";
 import { toast } from "../components/toast";
-import { AnimatePresence } from "framer-motion";
+
 
 type View = "liste" | "board" | "calendrier" | "cartes";
 type Filter = "Tous" | "VIP" | "En retard" | "Transferts" | "À confirmer";
@@ -133,8 +133,7 @@ export default function Requests() {
         </div>
       </Reveal>
 
-      <AnimatePresence mode="wait" initial={false}>
-      <FadeSwitch key={view} k={view}>
+      <FadeSwitch k={view}>
       {requestsQ.loading ? (
         <div className="space-y-2.5">
           {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-[62px]" />)}
@@ -360,7 +359,6 @@ export default function Requests() {
         </Reveal>
       )}
       </FadeSwitch>
-      </AnimatePresence>
 
       <GlassModal
         open={modalOpen}
