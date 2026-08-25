@@ -6,7 +6,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   Activity, Bell, Building2, CalendarDays, CheckSquare, ChevronRight, ChevronsUpDown,
   Database, Feather, FileText, HelpCircle, Inbox, LayoutDashboard, Layers, LogOut, Menu,
@@ -87,6 +87,7 @@ const GROUPS: NavGroupDef[] = [
     items: [
       { to: "/sources", label: "Sources", icon: Database },
       { to: "/integrations", label: "Intégrations", icon: Plug },
+      { to: "/settings", label: "Paramètres", icon: Settings },
     ],
   },
 ];
@@ -557,6 +558,18 @@ export function AppShell() {
   const [helpOpen, setHelpOpen] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
+  const reduce = useReducedMotion();
+
+  /* Transition de page : transform + opacity uniquement (GPU-friendly,
+     pas de blur/repaint). Coupée si prefers-reduced-motion. */
+  const pageAnim = reduce
+    ? { initial: false as const, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.08 } }
+    : {
+        initial: { opacity: 0, y: 10 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: -6 },
+        transition: { duration: 0.22, ease: EASE },
+      };
 
   const clickRef = useRef<{ x: number; y: number } | null>(null);
   useEffect(() => {
@@ -596,13 +609,13 @@ export function AppShell() {
 
       <SidebarInset>
         <InsetHeader onSearch={() => setPaletteOpen(true)} />
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.main
             key={location.pathname}
-            initial={{ opacity: 0, y: 8, filter: "blur(5px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -4, filter: "blur(3px)" }}
-            transition={{ duration: 0.24, ease: EASE }}
+            initial={pageAnim.initial}
+            animate={pageAnim.animate}
+            exit={pageAnim.exit}
+            transition={pageAnim.transition}
             className="mx-auto w-full max-w-[1160px] flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-8 lg:pb-16"
           >
             <Outlet />

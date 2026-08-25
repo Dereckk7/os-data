@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn, useRequests } from "../lib/services";
 import { GlassBadge, GlassSurface } from "../components/glass";
-import { Reveal, SegmentedControl, Skeleton, StatusBadge } from "../components/ui";
+import { FadeSwitch, Reveal, SegmentedControl, Skeleton, StatusBadge } from "../components/ui";
+import { AnimatePresence } from "framer-motion";
 
 type View = "Jour" | "Semaine" | "Mois";
 
@@ -60,10 +61,11 @@ export default function Planning() {
         </header>
       </Reveal>
 
+      <AnimatePresence mode="wait" initial={false}>
+      <FadeSwitch k={view}>
       {requestsQ.loading ? (
         <Skeleton className="h-96" />
       ) : view === "Jour" ? (
-        <Reveal delay={0.08}>
           <GlassSurface className="p-5 sm:p-6">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-[15px] font-semibold tracking-tight">Aujourd'hui</h2>
@@ -95,9 +97,7 @@ export default function Planning() {
               </ul>
             )}
           </GlassSurface>
-        </Reveal>
       ) : view === "Semaine" ? (
-        <Reveal delay={0.08}>
           <GlassSurface className="overflow-x-auto p-5 sm:p-6">
             <div className="grid min-w-[720px] grid-cols-7 gap-2">
               {weekDays.map((d, i) => {
@@ -129,9 +129,7 @@ export default function Planning() {
               })}
             </div>
           </GlassSurface>
-        </Reveal>
       ) : (
-        <Reveal delay={0.08}>
           <GlassSurface className="p-5 sm:p-6">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-[15px] font-semibold capitalize tracking-tight">{monthLabel}</h2>
@@ -176,8 +174,9 @@ export default function Planning() {
               })}
             </div>
           </GlassSurface>
-        </Reveal>
       )}
+      </FadeSwitch>
+      </AnimatePresence>
     </div>
   );
 }

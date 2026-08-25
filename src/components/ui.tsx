@@ -12,6 +12,26 @@ import { GlassBadge, GlassButton } from "./glass";
 
 export const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/* ————— Crossfade d'onglets / de vues —————
+   Anime l'entrée et la sortie du contenu quand sa clé change (onglets,
+   périodes, vues). Transform + opacity uniquement ; coupé si
+   prefers-reduced-motion. */
+export function FadeSwitch({ k, children, className }: { k: string; children: ReactNode; className?: string }) {
+  const reduce = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return (
+    <motion.div
+      key={k}
+      initial={reduce ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={reduce ? undefined : { opacity: 0, y: -6 }}
+      transition={{ duration: reduce ? 0.05 : 0.2, ease: EASE }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 /* ————— Révélation au scroll ————— */
 export function Reveal({ children, delay = 0, y = 8, className }: { children: ReactNode; delay?: number; y?: number; className?: string }) {
   return (
