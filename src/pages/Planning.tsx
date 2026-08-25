@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { cn, useRequests } from "../lib/services";
 import { GlassBadge, GlassSurface } from "../components/glass";
 import { FadeSwitch, Reveal, SegmentedControl, Skeleton, StatusBadge } from "../components/ui";
-import { AnimatePresence } from "framer-motion";
+
 
 type View = "Jour" | "Semaine" | "Mois";
 
@@ -61,8 +61,7 @@ export default function Planning() {
         </header>
       </Reveal>
 
-      <AnimatePresence mode="wait" initial={false}>
-      <FadeSwitch key={view} k={view}>
+      <FadeSwitch k={view}>
       {requestsQ.loading ? (
         <Skeleton className="h-96" />
       ) : view === "Jour" ? (
@@ -176,7 +175,6 @@ export default function Planning() {
           </GlassSurface>
       )}
       </FadeSwitch>
-      </AnimatePresence>
     </div>
   );
 }

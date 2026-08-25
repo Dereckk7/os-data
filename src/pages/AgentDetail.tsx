@@ -7,7 +7,7 @@ import type { AgentStatus } from "../lib/types";
 import { GlassBadge, GlassButton, GlassPanel, GlassSelect, GlassSurface } from "../components/glass";
 import { Sparkline } from "../components/charts";
 import { ActivityFeed, AgentStatusBadge, AnimatedNumber, ErrorState, FadeSwitch, Reveal, SegmentedControl, Skeleton, Toggle } from "../components/ui";
-import { AnimatePresence } from "framer-motion";
+
 import { toast } from "../components/toast";
 import { AgentTile } from "./Agents";
 
@@ -101,8 +101,7 @@ export default function AgentDetail() {
         <SegmentedControl value={tab} onChange={setTab} options={TABS.map((t) => ({ value: t, label: t }))} size="sm" />
       </Reveal>
 
-      <AnimatePresence mode="wait" initial={false}>
-      <FadeSwitch key={tab} k={tab}>
+      <FadeSwitch k={tab}>
         {tab === "Vue d'ensemble" && (
           <div className="grid gap-4 lg:grid-cols-12">
             <GlassPanel eyebrow="Capacités" title="Ce que fait cet agent" className="lg:col-span-7">
@@ -230,7 +229,6 @@ export default function AgentDetail() {
           </GlassPanel>
         )}
       </FadeSwitch>
-      </AnimatePresence>
     </div>
   );
 }

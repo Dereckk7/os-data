@@ -12,19 +12,19 @@ import { GlassBadge, GlassButton } from "./glass";
 
 export const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-/* ————— Crossfade d'onglets / de vues —————
-   Anime l'entrée et la sortie du contenu quand sa clé change (onglets,
-   périodes, vues). Transform + opacity uniquement ; coupé si
-   prefers-reduced-motion. */
+/* ————— Fondu d'onglets / de vues —————
+   Quand la clé `k` change, le motion.div est re-monté et fond en entrée.
+   Volontairement SANS AnimatePresence : un simple keyed-remount ne peut
+   jamais bloquer le rendu (aucune attente de sortie). Transform + opacity
+   uniquement ; coupé si prefers-reduced-motion. */
 export function FadeSwitch({ k, children, className }: { k: string; children: ReactNode; className?: string }) {
-  const reduce = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduce = prefersReducedMotion();
   return (
     <motion.div
       key={k}
       initial={reduce ? false : { opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={reduce ? undefined : { opacity: 0, y: -6 }}
-      transition={{ duration: reduce ? 0.05 : 0.2, ease: EASE }}
+      transition={{ duration: reduce ? 0 : 0.2, ease: EASE }}
       className={className}
     >
       {children}
