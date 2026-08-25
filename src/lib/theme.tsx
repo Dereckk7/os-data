@@ -34,8 +34,19 @@ function resolveMode(mode: ThemeMode): { resolved: ResolvedTheme; comfort: boole
   return { resolved: mode, comfort: false };
 }
 
+let themeAnimTimer: number | null = null;
+
 function applyTheme(resolved: ResolvedTheme, comfort: boolean) {
   const root = document.documentElement;
+
+  /* Pose une classe transitoire pour fondre les couleurs en douceur. */
+  root.classList.add("theme-anim");
+  if (themeAnimTimer !== null) window.clearTimeout(themeAnimTimer);
+  themeAnimTimer = window.setTimeout(() => {
+    root.classList.remove("theme-anim");
+    themeAnimTimer = null;
+  }, 420);
+
   root.dataset.theme = resolved;
   if (comfort) root.dataset.comfort = "true";
   else delete root.dataset.comfort;

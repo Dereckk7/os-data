@@ -9,8 +9,9 @@ import { mockOrganization } from "../lib/mock";
 import { usePrefs, useTheme, type ContrastPref, type DensityPref, type FontPref, type MotionPref, type ThemeMode } from "../lib/theme";
 import { GlassBadge, GlassButton, GlassInput, GlassModal, GlassSelect, GlassSurface } from "../components/glass";
 import { AgentGlyph } from "../components/icons";
-import { Avatar, Reveal, Toggle } from "../components/ui";
+import { Avatar, FadeSwitch, Reveal, Toggle } from "../components/ui";
 import { toast } from "../components/toast";
+import { AnimatePresence } from "framer-motion";
 import type { Tone } from "../lib/types";
 
 const SECTIONS = [
@@ -120,7 +121,8 @@ export default function Settings() {
           </div>
         </nav>
 
-        <Reveal key={section} className="min-w-0">
+        <AnimatePresence mode="wait" initial={false}>
+        <FadeSwitch k={section} className="min-w-0">
           <GlassSurface className="p-5 sm:p-6">
             <div className="mb-4 flex items-center gap-2.5 border-b border-white/[0.06] pb-4">
               {active && <active.icon size={16} strokeWidth={1.6} className="text-cream/70" />}
@@ -508,7 +510,8 @@ export default function Settings() {
               </div>
             )}
           </GlassSurface>
-        </Reveal>
+        </FadeSwitch>
+        </AnimatePresence>
       </div>
 
       <GlassModal

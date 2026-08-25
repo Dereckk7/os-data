@@ -369,6 +369,32 @@ body {
   }
 }
 
+/* ————— Transition douce de thème —————
+   Activée temporairement sur <html> pendant un changement de thème :
+   les couleurs (fond, texte, bordures, icônes) se fondent en ~350 ms
+   au lieu de basculer sèchement. Retirée ensuite pour ne pas taxer
+   les interactions courantes. */
+.theme-anim,
+.theme-anim *,
+.theme-anim *::before,
+.theme-anim *::after {
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease,
+    fill 0.35s ease,
+    stroke 0.35s ease,
+    box-shadow 0.35s ease !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-anim,
+  .theme-anim *,
+  .theme-anim *::before,
+  .theme-anim *::after {
+    transition: none !important;
+  }
+}
+
 @keyframes shimmer { to { background-position: -200% 0; } }
 @keyframes drift1 { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(130px, 90px, 0) scale(1.14); } }
 @keyframes drift2 { from { transform: translate3d(0, 0, 0) scale(1.06); } to { transform: translate3d(-150px, -100px, 0) scale(0.94); } }

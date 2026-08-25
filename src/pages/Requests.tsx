@@ -6,9 +6,10 @@ import { cn, useRequests } from "../lib/services";
 import type { DataRequest, RequestStatus, RequestType } from "../lib/types";
 import { GlassButton, GlassInput, GlassModal, GlassSelect, GlassSurface } from "../components/glass";
 import { TypeIcon } from "../components/icons";
-import { Avatar, EmptyState, PriorityBadge, Reveal, SegmentedControl, Skeleton, StatusBadge } from "../components/ui";
+import { Avatar, EmptyState, FadeSwitch, PriorityBadge, Reveal, SegmentedControl, Skeleton, StatusBadge } from "../components/ui";
 import { WorkCard, type WorkTone } from "../components/workcard";
 import { toast } from "../components/toast";
+import { AnimatePresence } from "framer-motion";
 
 type View = "liste" | "board" | "calendrier" | "cartes";
 type Filter = "Tous" | "VIP" | "En retard" | "Transferts" | "À confirmer";
@@ -132,6 +133,8 @@ export default function Requests() {
         </div>
       </Reveal>
 
+      <AnimatePresence mode="wait" initial={false}>
+      <FadeSwitch k={view}>
       {requestsQ.loading ? (
         <div className="space-y-2.5">
           {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-[62px]" />)}
@@ -356,6 +359,8 @@ export default function Requests() {
           </GlassSurface>
         </Reveal>
       )}
+      </FadeSwitch>
+      </AnimatePresence>
 
       <GlassModal
         open={modalOpen}
