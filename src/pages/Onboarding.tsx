@@ -68,7 +68,7 @@ export default function Onboarding() {
             <Reveal key={s.key} delay={0.05 + i * 0.05}>
               <GlassSurface sweep className={cn("group flex h-full flex-col gap-3 p-5 transition-colors duration-300", isConnected && "border-jade/25")}>
                 <div className="flex items-start justify-between gap-3">
-                  <AnimatedIcon trigger="hover" className="grid h-9 w-9 place-items-center rounded-[10px] border border-white/[0.08] bg-ink-950/55 text-cream/75">
+                  <AnimatedIcon trigger="hover" className="grid h-9 w-9 place-items-center rounded-[10px] border border-[var(--hairline)] bg-ink-950/55 text-cream/75">
                     <SourceIcon sourceKey={s.key} size={16} strokeWidth={1.6} />
                   </AnimatedIcon>
                   {isConnected ? <GlassBadge tone="success" dot>Connecté</GlassBadge>
@@ -79,11 +79,11 @@ export default function Onboarding() {
                 <div className="min-h-[52px]">
                   <p className="flex items-center gap-2 text-[14px] font-semibold tracking-tight">
                     {s.name}
-                    <span className="num rounded-[5px] border border-white/[0.08] bg-white/[0.03] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/40">{s.method}</span>
+                    <span className="num rounded-[5px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/40">{s.method}</span>
                   </p>
                   <p className="mt-1 text-xs leading-relaxed text-cream/50">{s.description}</p>
                 </div>
-                <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-3">
+                <div className="mt-auto flex items-center justify-between gap-2 border-t border-[var(--card-divider)] pt-3">
                   {isConnected ? (
                     <>
                       <span className="num text-[10.5px] text-jade">{fmtInt(s.records)} données</span>
@@ -117,7 +117,7 @@ export default function Onboarding() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.35, ease: EASE }}
-        className="mt-8 flex flex-col-reverse items-stretch gap-2.5 border-t border-white/[0.06] pt-5 sm:flex-row sm:items-center sm:justify-between"
+        className="mt-8 flex flex-col-reverse items-stretch gap-2.5 border-t border-[var(--card-divider)] pt-5 sm:flex-row sm:items-center sm:justify-between"
       >
         <GlassButton variant="ghost" onClick={() => finish(true)}>Passer pour l'instant</GlassButton>
         <div className="flex items-center justify-between gap-3 sm:justify-end">

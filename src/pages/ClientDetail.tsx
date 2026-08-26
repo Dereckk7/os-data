@@ -102,7 +102,7 @@ export default function ClientDetail() {
               {clientRequests.length === 0 ? (
                 <p className="py-4 text-center text-xs text-cream/40">Aucune demande associée à ce client.</p>
               ) : (
-                <ul className="divide-y divide-white/[0.05]">
+                <ul className="divide-y divide-[var(--card-divider)]">
                   {clientRequests.map((r) => (
                     <li key={r.id}>
                       <Link to={`/requests/${r.id}`} className="group flex items-center justify-between gap-3 py-3 transition-colors hover:bg-[var(--row-hover)] first:pt-0 last:pb-0">

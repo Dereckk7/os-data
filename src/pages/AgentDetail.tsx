@@ -82,7 +82,7 @@ export default function AgentDetail() {
             </GlassButton>
           </div>
 
-          <div className="mt-5 grid grid-cols-3 gap-px overflow-hidden rounded-[13px] border border-white/[0.06] bg-white/[0.05]">
+          <div className="mt-5 grid grid-cols-3 gap-px overflow-hidden rounded-[13px] border border-[var(--card-divider)] bg-[var(--surface-2)]">
             {[
               { k: "Tâches aujourd'hui", v: <AnimatedNumber value={String(agent.actionsToday)} /> },
               { k: "Taux de réussite", v: <span className="num">{agent.accuracy}%</span> },
@@ -107,7 +107,7 @@ export default function AgentDetail() {
             <GlassPanel eyebrow="Capacités" title="Ce que fait cet agent" className="lg:col-span-7">
               <ul className="space-y-2.5">
                 {agent.capabilities.map((c) => (
-                  <li key={c} className="flex items-center gap-2.5 rounded-[11px] border border-white/[0.06] bg-white/[0.015] px-3.5 py-2.5">
+                  <li key={c} className="flex items-center gap-2.5 rounded-[11px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3.5 py-2.5">
                     <span className="h-[5px] w-[5px] rounded-full bg-champagne-400" />
                     <span className="text-[13px] font-medium">{c}</span>
                   </li>
@@ -131,7 +131,7 @@ export default function AgentDetail() {
 
         {tab === "Tâches" && (
           <GlassPanel eyebrow="File de travail" title={`${agent.tasks.length} tâches`}>
-            <ul className="divide-y divide-white/[0.05]">
+            <ul className="divide-y divide-[var(--card-divider)]">
               {agent.tasks.map((t) => (
                 <li key={t.id} className="flex items-center justify-between gap-3 py-3">
                   <span className="min-w-0">
@@ -149,13 +149,13 @@ export default function AgentDetail() {
           <GlassPanel eyebrow="Données" title="Sources utilisées par l'agent">
             <ul className="space-y-2.5">
               {agent.sources.map((s) => (
-                <li key={s} className="flex items-center justify-between gap-3 rounded-[11px] border border-white/[0.06] bg-white/[0.015] px-3.5 py-3">
+                <li key={s} className="flex items-center justify-between gap-3 rounded-[11px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3.5 py-3">
                   <span className="text-[13px] font-medium">{s}</span>
                   <Link to="/sources" className="text-[11px] font-medium text-cream/55 transition-colors hover:text-cream">Gérer →</Link>
                 </li>
               ))}
             </ul>
-            <p className="mt-4 rounded-[10px] border border-white/[0.06] bg-white/[0.02] px-3 py-2.5 text-[11.5px] leading-relaxed text-cream/45">
+            <p className="mt-4 rounded-[10px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3 py-2.5 text-[11.5px] leading-relaxed text-cream/45">
               Les accès sont révoqués automatiquement si une source passe en erreur.
             </p>
           </GlassPanel>
@@ -178,7 +178,7 @@ export default function AgentDetail() {
                       <dt className="text-[11.5px] text-cream/50">{m.k}</dt>
                       <dd className="num text-[12.5px] font-semibold">{m.v}</dd>
                     </div>
-                    <div className="mt-1.5 h-[3px] overflow-hidden rounded-full bg-white/[0.06]">
+                    <div className="mt-1.5 h-[3px] overflow-hidden rounded-full bg-[var(--surface-3)]">
                       <div className="h-full rounded-full bg-champagne-500/70 transition-all duration-1000" style={{ width: `${m.pct}%` }} />
                     </div>
                   </div>
@@ -190,7 +190,7 @@ export default function AgentDetail() {
 
         {tab === "Configuration" && (
           <GlassPanel eyebrow="Réglages" title={`Configuration — ${agent.name}`}>
-            <div className="divide-y divide-white/[0.05]">
+            <div className="divide-y divide-[var(--card-divider)]">
               <div className="flex items-center justify-between gap-4 py-3.5">
                 <div>
                   <p className="text-[13px] font-medium">Agent activé</p>

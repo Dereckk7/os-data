@@ -176,7 +176,7 @@ export function CommandPalette({
             open ? "pointer-events-auto" : "pointer-events-none"
           )}
         >
-          <div className="flex items-center gap-3 border-b border-white/[0.08] px-4">
+          <div className="flex items-center gap-3 border-b border-[var(--hairline)] px-4">
             <Search className="h-4 w-4 text-cream/40" strokeWidth={1.75} />
             <input
               ref={inputRef}

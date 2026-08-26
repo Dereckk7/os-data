@@ -145,7 +145,7 @@ export function EmptyState({ icon, title, desc, action, className }: {
 }) {
   return (
     <div className={cn("flex flex-col items-center px-6 py-14 text-center", className)}>
-      <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-white/[0.08] bg-white/[0.03] text-cream/40">
+      <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-[var(--hairline)] bg-[var(--surface-2)] text-cream/40">
         {icon ?? <Inbox size={18} strokeWidth={1.5} />}
       </span>
       <p className="mt-4 text-[15px] font-semibold">{title}</p>
@@ -176,7 +176,7 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
     <button
       type="button" role="switch" aria-checked={checked} aria-label={label}
       onClick={() => onChange(!checked)}
-      className={cn("relative h-[22px] w-10 shrink-0 rounded-full border transition-colors duration-300", checked ? "border-jade/40 bg-jade/35" : "border-white/[0.1] bg-white/[0.06]")}
+      className={cn("relative h-[22px] w-10 shrink-0 rounded-full border transition-colors duration-300", checked ? "border-jade/40 bg-jade/35" : "border-[var(--hairline-strong)] bg-[var(--surface-3)]")}
     >
       <span className={cn("absolute top-1/2 h-[16px] w-[16px] -translate-y-1/2 rounded-full transition-all duration-300", checked ? "left-[21px] bg-jade" : "left-[3px] bg-cream/45")} />
     </button>
@@ -246,7 +246,7 @@ export function SegmentedControl<T extends string>({ options, value, onChange, c
   className?: string; size?: "sm" | "md";
 }) {
   return (
-    <div role="tablist" className={cn("inline-flex items-center gap-0.5 rounded-[12px] border border-white/[0.07] bg-white/[0.03] p-1", className)}>
+    <div role="tablist" className={cn("inline-flex items-center gap-0.5 rounded-[12px] border border-[var(--hairline)] bg-[var(--surface-2)] p-1", className)}>
       {options.map((o) => {
         const active = o.value === value;
         return (
@@ -278,10 +278,10 @@ export function ActivityFeed({ events, className }: { events: ActivityEvent[]; c
             <span
               className={cn(
                 "z-10 mt-[7px] h-[7px] w-[7px] rounded-full border",
-                e.live ? "border-jade/60 bg-jade pulse-dot" : e.agent ? "border-champagne-500/50 bg-champagne-500/25" : "border-white/20 bg-white/[0.07]"
+                e.live ? "border-jade/60 bg-jade pulse-dot" : e.agent ? "border-champagne-500/50 bg-champagne-500/25" : "border-white/20 bg-[var(--surface-3)]"
               )}
             />
-            {i < events.length - 1 && <span className="absolute top-0 bottom-0 w-px bg-white/[0.07]" aria-hidden />}
+            {i < events.length - 1 && <span className="absolute top-0 bottom-0 w-px bg-[var(--surface-3)]" aria-hidden />}
           </span>
           <span className={cn("block", i < events.length - 1 ? "pb-4" : "pb-0.5")}>
             <span className={cn("block text-[13px] font-medium leading-5", e.live && "text-cream")}>

@@ -59,7 +59,7 @@ export function InsightCard({ insight, onCta, onOpen, compact, className }: {
         </div>
       )}
 
-      <div className="mt-auto flex items-center justify-between gap-3 border-t border-white/[0.06] pt-3 pl-2">
+      <div className="mt-auto flex items-center justify-between gap-3 border-t border-[var(--card-divider)] pt-3 pl-2">
         <span className="num truncate text-[9.5px] uppercase tracking-[0.12em] text-cream/30">{insight.agent} · {insight.time}</span>
         <GlassButton size="sm" variant={insight.type === "opportunity" ? "gold" : "ghost"} onClick={() => onCta(insight)}>
           {insight.cta}

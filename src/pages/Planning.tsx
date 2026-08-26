@@ -54,7 +54,7 @@ export default function Planning() {
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Travail</p>
-            <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Planning</h1>
+            <h1 className="mt-2 t-title">Planning</h1>
             <p className="mt-1.5 text-[13.5px] text-cream/50">Rendez-vous, demandes, réservations et échéances — au même endroit.</p>
           </div>
           <SegmentedControl value={view} onChange={setView} options={(["Jour", "Semaine", "Mois"] as View[]).map((v) => ({ value: v, label: v }))} />
@@ -78,7 +78,7 @@ export default function Planning() {
                   <li key={e.id}>
                     <button
                       onClick={() => e.kind === "demande" && navigate(`/requests/${e.id}`)}
-                      className="grid w-full grid-cols-[56px_1fr] items-center gap-3 rounded-[12px] border border-white/[0.06] bg-white/[0.015] px-3.5 py-3 text-left transition-all duration-200 hover:-translate-y-px hover:border-white/[0.14]"
+                      className="grid w-full grid-cols-[56px_1fr] items-center gap-3 rounded-[12px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3.5 py-3 text-left transition-all duration-200 hover:-translate-y-px hover:border-[var(--hairline-strong)]"
                     >
                       <span className="num text-[12px] font-semibold text-champagne-300">{e.time}</span>
                       <span className="flex min-w-0 items-center justify-between gap-3">
@@ -106,7 +106,7 @@ export default function Planning() {
                 return (
                   <div
                     key={i}
-                    className={cn("flex min-h-[280px] flex-col rounded-[12px] border p-2.5", isToday ? "border-champagne-500/40 bg-champagne-500/[0.05]" : "border-white/[0.06] bg-white/[0.012]")}
+                    className={cn("flex min-h-[280px] flex-col rounded-[12px] border p-2.5", isToday ? "border-champagne-500/40 bg-champagne-500/[0.05]" : "border-[var(--card-divider)] bg-[var(--surface-2)]")}
                   >
                     <p className={cn("num mb-2 text-center text-[10.5px] font-semibold uppercase tracking-[0.1em]", isToday ? "text-champagne-300" : "text-cream/45")}>
                       {label} {d}
@@ -116,7 +116,7 @@ export default function Planning() {
                         <button
                           key={e.id}
                           onClick={() => e.kind === "demande" && navigate(`/requests/${e.id}`)}
-                          className={cn("w-full rounded-[8px] border px-2 py-1.5 text-left transition-all duration-150 hover:border-white/[0.2]", e.kind === "rdv" ? "border-white/[0.08] bg-white/[0.03]" : "border-champagne-500/20 bg-champagne-500/[0.06]")}
+                          className={cn("w-full rounded-[8px] border px-2 py-1.5 text-left transition-all duration-150 hover:border-[var(--hairline-strong)]", e.kind === "rdv" ? "border-[var(--hairline)] bg-[var(--surface-2)]" : "border-champagne-500/20 bg-champagne-500/[0.06]")}
                         >
                           <span className="num block text-[8.5px] text-cream/40">{e.time}</span>
                           <span className="mt-0.5 block truncate text-[10.5px] font-medium leading-tight">{e.title}</span>
@@ -146,7 +146,7 @@ export default function Planning() {
                 return (
                   <div
                     key={d}
-                    className={cn("flex aspect-square flex-col items-center rounded-[10px] border pt-1.5 transition-colors sm:aspect-auto sm:min-h-[74px]", isToday ? "border-champagne-500/40 bg-champagne-500/[0.06]" : "border-white/[0.05] bg-white/[0.012] hover:border-white/[0.12]")}
+                    className={cn("flex aspect-square flex-col items-center rounded-[10px] border pt-1.5 transition-colors sm:aspect-auto sm:min-h-[74px]", isToday ? "border-champagne-500/40 bg-champagne-500/[0.06]" : "border-[var(--card-divider)] bg-[var(--surface-2)] hover:border-[var(--hairline-strong)]")}
                   >
                     <span className={cn("num text-[10.5px]", isToday ? "font-semibold text-champagne-300" : "text-cream/50")}>{d}</span>
                     <span className="mt-1 flex w-full flex-col gap-[3px] px-1">
@@ -154,7 +154,7 @@ export default function Planning() {
                         <button
                           key={e.id}
                           onClick={() => e.kind === "demande" && navigate(`/requests/${e.id}`)}
-                          className={cn("hidden w-full truncate rounded-[5px] border px-1 py-0.5 text-left text-[8px] leading-tight sm:block", e.kind === "rdv" ? "border-white/[0.08] bg-white/[0.04] text-cream/60" : "border-champagne-500/20 bg-champagne-500/[0.07] text-champagne-300")}
+                          className={cn("hidden w-full truncate rounded-[5px] border px-1 py-0.5 text-left text-[8px] leading-tight sm:block", e.kind === "rdv" ? "border-[var(--hairline)] bg-[var(--surface-2)] text-cream/60" : "border-champagne-500/20 bg-champagne-500/[0.07] text-champagne-300")}
                         >
                           {e.title}
                         </button>

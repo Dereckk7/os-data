@@ -48,7 +48,7 @@ export default function Tasks() {
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Travail</p>
-            <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Tâches</h1>
+            <h1 className="mt-2 t-title">Tâches</h1>
             <p className="mt-1.5 text-[13.5px] text-cream/50">Le DATA OS transforme ses analyses en travail concret — priorisé et suivi.</p>
           </div>
           <button
@@ -70,9 +70,9 @@ export default function Tasks() {
             <section key={col.status} aria-label={`Colonne ${col.label}`} className="flex min-h-[180px] flex-col">
               <div className="mb-2.5 flex items-center justify-between px-1">
                 <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-cream/45">{col.label}</span>
-                <span className="num rounded-[6px] border border-white/[0.08] bg-white/[0.03] px-1.5 py-px text-[9.5px] text-cream/50">{counts(col.status)}</span>
+                <span className="num rounded-[6px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[9.5px] text-cream/50">{counts(col.status)}</span>
               </div>
-              <div className="flex-1 space-y-2.5 rounded-[14px] border border-white/[0.05] bg-white/[0.012] p-2">
+              <div className="flex-1 space-y-2.5 rounded-[14px] border border-[var(--card-divider)] bg-[var(--surface-2)] p-2">
                 {tasks.filter((t) => t.status === col.status).map((t) => (
                   <motion.article
                     layout key={t.id}
@@ -87,9 +87,9 @@ export default function Tasks() {
                         <p className={cn("text-[12.5px] font-medium leading-snug", col.status === "Terminé" && "line-through decoration-cream/30")}>{t.title}</p>
                         <div className="mt-2 flex flex-wrap items-center gap-1.5">
                           <PriorityBadge priority={t.priority} />
-                          {t.count && <span className="num rounded-full border border-white/[0.08] px-2 py-px text-[9px] text-cream/45">{t.count}</span>}
+                          {t.count && <span className="num rounded-full border border-[var(--hairline)] px-2 py-px text-[9px] text-cream/45">{t.count}</span>}
                         </div>
-                        <div className="mt-2 flex items-center justify-between gap-2 border-t border-white/[0.06] pt-2">
+                        <div className="mt-2 flex items-center justify-between gap-2 border-t border-[var(--card-divider)] pt-2">
                           <span className="num truncate text-[8.5px] uppercase tracking-[0.12em] text-cream/30">{t.agent} · {t.due}</span>
                           {t.ref && (
                             <button
@@ -103,12 +103,12 @@ export default function Tasks() {
                         </div>
                         <div className="mt-2 flex gap-1.5">
                           {col.status !== "À faire" && (
-                            <button onClick={() => move(t, -1)} className="h-7 flex-1 rounded-[7px] border border-white/[0.08] text-[10px] font-medium text-cream/55 transition-colors hover:bg-white/[0.05] hover:text-cream">
+                            <button onClick={() => move(t, -1)} className="h-7 flex-1 rounded-[7px] border border-[var(--hairline)] text-[10px] font-medium text-cream/55 transition-colors hover:bg-[var(--row-hover)] hover:text-cream">
                               ← Reculer
                             </button>
                           )}
                           {col.status !== "Terminé" && (
-                            <button onClick={() => move(t, 1)} className="h-7 flex-1 rounded-[7px] border border-white/[0.08] text-[10px] font-medium text-cream/55 transition-colors hover:bg-white/[0.05] hover:text-cream">
+                            <button onClick={() => move(t, 1)} className="h-7 flex-1 rounded-[7px] border border-[var(--hairline)] text-[10px] font-medium text-cream/55 transition-colors hover:bg-[var(--row-hover)] hover:text-cream">
                               Avancer →
                             </button>
                           )}
@@ -118,7 +118,7 @@ export default function Tasks() {
                   </motion.article>
                 ))}
                 {counts(col.status) === 0 && (
-                  <p className="rounded-[10px] border border-dashed border-white/[0.08] p-4 text-center text-[11px] text-cream/25">Aucune tâche</p>
+                  <p className="rounded-[10px] border border-dashed border-[var(--hairline)] p-4 text-center text-[11px] text-cream/25">Aucune tâche</p>
                 )}
               </div>
             </section>

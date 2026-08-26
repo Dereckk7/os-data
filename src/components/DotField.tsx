@@ -130,10 +130,12 @@ const DotField = memo(function DotField({
     }
 
     let frameCount = 0;
+    let paused = false;
     let gradCache: CanvasGradient | null = null;
     let gradKey = "";
 
     function tick() {
+      if (paused) return;
       rafRef.current = requestAnimationFrame(tick);
       frameCount++;
       const dots = dotsRef.current;
@@ -264,6 +266,20 @@ const DotField = memo(function DotField({
       rafRef.current = requestAnimationFrame(tick);
     }
 
+    /* Perf (RÈGLE 5) : on met la boucle d'animation en pause quand l'onglet
+       est caché, et on la relance au retour. */
+    const onVisibility = () => {
+      if (staticMode) return;
+      if (document.hidden) {
+        paused = true;
+        cancelAnimationFrame(rafRef.current);
+      } else if (paused) {
+        paused = false;
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     rebuildRef.current = () => {
       const { w, h } = sizeRef.current;
       if (w > 0 && h > 0) buildDots(w, h);
@@ -275,6 +291,7 @@ const DotField = memo(function DotField({
       window.clearTimeout(resizeTimer);
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [staticMode]);
