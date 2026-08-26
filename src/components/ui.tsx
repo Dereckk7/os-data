@@ -160,7 +160,7 @@ export function ErrorState({ title, desc, onRetry, className }: {
 }) {
   return (
     <div className={cn("flex flex-col items-center px-6 py-14 text-center", className)}>
-      <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-ember/25 bg-ember/10 text-[#e28d85]">
+      <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-ember/25 bg-ember/10 text-ember">
         <AlertTriangle size={18} strokeWidth={1.5} />
       </span>
       <p className="mt-4 text-[15px] font-semibold">{title}</p>
@@ -189,7 +189,7 @@ const avatarPalette = [
   "bg-jade/12 text-jade border-jade/25",
   "bg-saffron/12 text-saffron border-saffron/25",
   "bg-ink-600/40 text-cream/70 border-white/10",
-  "bg-ember/12 text-[#e28d85] border-ember/25",
+  "bg-ember/12 text-ember border-ember/25",
 ];
 export function Avatar({ initials, name = "", size = 32, className }: { initials: string; name?: string; size?: number; className?: string }) {
   const idx = Math.abs([...name].reduce((acc, c) => acc + c.charCodeAt(0), 0)) % avatarPalette.length;

@@ -40,7 +40,7 @@ export function useToast() {
 
 const toneStyles: Record<Tone, { cls: string; icon: ReactNode }> = {
   success: { cls: "text-jade", icon: <CheckCircle2 size={16} strokeWidth={1.75} /> },
-  danger: { cls: "text-[#e28d85]", icon: <AlertTriangle size={16} strokeWidth={1.75} /> },
+  danger: { cls: "text-ember", icon: <AlertTriangle size={16} strokeWidth={1.75} /> },
   warning: { cls: "text-saffron", icon: <AlertTriangle size={16} strokeWidth={1.75} /> },
   gold: { cls: "text-champagne-300", icon: <Sparkles size={16} strokeWidth={1.75} /> },
   neutral: { cls: "text-cream/60", icon: <Info size={16} strokeWidth={1.75} /> },

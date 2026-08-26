@@ -50,7 +50,7 @@ const btnVariants: Record<ButtonVariant, string> = {
   gold: "bg-champagne-500/10 text-champagne-300 border border-champagne-500/25 hover:bg-champagne-500/[0.17] hover:border-champagne-500/40",
   ghost: "border border-white/[0.08] text-cream/85 bg-transparent hover:bg-white/[0.045] hover:text-cream hover:border-white/[0.14]",
   soft: "bg-white/[0.05] text-cream/85 hover:bg-white/[0.085] hover:text-cream",
-  danger: "bg-ember/10 text-[#e28d85] border border-ember/25 hover:bg-ember/[0.17] hover:border-ember/40",
+  danger: "bg-ember/10 text-ember border border-ember/25 hover:bg-ember/[0.17] hover:border-ember/40",
 };
 const btnSizes: Record<ButtonSize, string> = {
   sm: "h-8 px-3 text-xs rounded-[9px] gap-1.5",
@@ -117,7 +117,7 @@ export function GlassInput({ label, icon, right, error, className, id, ...rest }
         <input id={inputId} className="h-full w-full bg-transparent text-[13px] text-cream outline-none placeholder:text-cream/30" {...rest} />
         {right}
       </div>
-      {error && <p className="mt-1.5 text-[11px] text-[#e28d85]">{error}</p>}
+      {error && <p className="mt-1.5 text-[11px] text-ember">{error}</p>}
     </div>
   );
 }
@@ -146,7 +146,7 @@ const badgeTones: Record<Tone, string> = {
   gold: "bg-champagne-500/[0.09] text-champagne-300 border-champagne-500/22",
   success: "bg-jade/[0.09] text-jade border-jade/25",
   warning: "bg-saffron/[0.09] text-saffron border-saffron/25",
-  danger: "bg-ember/[0.09] text-[#e28d85] border-ember/28",
+  danger: "bg-ember/[0.09] text-ember border-ember/28",
 };
 
 export function GlassBadge({ tone = "neutral", dot, pulse, children, className }: {
@@ -198,7 +198,7 @@ export function GlassModal({ open, onClose, title, eyebrow, children, footer, wi
         <div className="fixed inset-0 z-[90] flex items-end justify-center p-3 sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={typeof title === "string" ? title : "Fenêtre de dialogue"}>
           <motion.button
             aria-label="Fermer la fenêtre"
-            className="absolute inset-0 cursor-default bg-ink-950/70 backdrop-blur-sm"
+            className="absolute inset-0 cursor-default bg-ink-950/70"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={onClose}
           />

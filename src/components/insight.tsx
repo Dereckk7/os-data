@@ -17,7 +17,7 @@ export const INSIGHT_META: Record<InsightType, { label: string; tone: Tone; bar:
 
 const toneText: Record<Tone, string> = {
   gold: "text-champagne-300", neutral: "text-cream/60", warning: "text-saffron",
-  danger: "text-[#e28d85]", success: "text-jade",
+  danger: "text-ember", success: "text-jade",
 };
 
 export function InsightCard({ insight, onCta, onOpen, compact, className }: {

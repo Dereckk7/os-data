@@ -17,7 +17,7 @@ const TONE: Record<WorkTone, { bar: string; text: string; fill: string; ring: st
   blue: { bar: "bg-[var(--type-blue)]", text: "text-[var(--type-blue)]", fill: "var(--type-blue)", ring: "border-[var(--type-blue)]" },
   violet: { bar: "bg-[var(--type-violet)]", text: "text-[var(--type-violet)]", fill: "var(--type-violet)", ring: "border-[var(--type-violet)]" },
   orange: { bar: "bg-[var(--type-orange)]", text: "text-[var(--type-orange)]", fill: "var(--type-orange)", ring: "border-[var(--type-orange)]" },
-  ember: { bar: "bg-ember/85", text: "text-[#e28d85]", fill: "#c9635a", ring: "border-ember/60" },
+  ember: { bar: "bg-ember/85", text: "text-ember", fill: "#c9635a", ring: "border-ember/60" },
   jade: { bar: "bg-jade/85", text: "text-jade", fill: "#8ab291", ring: "border-jade/60" },
   gold: { bar: "bg-champagne-500/85", text: "text-champagne-300", fill: "#c9b27c", ring: "border-champagne-500/60" },
   neutral: { bar: "bg-cream/45", text: "text-cream/55", fill: "rgba(245,245,242,0.45)", ring: "border-cream/30" },
@@ -223,7 +223,7 @@ export function WorkCard({
 
         {dueIn !== undefined &&
           (overdue ? (
-            <span className="num flex shrink-0 items-center gap-1.5 rounded-full border border-ember/35 bg-ember/[0.08] px-2.5 py-1 text-[9.5px] font-semibold text-[#e28d85]">
+            <span className="num flex shrink-0 items-center gap-1.5 rounded-full border border-ember/35 bg-ember/[0.08] px-2.5 py-1 text-[9.5px] font-semibold text-ember">
               <Clock size={11} strokeWidth={1.75} /> Dépassée
             </span>
           ) : (

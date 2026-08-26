@@ -189,7 +189,7 @@ function UserMenu({ onHelp }: { onHelp: () => void }) {
               <HelpCircle size={14} strokeWidth={1.6} /> Aide <DropdownMenuShortcut>⌘/</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => { signOut(); navigate("/login"); }} className="text-[#e28d85] focus:text-[#e28d85]">
+            <DropdownMenuItem onClick={() => { signOut(); navigate("/login"); }} className="text-ember focus:text-ember">
               <LogOut size={14} strokeWidth={1.6} /> Se déconnecter
             </DropdownMenuItem>
           </DropdownMenuContent>
