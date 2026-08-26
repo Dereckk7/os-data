@@ -87,7 +87,7 @@ export default function Requests() {
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Pilotage des demandes</p>
-            <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Demandes</h1>
+            <h1 className="mt-2 t-title">Demandes</h1>
             <p className="num mt-1.5 text-[11.5px] text-cream/45">
               {openCount} ouvertes · {lateCount} en retard · {validateCount} à valider
             </p>
@@ -106,7 +106,7 @@ export default function Requests() {
                 key={f} onClick={() => setFilter(f)}
                 className={cn(
                   "h-9 rounded-full border px-4 text-xs font-medium transition-all duration-200",
-                  filter === f ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-white/[0.08] bg-white/[0.02] text-cream/55 hover:border-white/[0.15] hover:text-cream/85"
+                  filter === f ? "border-transparent bg-[color-mix(in_srgb,var(--color-cream)_10%,transparent)] text-cream" : "border-transparent bg-[var(--surface-2)] text-cream/55 shadow-[var(--highlight-top)] hover:text-cream/85"
                 )}
               >
                 {f}
@@ -157,7 +157,7 @@ export default function Requests() {
             <GlassSurface className="hidden overflow-hidden p-0 md:block">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-white/[0.07]">
+                  <tr className="border-b border-[var(--hairline)]">
                     {["Client", "Demande", "Statut", "Priorité", "Responsable", "Heure"].map((h) => (
                       <th key={h} className="card-eyebrow px-4 py-3 first:pl-5 last:pr-5">{h}</th>
                     ))}
@@ -168,7 +168,7 @@ export default function Requests() {
                     <tr
                       key={r.id}
                       onClick={() => navigate(`/requests/${r.id}`)}
-                      className="group cursor-pointer border-b border-white/[0.04] transition-colors duration-150 last:border-0 hover:bg-white/[0.022]"
+                      className="group cursor-pointer border-b border-[var(--card-divider)] transition-colors duration-150 last:border-0 hover:bg-[var(--row-hover)]"
                     >
                       <td className="py-3 pl-5 pr-4">
                         <span className="flex items-center gap-2.5">
@@ -219,7 +219,7 @@ export default function Requests() {
                     <TypeIcon type={r.type} size={14} strokeWidth={1.5} className="mt-0.5 shrink-0 text-cream/35" />
                     <span className="text-[13.5px] font-medium leading-snug">{r.title}</span>
                   </span>
-                  <span className="mt-3 flex items-center justify-between border-t border-white/[0.06] pt-2.5">
+                  <span className="mt-3 flex items-center justify-between border-t border-[var(--card-divider)] pt-2.5">
                     <PriorityBadge priority={r.priority} />
                     <span className="num text-[10px] text-cream/35">{r.ref} · {r.time}</span>
                   </span>
@@ -238,7 +238,7 @@ export default function Requests() {
                   <div key={col} className="w-[262px] shrink-0">
                     <div className="mb-2.5 flex items-center justify-between px-1">
                       <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-cream/45">{col}</span>
-                      <span className="num rounded-[6px] border border-white/[0.08] bg-white/[0.03] px-1.5 py-px text-[9.5px] text-cream/50">{items.length}</span>
+                      <span className="num rounded-[6px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[9.5px] text-cream/50">{items.length}</span>
                     </div>
                     <div className="space-y-2">
                       {items.map((r) => (
@@ -248,14 +248,14 @@ export default function Requests() {
                             {r.vip && <span className="num shrink-0 rounded-[5px] border border-champagne-500/25 bg-champagne-500/[0.08] px-1.5 py-px text-[8px] font-semibold tracking-[0.1em] text-champagne-300">VIP</span>}
                           </span>
                           <span className="mt-1 block text-[11px] text-cream/45">{r.client}</span>
-                          <span className="mt-2.5 flex items-center justify-between border-t border-white/[0.06] pt-2">
+                          <span className="mt-2.5 flex items-center justify-between border-t border-[var(--card-divider)] pt-2">
                             <PriorityBadge priority={r.priority} />
                             <span className="num text-[9.5px] text-cream/35">{r.time}</span>
                           </span>
                         </button>
                       ))}
                       {items.length === 0 && (
-                        <div className="rounded-[12px] border border-dashed border-white/[0.08] p-4 text-center text-[11px] text-cream/25">Aucune demande</div>
+                        <div className="rounded-[12px] border border-dashed border-[var(--hairline)] p-4 text-center text-[11px] text-cream/25">Aucune demande</div>
                       )}
                     </div>
                   </div>
@@ -325,7 +325,7 @@ export default function Requests() {
                     key={d}
                     className={cn(
                       "flex aspect-square flex-col items-center rounded-[10px] border pt-1.5 transition-colors sm:aspect-auto sm:min-h-[74px]",
-                      isToday ? "border-champagne-500/40 bg-champagne-500/[0.06]" : "border-white/[0.05] bg-white/[0.012] hover:border-white/[0.12]"
+                      isToday ? "border-champagne-500/40 bg-champagne-500/[0.06]" : "border-[var(--card-divider)] bg-[var(--surface-2)] hover:border-[var(--hairline-strong)]"
                     )}
                   >
                     <span className={cn("num text-[10.5px]", isToday ? "font-semibold text-champagne-300" : "text-cream/50")}>{d}</span>
@@ -336,7 +336,7 @@ export default function Requests() {
                           onClick={() => navigate(`/requests/${r.id}`)}
                           className={cn(
                             "hidden w-full truncate rounded-[5px] border px-1 py-0.5 text-left text-[8px] leading-tight sm:block",
-                            r.status === "En retard" ? "border-ember/30 bg-ember/[0.08] text-[#e28d85]" : r.vip ? "border-champagne-500/20 bg-champagne-500/[0.07] text-champagne-300" : "border-white/[0.08] bg-white/[0.04] text-cream/60"
+                            r.status === "En retard" ? "border-ember/30 bg-ember/[0.08] text-ember" : r.vip ? "border-champagne-500/20 bg-champagne-500/[0.07] text-champagne-300" : "border-[var(--hairline)] bg-[var(--surface-2)] text-cream/60"
                           )}
                         >
                           {r.title}
@@ -389,7 +389,7 @@ export default function Requests() {
             label="Priorité" value={form.priority} onChange={(v) => setForm((f) => ({ ...f, priority: v }))}
             options={["Critique", "Haute", "Normale", "Basse"].map((p) => ({ value: p, label: p }))}
           />
-          <p className="rounded-[10px] border border-white/[0.06] bg-white/[0.02] px-3 py-2.5 text-[11.5px] leading-relaxed text-cream/45">
+          <p className="rounded-[10px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3 py-2.5 text-[11.5px] leading-relaxed text-cream/45">
             L'Agent Réservation qualifiera la demande et lancera la recherche d'options automatiquement.
           </p>
         </div>

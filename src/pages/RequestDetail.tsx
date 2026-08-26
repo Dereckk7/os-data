@@ -57,11 +57,11 @@ export default function RequestDetail() {
                 <PriorityBadge priority={request.priority} />
                 {request.vip && <GlassBadge tone="gold" dot>VIP</GlassBadge>}
               </div>
-              <h1 className="mt-3 text-[20px] font-semibold tracking-tight sm:text-[22px]">{request.title}</h1>
+              <h1 className="mt-3 t-title">{request.title}</h1>
               <p className="mt-1.5 text-[13px] text-cream/55">{request.summary}</p>
               <Link
                 to={`/clients/${request.clientId}`}
-                className="group mt-4 inline-flex items-center gap-2.5 rounded-[11px] border border-white/[0.07] bg-white/[0.02] py-1.5 pl-1.5 pr-3 transition-all duration-200 hover:border-white/[0.16]"
+                className="group mt-4 inline-flex items-center gap-2.5 rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] py-1.5 pl-1.5 pr-3 transition-all duration-200 hover:border-[var(--hairline-strong)]"
               >
                 <Avatar initials={request.client.split(" ").map((p) => p[0]).join("")} name={request.client} size={26} />
                 <span className="text-[12.5px] font-medium">{request.client}</span>
@@ -97,19 +97,19 @@ export default function RequestDetail() {
                       key={opt.id}
                       className={cn(
                         "rounded-[14px] border p-4 transition-all duration-300",
-                        isSelected ? "border-champagne-500/45 bg-champagne-500/[0.05] shadow-[0_0_30px_rgba(201,178,124,0.06)]" : "border-white/[0.07] bg-white/[0.015] hover:border-white/[0.14]"
+                        isSelected ? "border-champagne-500/45 bg-champagne-500/[0.05] shadow-[0_0_30px_rgba(196,168,130,0.08)]" : "border-[var(--hairline)] bg-[var(--surface-2)] hover:border-[var(--hairline-strong)]"
                       )}
                     >
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="num rounded-[6px] border border-white/[0.09] bg-white/[0.04] px-1.5 py-px text-[9px] font-semibold uppercase tracking-[0.12em] text-cream/55">{opt.label}</span>
+                            <span className="num rounded-[6px] border border-[var(--hairline-strong)] bg-[var(--surface-2)] px-1.5 py-px text-[9px] font-semibold uppercase tracking-[0.12em] text-cream/55">{opt.label}</span>
                             {opt.recommended && <GlassBadge tone="gold" dot>Recommandée</GlassBadge>}
                           </div>
                           <p className="mt-2 text-[14.5px] font-semibold tracking-tight">{opt.vehicle}</p>
                           <div className="mt-2 flex flex-wrap gap-1.5">
                             {opt.features.map((f) => (
-                              <span key={f} className="rounded-full border border-white/[0.07] px-2 py-0.5 text-[10.5px] text-cream/50">{f}</span>
+                              <span key={f} className="rounded-full border border-[var(--hairline)] px-2 py-0.5 text-[10.5px] text-cream/50">{f}</span>
                             ))}
                           </div>
                         </div>
@@ -118,13 +118,13 @@ export default function RequestDetail() {
                           <p className="num mt-0.5 text-[9px] uppercase tracking-[0.1em] text-cream/30">par prestation</p>
                         </div>
                       </div>
-                      <div className="mt-3.5 flex flex-wrap items-center gap-4 border-t border-white/[0.06] pt-3.5">
+                      <div className="mt-3.5 flex flex-wrap items-center gap-4 border-t border-[var(--card-divider)] pt-3.5">
                         <div className="min-w-[160px] flex-1">
                           <div className="flex items-center justify-between">
                             <span className="text-[10px] uppercase tracking-[0.12em] text-cream/35">Fiabilité</span>
                             <span className="num text-[11px] font-semibold text-champagne-300">{opt.reliability}%</span>
                           </div>
-                          <div className="mt-1.5 h-[3px] overflow-hidden rounded-full bg-white/[0.07]">
+                          <div className="mt-1.5 h-[3px] overflow-hidden rounded-full bg-[var(--surface-3)]">
                             <div className="h-full rounded-full bg-champagne-500/80 transition-all duration-700" style={{ width: `${opt.reliability}%` }} />
                           </div>
                         </div>
