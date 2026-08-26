@@ -37,8 +37,7 @@ export function Reveal({ children, delay = 0, y = 8, className }: { children: Re
   return (
     <motion.div
       initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: EASE }}
       className={className}
     >

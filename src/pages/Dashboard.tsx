@@ -104,10 +104,12 @@ export default function Dashboard() {
                       </span>
                       <span className="ai-tag"><Sparkles size={11} strokeWidth={2} /> IA</span>
                     </div>
-                    <div className="num relative mt-2 pl-2.5 text-[34px] font-[590] tracking-[-0.022em]">
-                      {opportunity.metric?.replace(" XAF", "")}{" "}
-                      <span className="text-xl text-champagne-300">XAF</span>
-                    </div>
+                    {opportunity.metric && (
+                      <div className="num relative mt-2 pl-2.5 text-[34px] font-[590] tracking-[-0.022em]">
+                        {opportunity.metric.replace(" XAF", "")}{" "}
+                        <span className="text-xl text-champagne-300">XAF</span>
+                      </div>
+                    )}
                     <p className="relative mt-2 pl-2.5 text-[13px] font-[510]">{opportunity.title}</p>
                     <p className="relative mt-1 pl-2.5 text-[12.5px] leading-relaxed text-cream/55">{opportunity.body}</p>
                     <div className="relative mt-auto flex items-center justify-between pl-2.5 pt-4">
@@ -116,8 +118,8 @@ export default function Dashboard() {
                       </span>
                       <button
                         onClick={() => {
-                          toast.gold("Opportunité ouverte", {
-                            description: "3 profils VIP à réactiver — potentiel 1 850 000 XAF.",
+                          toast.gold(opportunity.title, {
+                            description: opportunity.body,
                             action: { label: "Voir", onClick: () => navigate("/insights") },
                           });
                         }}
