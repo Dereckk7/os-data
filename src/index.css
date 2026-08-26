@@ -572,6 +572,23 @@ body {
 
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
 
+/* ————— Auth : flux de données / réseaux d'intelligence —————
+   Motion lente, très basse opacité. transform + opacity uniquement.
+   Se met en pause quand l'onglet est caché ; coupée en reduced-motion. */
+@keyframes authDrift {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-16px, 12px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+@keyframes authPulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.85; } }
+.auth-drift { animation: authDrift 42s ease-in-out infinite; will-change: transform; }
+.auth-node { animation: authPulse 7s ease-in-out infinite; will-change: opacity; }
+.auth-viz[data-paused="true"] .auth-drift,
+.auth-viz[data-paused="true"] .auth-node { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .auth-drift, .auth-node { animation: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .amb-flow-1, .amb-flow-2, .pulse-dot, .skeleton,
   .agent-breathe, .agent-ring, .agent-err,

@@ -89,7 +89,7 @@ export function Sidebar({ children, collapsible = "icon" }: { children: ReactNod
             <motion.div
               key="sheet-overlay"
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[70] bg-ink-950/70 backdrop-blur-sm"
+              className="fixed inset-0 z-[70] bg-ink-950/70"
               onClick={() => setOpenMobile(false)}
               aria-hidden="true"
             />
@@ -97,12 +97,12 @@ export function Sidebar({ children, collapsible = "icon" }: { children: ReactNod
               key="sheet"
               initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }}
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-y-0 left-0 z-[75] flex w-[17.5rem] max-w-[85vw] flex-col border-r border-[color-mix(in_srgb,var(--color-cream)_10%,transparent)] bg-ink-900/95 backdrop-blur-2xl"
+              className="fixed inset-y-0 left-0 z-[75] flex w-[17.5rem] max-w-[85vw] flex-col border-r border-[var(--hairline)] bg-[var(--surface-1)] shadow-[var(--shadow-4)]"
               role="dialog" aria-modal="true" aria-label="Menu"
             >
               <button
                 onClick={() => setOpenMobile(false)} aria-label="Fermer le menu"
-                className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-[9px] text-cream/50 hover:bg-white/[0.06] hover:text-cream"
+                className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-[9px] text-cream/50 hover:bg-[var(--row-hover)] hover:text-cream"
               >
                 <X size={16} strokeWidth={1.75} />
               </button>
@@ -119,7 +119,7 @@ export function Sidebar({ children, collapsible = "icon" }: { children: ReactNod
       data-state={state}
       data-collapsible={collapsible}
       className={cn(
-        "group/sidebar sticky top-0 z-40 hidden h-screen flex-col border-r border-[color-mix(in_srgb,var(--color-cream)_9%,transparent)] bg-ink-950/60 backdrop-blur-2xl transition-[width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:flex",
+        "group/sidebar sticky top-0 z-40 hidden h-screen flex-col border-r border-[var(--hairline)] bg-[var(--surface-1)] transition-[width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:flex",
         state === "expanded" ? "w-[248px]" : "w-[68px]"
       )}
     >
@@ -134,7 +134,7 @@ function SidebarRail({ onToggle, collapsed }: { onToggle: () => void; collapsed:
     <button
       onClick={onToggle}
       aria-label={collapsed ? "Déplier la barre latérale" : "Replier la barre latérale"}
-      className="absolute -right-3 top-16 z-50 grid h-6 w-6 place-items-center rounded-full border border-white/[0.1] bg-ink-800 text-cream/55 shadow-md transition-all duration-200 hover:border-white/[0.2] hover:text-cream"
+      className="absolute -right-3 top-16 z-50 grid h-6 w-6 place-items-center rounded-full border border-[var(--hairline-strong)] bg-ink-800 text-cream/55 shadow-md transition-all duration-200 hover:border-[var(--hairline-strong)] hover:text-cream"
     >
       {collapsed ? <ChevronsRight size={12} strokeWidth={1.75} /> : <ChevronsLeft size={12} strokeWidth={1.75} />}
     </button>
@@ -148,7 +148,7 @@ export function SidebarTrigger({ className }: { className?: string }) {
       onClick={() => (isMobile ? setOpenMobile(true) : setOpen(!open))}
       aria-label="Basculer la barre latérale"
       className={cn(
-        "grid h-9 w-9 place-items-center rounded-[10px] border border-white/[0.08] bg-white/[0.03] text-cream/60 transition-all duration-200 hover:border-white/[0.16] hover:text-cream active:scale-95",
+        "grid h-9 w-9 place-items-center rounded-[10px] border border-[var(--hairline)] bg-[var(--surface-2)] text-cream/60 transition-all duration-200 hover:border-[var(--hairline-strong)] hover:text-cream active:scale-95",
         className
       )}
     >
@@ -222,8 +222,8 @@ export function SidebarMenuButton({ children, className, tooltip, isActive, onCl
         "peer flex w-full items-center gap-2.5 overflow-hidden rounded-[10px] text-left font-medium transition-all duration-200",
         size === "default" ? "h-9 px-2.5 text-[13px]" : "h-11 px-2.5 text-sm",
         isActive
-          ? "bg-champagne-500/[0.1] text-cream shadow-[inset_0_0_0_1px_rgba(201,178,124,0.18)]"
-          : "text-cream/55 hover:bg-white/[0.045] hover:text-cream",
+          ? "bg-[var(--surface-2)] font-[590] text-cream shadow-[var(--highlight-top),inset_2px_0_0_0_var(--color-champagne-500)]"
+          : "text-cream/55 hover:bg-[var(--row-hover)] hover:text-cream",
         className
       )}
       {...rest}
@@ -251,7 +251,7 @@ export function SidebarMenuAction({ children, className, showOnHover, onClick, l
       onClick={onClick}
       aria-label={label ?? "Actions"}
       className={cn(
-        "absolute right-1.5 top-1/2 z-10 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-[8px] text-cream/45 transition-all hover:bg-white/[0.07] hover:text-cream",
+        "absolute right-1.5 top-1/2 z-10 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-[8px] text-cream/45 transition-all hover:bg-[var(--row-hover)] hover:text-cream",
         showOnHover && "opacity-0 focus:opacity-100 group-hover/menu-item:opacity-100",
         className
       )}
@@ -265,7 +265,7 @@ export function SidebarMenuBadge({ children, className }: { children: ReactNode;
   return (
     <span
       className={cn(
-        "num ml-auto shrink-0 rounded-full border border-white/[0.08] bg-white/[0.04] px-1.5 py-px text-[9px] font-semibold text-cream/55 group-data-[state=collapsed]/sidebar:hidden",
+        "num ml-auto shrink-0 rounded-full border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[9px] font-semibold text-cream/55 group-data-[state=collapsed]/sidebar:hidden",
         className
       )}
     >
@@ -276,7 +276,7 @@ export function SidebarMenuBadge({ children, className }: { children: ReactNode;
 
 export function SidebarMenuSub({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <ul className={cn("ml-[1.15rem] flex flex-col gap-0.5 border-l border-white/[0.07] pl-2.5 group-data-[state=collapsed]/sidebar:hidden", className)}>
+    <ul className={cn("ml-[1.15rem] flex flex-col gap-0.5 border-l border-[var(--hairline)] pl-2.5 group-data-[state=collapsed]/sidebar:hidden", className)}>
       {children}
     </ul>
   );
@@ -297,8 +297,10 @@ export function SidebarMenuSubButton({ children, className, isActive, onClick, h
       onClick={() => { onClick?.(); if (isMobile) setOpenMobile(false); }}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        "flex h-8 w-full items-center gap-2 rounded-[8px] px-2 text-[12.5px] transition-all duration-200",
-        isActive ? "bg-white/[0.05] font-semibold text-cream" : "text-cream/50 hover:bg-white/[0.035] hover:text-cream/85",
+        "relative flex h-8 w-full items-center gap-2 rounded-xs px-2 text-[12.5px] transition-all duration-200",
+        isActive
+          ? "bg-[color-mix(in_srgb,var(--color-cream)_5%,transparent)] font-[590] text-cream shadow-[inset_2px_0_0_0_var(--color-champagne-500)]"
+          : "text-cream/50 hover:bg-[var(--row-hover)] hover:text-cream/85",
         className
       )}
     >
