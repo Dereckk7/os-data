@@ -120,7 +120,7 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     const root = document.documentElement;
     root.dataset.motion = prefs.motion;
     root.dataset.contrast = prefs.contrast;
-    root.style.fontSize = `${15 * densityScale[prefs.density] * fontScale[prefs.fontSize]}px`;
+    root.style.fontSize = `${16 * densityScale[prefs.density] * fontScale[prefs.fontSize]}px`;
     try { localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); } catch { /* noop */ }
   }, [prefs]);
 
