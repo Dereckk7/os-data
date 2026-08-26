@@ -54,7 +54,7 @@ function applyTheme(resolved: ResolvedTheme, comfort: boolean, animate = true) {
   root.dataset.theme = resolved;
   if (comfort) root.dataset.comfort = "true";
   else delete root.dataset.comfort;
-  root.style.backgroundColor = resolved === "light" ? "#f8f9fa" : "#08090b";
+  root.style.backgroundColor = resolved === "light" ? "#f4f3ef" : "#08090a";
 }
 
 function prefersReducedMotionRaw(): boolean {
