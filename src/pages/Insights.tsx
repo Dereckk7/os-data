@@ -43,7 +43,7 @@ export default function Insights() {
       <Reveal>
         <header>
           <p className="eyebrow">Intelligence</p>
-          <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Insights</h1>
+          <h1 className="mt-2 t-title">Insights</h1>
           <p className="mt-1.5 max-w-xl text-[13.5px] leading-relaxed text-cream/50">
             Opportunités, anomalies et décisions — détectées en continu par vos agents sur l'ensemble de vos sources.
           </p>
@@ -58,7 +58,7 @@ export default function Insights() {
                 key={f.value} onClick={() => setType(f.value)}
                 className={cn(
                   "h-9 rounded-full border px-4 text-xs font-medium transition-all duration-200",
-                  type === f.value ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-white/[0.08] bg-white/[0.02] text-cream/55 hover:border-white/[0.15] hover:text-cream/85"
+                  type === f.value ? "border-transparent bg-[color-mix(in_srgb,var(--color-cream)_10%,transparent)] text-cream" : "border-transparent bg-[var(--surface-2)] text-cream/55 shadow-[var(--highlight-top)] hover:text-cream/85"
                 )}
               >
                 {f.label}
@@ -70,7 +70,7 @@ export default function Insights() {
             {STATUS_FILTERS.map((s) => (
               <button
                 key={s} onClick={() => setStatus(s)}
-                className={cn("h-8 rounded-full border px-3 text-[11px] font-medium transition-all duration-200", status === s ? "border-white/[0.2] bg-white/[0.08] text-cream" : "border-white/[0.07] text-cream/45 hover:text-cream/75")}
+                className={cn("h-8 rounded-full border px-3 text-[11px] font-medium transition-all duration-200", status === s ? "border-transparent bg-[color-mix(in_srgb,var(--color-cream)_10%,transparent)] text-cream" : "border-transparent text-cream/45 hover:text-cream/75")}
               >
                 {s}
               </button>
@@ -145,7 +145,7 @@ export default function Insights() {
           <div className="space-y-4">
             <p className="text-[13.5px] leading-relaxed text-cream/65">{selected.body}</p>
             {selected.metric && (
-              <div className="flex items-baseline gap-3 rounded-[12px] border border-white/[0.07] bg-white/[0.02] px-4 py-3">
+              <div className="flex items-baseline gap-3 rounded-[12px] border border-[var(--hairline)] bg-[var(--surface-2)] px-4 py-3">
                 <span className="num text-[22px] font-semibold">{selected.metric}</span>
                 <span className="text-[10px] uppercase tracking-[0.12em] text-cream/35">{selected.metricLabel}</span>
               </div>

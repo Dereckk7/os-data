@@ -26,7 +26,7 @@ export default function Documents() {
       <Reveal>
         <header>
           <p className="eyebrow">Ressources</p>
-          <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Documents</h1>
+          <h1 className="mt-2 t-title">Documents</h1>
           <p className="mt-1.5 text-[13.5px] text-cream/50">{documentsQ.data.length} documents classés automatiquement depuis vos sources.</p>
         </header>
       </Reveal>
@@ -39,7 +39,7 @@ export default function Documents() {
                 key={c} onClick={() => setCategory(c)}
                 className={cn(
                   "h-9 rounded-full border px-3.5 text-xs font-medium transition-all duration-200",
-                  category === c ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-white/[0.08] bg-white/[0.02] text-cream/55 hover:border-white/[0.15] hover:text-cream/85"
+                  category === c ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-[var(--hairline)] bg-[var(--surface-2)] text-cream/55 hover:border-[var(--hairline-strong)] hover:text-cream/85"
                 )}
               >
                 {c}
@@ -52,7 +52,7 @@ export default function Documents() {
             <input
               id="doc-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)}
               placeholder="Rechercher dans vos documents…"
-              className="h-10 w-full rounded-[11px] border border-white/[0.08] bg-white/[0.03] pl-9 pr-3 text-[13px] text-cream outline-none transition-all placeholder:text-cream/30 hover:border-white/[0.14] focus:border-cream/35"
+              className="h-10 w-full rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] pl-9 pr-3 text-[13px] text-cream outline-none transition-all placeholder:text-cream/30 hover:border-[var(--hairline-strong)] focus:border-cream/35"
             />
           </div>
         </div>
@@ -73,11 +73,11 @@ export default function Documents() {
         </GlassSurface>
       ) : (
         <GlassSurface className="overflow-hidden p-0">
-          <ul className="divide-y divide-white/[0.05]">
+          <ul className="divide-y divide-[var(--card-divider)]">
             {filtered.map((d, i) => (
               <li key={d.id} className="row-in" style={{ animationDelay: `${i * 20}ms` }}>
-                <div className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-white/[0.02] sm:px-6">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[10px] border border-white/[0.08] bg-ink-950/55 text-cream/60">
+                <div className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-[var(--row-hover)] sm:px-6">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[10px] border border-[var(--hairline)] bg-ink-950/55 text-cream/60">
                     <FileText size={15} strokeWidth={1.6} />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -87,19 +87,19 @@ export default function Documents() {
                     </p>
                   </div>
                   <div className="hidden shrink-0 items-center gap-1.5 md:flex">
-                    {d.tags.map((t) => <span key={t} className="rounded-full border border-white/[0.07] px-2 py-0.5 text-[10px] text-cream/45">{t}</span>)}
+                    {d.tags.map((t) => <span key={t} className="rounded-full border border-[var(--hairline)] px-2 py-0.5 text-[10px] text-cream/45">{t}</span>)}
                   </div>
                   <div className="flex shrink-0 items-center gap-1.5">
                     <button
                       aria-label={`Aperçu de ${d.name}`} onClick={() => setPreview(d)}
-                      className="grid h-9 w-9 place-items-center rounded-[9px] border border-white/[0.08] text-cream/55 transition-all hover:border-white/[0.18] hover:text-cream"
+                      className="grid h-9 w-9 place-items-center rounded-[9px] border border-[var(--hairline)] text-cream/55 transition-all hover:border-[var(--hairline-strong)] hover:text-cream"
                     >
                       <Eye size={14} strokeWidth={1.6} />
                     </button>
                     <button
                       aria-label={`Télécharger ${d.name}`}
                       onClick={() => toast.success("Téléchargement lancé", { description: `${d.name} · ${d.size}` })}
-                      className="grid h-9 w-9 place-items-center rounded-[9px] border border-white/[0.08] text-cream/55 transition-all hover:border-white/[0.18] hover:text-cream"
+                      className="grid h-9 w-9 place-items-center rounded-[9px] border border-[var(--hairline)] text-cream/55 transition-all hover:border-[var(--hairline-strong)] hover:text-cream"
                     >
                       <Download size={14} strokeWidth={1.6} />
                     </button>
@@ -129,7 +129,7 @@ export default function Documents() {
       >
         {preview && (
           <div className="space-y-4">
-            <div className="flex aspect-[4/3] items-center justify-center rounded-[12px] border border-dashed border-white/[0.1] bg-white/[0.015]">
+            <div className="flex aspect-[4/3] items-center justify-center rounded-[12px] border border-dashed border-[var(--hairline-strong)] bg-[var(--surface-2)]">
               <div className="text-center">
                 <FileText size={26} strokeWidth={1.25} className="mx-auto text-cream/25" />
                 <p className="num mt-2 text-[10px] uppercase tracking-[0.14em] text-cream/30">Aperçu — {preview.size}</p>

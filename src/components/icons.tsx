@@ -8,6 +8,7 @@ import {
   ConciergeBell, CreditCard, Fingerprint, FolderOpen, Hotel, Mail, MessageCircle, Plane,
   Radar, Scale, ShieldCheck, Stamp, Ticket, Users, Wallet, Workflow,
 } from "lucide-react";
+import { cn } from "../lib/services";
 import type { InsightType, RequestType, SourceKey } from "../lib/types";
 
 /* ————— Symbole propriétaire : convergence de flux ————— */
@@ -17,8 +18,8 @@ export function LogoMark({ size = 24, className }: { size?: number; className?: 
       <path d="M3 5.5c5.6 0 6.2 6.5 10.6 6.5" stroke="currentColor" strokeOpacity="0.85" strokeWidth="1.5" strokeLinecap="round" />
       <path d="M3 12h10.6" stroke="currentColor" strokeOpacity="0.85" strokeWidth="1.5" strokeLinecap="round" />
       <path d="M3 18.5c5.6 0 6.2-6.5 10.6-6.5" stroke="currentColor" strokeOpacity="0.85" strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx="15.4" cy="12" r="2.05" fill="#C9B27C" />
-      <path d="M18.6 12h2.6m0 0-1.9-1.9m1.9 1.9-1.9 1.9" stroke="#C9B27C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="15.4" cy="12" r="2.05" fill="#C4A882" />
+      <path d="M18.6 12h2.6m0 0-1.9-1.9m1.9 1.9-1.9 1.9" stroke="#C4A882" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -89,3 +90,25 @@ export function AgentGlyph({ agentId, ...props }: { agentId: string; size?: numb
 export const insightIcons: Record<InsightType, LucideIcon> = {
   opportunity: Radar, recommendation: Compass, warning: AlertTriangle, anomaly: Activity, decision: Scale,
 };
+
+/* ————— Identité de navigation (approche mesurée) —————
+   On garde Lucide pour l'utilitaire. Les concepts majeurs du Data OS
+   partagent UN traitement : même grille, même graisse de trait (1.6),
+   micro-animation d'accent champagne sur l'item actif. Simplicité. */
+export function ConceptGlyph({ icon: Icon, active = false, size = 15, className }: {
+  icon: LucideIcon; active?: boolean; size?: number; className?: string;
+}) {
+  return (
+    <span
+      className={cn(
+        "relative grid shrink-0 place-items-center transition-colors duration-200",
+        active ? "text-champagne-300" : "text-current",
+        className,
+      )}
+      aria-hidden="true"
+    >
+      <Icon size={size} strokeWidth={1.6} />
+      {active && <span className="pulse-dot absolute -right-[3px] -top-[3px] h-[3px] w-[3px] rounded-full bg-champagne-400" />}
+    </span>
+  );
+}

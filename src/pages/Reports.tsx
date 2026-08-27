@@ -36,7 +36,7 @@ export default function Reports() {
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Analyse</p>
-            <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Rapports</h1>
+            <h1 className="mt-2 t-title">Rapports</h1>
             <p className="mt-1.5 text-[13.5px] text-cream/50">Générés automatiquement par l'Agent Reporting, chaque matin à 08:00.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -56,10 +56,10 @@ export default function Reports() {
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map((r, i) => (
             <Reveal key={r.id} delay={0.04 * i}>
-              <GlassSurface sweep className="flex h-full flex-col p-5">
+              <GlassSurface className="flex h-full flex-col p-5">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2.5">
-                    <span className="grid h-8 w-8 place-items-center rounded-[9px] border border-white/[0.08] bg-ink-950/55 text-cream/60">
+                    <span className="grid h-8 w-8 place-items-center rounded-[9px] border border-[var(--hairline)] bg-ink-950/55 text-cream/60">
                       <FileText size={14.5} strokeWidth={1.6} />
                     </span>
                     <div>
@@ -73,23 +73,23 @@ export default function Reports() {
                 <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-cream/55">{r.summary}</p>
                 <div className="mt-4">
                   {r.status === "Génération" ? (
-                    <div className="h-[44px] rounded-[8px] border border-dashed border-white/[0.1] p-2">
+                    <div className="h-[44px] rounded-[8px] border border-dashed border-[var(--hairline-strong)] p-2">
                       <div className="skeleton h-full w-full" />
                     </div>
                   ) : (
                     <MiniBars data={r.trend} height={44} />
                   )}
                 </div>
-                <div className="mt-4 grid grid-cols-3 gap-2 border-t border-white/[0.06] pt-3.5">
+                <div className="mt-4 grid grid-cols-3 gap-2 border-t border-[var(--card-divider)] pt-3.5">
                   {r.highlights.map((h) => (
                     <div key={h.label} className="min-w-0">
                       <p className="truncate text-[8.5px] uppercase tracking-[0.1em] text-cream/30">{h.label}</p>
                       <p className="num mt-0.5 truncate text-[11px] font-semibold text-cream/85">{h.value}</p>
-                      {h.delta && <p className={cn("num text-[9px]", h.delta.startsWith("+") ? "text-jade" : h.delta.startsWith("-") ? "text-[#e28d85]" : "text-cream/35")}>{h.delta}</p>}
+                      {h.delta && <p className={cn("num text-[9px]", h.delta.startsWith("+") ? "text-jade" : h.delta.startsWith("-") ? "text-ember" : "text-cream/35")}>{h.delta}</p>}
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 flex gap-2 border-t border-white/[0.06] pt-3.5">
+                <div className="mt-4 flex gap-2 border-t border-[var(--card-divider)] pt-3.5">
                   <GlassButton size="sm" variant="soft" full onClick={() => setPreview(r)}>Ouvrir</GlassButton>
                   <GlassButton size="sm" variant="ghost" full iconLeft={<Download size={13} strokeWidth={1.75} />} disabled={r.status !== "Prêt"} onClick={() => exportReport(r)}>
                     Exporter
@@ -124,14 +124,14 @@ export default function Reports() {
             <p className="text-[13px] leading-relaxed text-cream/65">{preview.summary}</p>
             <div className="grid grid-cols-3 gap-2">
               {preview.highlights.map((h) => (
-                <div key={h.label} className="rounded-[11px] border border-white/[0.07] bg-white/[0.02] p-3">
+                <div key={h.label} className="rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] p-3">
                   <p className="text-[8.5px] uppercase tracking-[0.1em] text-cream/30">{h.label}</p>
                   <p className="num mt-1 text-[13px] font-semibold">{h.value}</p>
                   {h.delta && <p className="num mt-0.5 text-[9.5px] text-cream/40">{h.delta}</p>}
                 </div>
               ))}
             </div>
-            <div className="rounded-[12px] border border-white/[0.07] bg-ink-950/50 p-4">
+            <div className="rounded-[12px] border border-[var(--hairline)] bg-ink-950/50 p-4">
               <p className="card-eyebrow mb-3">Tendance — 7 dernières périodes</p>
               <Sparkline data={preview.trend} width={440} height={70} className="w-full" />
             </div>

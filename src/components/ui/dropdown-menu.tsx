@@ -16,7 +16,7 @@ const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        "animate-menu-in z-[100] min-w-[10rem] overflow-hidden rounded-[12px] border border-white/[0.09] bg-ink-800/95 p-1 shadow-[0_16px_48px_rgba(0,0,0,0.45)] backdrop-blur-xl",
+        "animate-menu-in z-[100] min-w-[10rem] overflow-hidden rounded-[12px] border border-[var(--hairline)] bg-[var(--surface-3)] p-1 shadow-[var(--shadow-3),var(--highlight-top)]",
         className
       )}
       {...props}
@@ -32,7 +32,7 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-pointer select-none items-center gap-2 rounded-[8px] px-2.5 py-2 text-[13px] font-medium text-cream/75 outline-none transition-colors focus:bg-white/[0.06] focus:text-cream data-[disabled]:pointer-events-none data-[disabled]:opacity-40 [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-cream/50",
+      "relative flex cursor-pointer select-none items-center gap-2 rounded-[8px] px-2.5 py-2 text-[13px] font-medium text-cream/75 outline-none transition-colors focus:bg-[var(--surface-3)] focus:text-cream data-[disabled]:pointer-events-none data-[disabled]:opacity-40 [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-cream/50",
       inset && "pl-8",
       className
     )}
@@ -57,7 +57,7 @@ const DropdownMenuSeparator = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>
 >(({ className, ...props }, ref) => (
-  <DropdownMenuPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-white/[0.07]", className)} {...props} />
+  <DropdownMenuPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-[var(--surface-3)]", className)} {...props} />
 ));
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
 

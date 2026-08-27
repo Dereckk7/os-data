@@ -28,8 +28,8 @@ const SIZES = {
 };
 
 const VARIANTS = {
-  ghost: "text-cream/60 hover:bg-white/[0.06] hover:text-cream",
-  outline: "border border-white/[0.1] bg-white/[0.03] text-cream/70 hover:border-white/[0.2] hover:text-cream",
+  ghost: "text-cream/60 hover:bg-[var(--row-hover)] hover:text-cream",
+  outline: "border border-[var(--hairline-strong)] bg-[var(--surface-2)] text-cream/70 hover:border-[var(--hairline-strong)] hover:text-cream",
   solid: "bg-cream text-ink-950 hover:bg-white",
 };
 

@@ -26,7 +26,7 @@ export default function Activity() {
       <Reveal>
         <header>
           <p className="eyebrow">Ressources</p>
-          <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Activité</h1>
+          <h1 className="mt-2 t-title">Activité</h1>
           <p className="mt-1.5 text-[13.5px] text-cream/50">Le journal global du DATA OS — agents, utilisateurs, système.</p>
         </header>
       </Reveal>
@@ -38,7 +38,7 @@ export default function Activity() {
               key={f} onClick={() => setFilter(f)}
               className={cn(
                 "h-9 rounded-full border px-4 text-xs font-medium transition-all duration-200",
-                filter === f ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-white/[0.08] bg-white/[0.02] text-cream/55 hover:border-white/[0.15] hover:text-cream/85"
+                filter === f ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-[var(--hairline)] bg-[var(--surface-2)] text-cream/55 hover:border-[var(--hairline-strong)] hover:text-cream/85"
               )}
             >
               {f === "Tout" ? "Tout" : KIND_LABEL[f]}
@@ -59,12 +59,12 @@ export default function Activity() {
                 <span className="num pt-[3px] text-right text-[10.5px] leading-5 text-cream/40">{a.time}</span>
                 <span className="relative flex justify-center">
                   <span className={cn("z-10 mt-[7px] h-[7px] w-[7px] rounded-full", KIND_DOT[a.kind])} />
-                  {i < filtered.length - 1 && <span className="absolute top-0 bottom-0 w-px bg-white/[0.07]" aria-hidden />}
+                  {i < filtered.length - 1 && <span className="absolute top-0 bottom-0 w-px bg-[var(--surface-3)]" aria-hidden />}
                 </span>
                 <span className={cn("block", i < filtered.length - 1 ? "pb-4" : "pb-0.5")}>
                   <span className="flex flex-wrap items-center gap-2">
                     <span className="text-[13px] font-medium leading-5">{a.title}</span>
-                    <span className="num rounded-[5px] border border-white/[0.08] bg-white/[0.03] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/40">
+                    <span className="num rounded-[5px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/40">
                       {KIND_LABEL[a.kind]}
                     </span>
                   </span>

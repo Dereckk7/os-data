@@ -61,7 +61,7 @@ export default function Agents() {
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Collaborateurs numériques</p>
-            <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Agents</h1>
+            <h1 className="mt-2 t-title">Agents</h1>
             <p className="mt-1.5 text-[13.5px] text-cream/50">
               {counts.Actifs} actifs · travaillent en continu sur vos sources connectées.
             </p>
@@ -77,7 +77,7 @@ export default function Agents() {
                 key={f} onClick={() => setFilter(f)}
                 className={cn(
                   "h-9 rounded-full border px-4 text-xs font-medium transition-all duration-200",
-                  filter === f ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-white/[0.08] bg-white/[0.02] text-cream/55 hover:border-white/[0.15] hover:text-cream/85"
+                  filter === f ? "border-transparent bg-[color-mix(in_srgb,var(--color-cream)_10%,transparent)] text-cream" : "border-transparent bg-[var(--surface-2)] text-cream/55 shadow-[var(--highlight-top)] hover:text-cream/85"
                 )}
               >
                 {f}
@@ -91,7 +91,7 @@ export default function Agents() {
             <input
               id="agent-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)}
               placeholder="Rechercher un agent…"
-              className="h-10 w-full rounded-[11px] border border-white/[0.08] bg-white/[0.03] pl-9 pr-3 text-[13px] text-cream outline-none transition-all placeholder:text-cream/30 hover:border-white/[0.14] focus:border-cream/35"
+              className="h-10 w-full rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] pl-9 pr-3 text-[13px] text-cream outline-none transition-all placeholder:text-cream/30 hover:border-[var(--hairline-strong)] focus:border-cream/35"
             />
           </div>
         </div>
@@ -114,7 +114,7 @@ export default function Agents() {
                   onClick={() => navigate(`/agents/${a.id}`)}
                   className={cn(
                     "glass glass-sweep group flex h-full w-full flex-col p-5 text-left transition-all duration-200",
-                    "hover:-translate-y-[2px] hover:border-white/[0.14] hover:bg-white/[0.032]",
+                    "hover:-translate-y-[2px] hover:border-[var(--hairline-strong)] hover:bg-[var(--row-hover)]",
                     (a.status === "En veille" || a.status === "Maintenance") && "opacity-80"
                   )}
                   aria-label={`Détails de ${a.name}`}
@@ -127,7 +127,16 @@ export default function Agents() {
                     <span className="block text-[15px] font-semibold tracking-tight">{a.name}</span>
                     <span className="mt-0.5 block text-xs text-cream/50">{a.role}</span>
                   </span>
-                  <span className="mt-4 grid grid-cols-2 gap-3 border-t border-white/[0.06] pt-3.5">
+                  {a.current && (
+                    <span className="mt-3 flex items-start gap-2 rounded-sm bg-[var(--surface-2)] px-2.5 py-2 shadow-[var(--highlight-top)]">
+                      <span className={cn("mt-[5px] h-[5px] w-[5px] shrink-0 rounded-full", a.status === "Opérationnel" ? "bg-champagne-500/80 pulse-dot" : "bg-cream/30")} aria-hidden />
+                      <span className="min-w-0">
+                        <span className="num block text-[8px] uppercase tracking-[0.12em] text-cream/35">Tâche courante</span>
+                        <span className="mt-0.5 block truncate text-[11.5px] leading-snug text-cream/65">{a.current}</span>
+                      </span>
+                    </span>
+                  )}
+                  <span className="mt-4 grid grid-cols-2 gap-3 border-t border-[var(--card-divider)] pt-3.5">
                     <span>
                       <span className="block text-[17px] font-semibold leading-none"><AnimatedNumber value={String(a.actionsToday)} /></span>
                       <span className="mt-1 block text-[9.5px] uppercase tracking-[0.1em] text-cream/35">tâches aujourd'hui</span>
@@ -137,7 +146,7 @@ export default function Agents() {
                       <span className="mt-1 block text-[9.5px] uppercase tracking-[0.1em] text-cream/35">réussite</span>
                     </span>
                   </span>
-                  <span className="mt-3.5 flex items-center justify-between border-t border-white/[0.06] pt-3">
+                  <span className="mt-3.5 flex items-center justify-between border-t border-[var(--card-divider)] pt-3">
                     <span className="num text-[9.5px] uppercase tracking-[0.12em] text-cream/30">Dernière activité · {a.lastActivity}</span>
                     <span className="flex items-center gap-1 text-[11px] font-medium text-cream/55 transition-colors duration-200 group-hover:text-cream">
                       Voir l'activité

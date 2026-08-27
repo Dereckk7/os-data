@@ -59,7 +59,7 @@ export default function ClientDetail() {
               <Avatar initials={client.initials} name={client.name} size={52} />
               <div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="text-[21px] font-semibold tracking-tight">{client.name}</h1>
+                  <h1 className="t-title">{client.name}</h1>
                   <GlassBadge tone={segmentTone[client.segment]} dot={client.segment === "VIP"}>{client.segment}</GlassBadge>
                   <GlassBadge tone={client.state === "Actif" ? "success" : client.state === "Inactif" ? "neutral" : "danger"}>{client.state}</GlassBadge>
                 </div>
@@ -71,17 +71,17 @@ export default function ClientDetail() {
             </div>
             <div className="text-right">
               <p className="card-eyebrow">Valeur client</p>
-              <p className="num mt-1.5 text-[24px] font-semibold tracking-tight text-champagne-300">{fmtMoney(client.value)}</p>
+              <p className="num mt-1.5 t-title text-champagne-300">{fmtMoney(client.value)}</p>
               <p className="num mt-1 text-[9.5px] uppercase tracking-[0.12em] text-cream/30">cumulée depuis {client.since}</p>
             </div>
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-[13px] border border-white/[0.06] bg-white/[0.05] sm:grid-cols-4">
+          <div className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-[13px] border border-[var(--card-divider)] bg-[var(--card-divider)] sm:grid-cols-4">
             {[
               { k: "Demandes", v: String(client.requestsCount), cls: "" },
               { k: "Réservations", v: String(client.bookingsCount), cls: "" },
               { k: "Satisfaction", v: `${client.satisfaction}%`, cls: "text-jade" },
-              { k: "Risque", v: client.risk, cls: client.risk === "Élevé" ? "text-[#e28d85]" : client.risk === "Modéré" ? "text-saffron" : "text-jade" },
+              { k: "Risque", v: client.risk, cls: client.risk === "Élevé" ? "text-ember" : client.risk === "Modéré" ? "text-saffron" : "text-jade" },
             ].map((s) => (
               <div key={s.k} className="bg-ink-900/70 px-4 py-3">
                 <p className="text-[9.5px] uppercase tracking-[0.12em] text-cream/35">{s.k}</p>
@@ -102,10 +102,10 @@ export default function ClientDetail() {
               {clientRequests.length === 0 ? (
                 <p className="py-4 text-center text-xs text-cream/40">Aucune demande associée à ce client.</p>
               ) : (
-                <ul className="divide-y divide-white/[0.05]">
+                <ul className="divide-y divide-[var(--card-divider)]">
                   {clientRequests.map((r) => (
                     <li key={r.id}>
-                      <Link to={`/requests/${r.id}`} className="group flex items-center justify-between gap-3 py-3 transition-colors hover:bg-white/[0.02] first:pt-0 last:pb-0">
+                      <Link to={`/requests/${r.id}`} className="group flex items-center justify-between gap-3 py-3 transition-colors hover:bg-[var(--row-hover)] first:pt-0 last:pb-0">
                         <span className="min-w-0">
                           <span className="block truncate text-[13px] font-medium">{r.title}</span>
                           <span className="num mt-0.5 block text-[9.5px] text-cream/35">{r.ref} · {r.time}</span>
@@ -129,7 +129,7 @@ export default function ClientDetail() {
                   const Icon = channelIcon[cm.channel];
                   return (
                     <li key={cm.id} className="flex items-start gap-3">
-                      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] border border-white/[0.08] bg-ink-950/55 text-cream/60">
+                      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] border border-[var(--hairline)] bg-ink-950/55 text-cream/60">
                         <Icon size={13} strokeWidth={1.6} />
                       </span>
                       <span className="min-w-0 flex-1">
@@ -166,7 +166,7 @@ export default function ClientDetail() {
                 {client.recommendedActions.map((a) => {
                   const done = acted[a.id];
                   return (
-                    <div key={a.id} className={cn("flex items-center justify-between gap-3 rounded-[12px] border p-3 transition-all duration-300", done ? "border-jade/25 bg-jade/[0.05]" : "border-white/[0.07] bg-white/[0.015] hover:border-white/[0.15]")}>
+                    <div key={a.id} className={cn("flex items-center justify-between gap-3 rounded-[12px] border p-3 transition-all duration-300", done ? "border-jade/25 bg-jade/[0.05]" : "border-[var(--hairline)] bg-[var(--surface-2)] hover:border-[var(--hairline-strong)]")}>
                       <span className="min-w-0">
                         <span className="block text-[12.5px] font-medium leading-snug">{a.label}</span>
                         <span className="num mt-1 block text-[9px] uppercase tracking-[0.12em] text-cream/30">{a.agent}</span>
@@ -178,7 +178,7 @@ export default function ClientDetail() {
                   );
                 })}
               </div>
-              <div className="mt-4 border-t border-white/[0.06] pt-3.5">
+              <div className="mt-4 border-t border-[var(--card-divider)] pt-3.5">
                 <GlassButton
                   variant="soft" size="sm" full iconLeft={<MessageCircle size={13} strokeWidth={1.6} />}
                   onClick={() => toast.neutral("Conversation ouverte", { description: `Fil ${client.name} chargé depuis WhatsApp Business.` })}

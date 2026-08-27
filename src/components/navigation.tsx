@@ -9,14 +9,14 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-do
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   Activity, Bell, Building2, CalendarDays, CheckSquare, ChevronRight, ChevronsUpDown,
-  Database, Feather, FileText, HelpCircle, Inbox, LayoutDashboard, Layers, LogOut, Menu,
+  Database, Feather, FileText, HelpCircle, Inbox, LayoutDashboard, LogOut, Menu,
   Monitor, Moon, MoreHorizontal, Pause, Play, Plug, Radar, ScrollText, Search, Settings,
-  Sparkles, Sun, Users, Workflow,
+  ShieldCheck, Sparkles, Sun, Users, Workflow,
 } from "lucide-react";
 import { cn, useAgents, useAuth, useClients, useNotifications, useRequests, useSourcesState } from "../lib/services";
 import { useTheme, type ThemeMode } from "../lib/theme";
 import { emitWave } from "../lib/background";
-import { LogoMark } from "./icons";
+import { ConceptGlyph, LogoMark } from "./icons";
 import { ThemeTogglerButton } from "./theme-toggle";
 import { Avatar, EASE, StatusBadge } from "./ui";
 import { Separator } from "./ui/separator";
@@ -40,7 +40,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/operations": "Opérations", "/agents": "Agents", "/insights": "Insights",
   "/reports": "Rapports", "/sources": "Sources", "/integrations": "Intégrations",
   "/documents": "Documents", "/activity": "Activité", "/cowork": "Cowork",
-  "/tasks": "Tâches", "/planning": "Planning", "/validation": "Validation",
+  "/tasks": "Tâches", "/planning": "Planning", "/validation": "Actions critiques",
   "/settings": "Paramètres",
 };
 
@@ -61,24 +61,18 @@ const GROUPS: NavGroupDef[] = [
       { to: "/requests", label: "Demandes", icon: Inbox },
       { to: "/clients", label: "Clients", icon: Users },
       { to: "/operations", label: "Opérations", icon: Activity },
+      { to: "/validation", label: "Actions critiques", icon: ShieldCheck },
+      { to: "/planning", label: "Planning", icon: CalendarDays },
+      { to: "/tasks", label: "Tâches", icon: CheckSquare },
+    ],
+  },
+  {
+    title: "Intelligence", icon: Sparkles, defaultOpen: true,
+    items: [
+      { to: "/cowork", label: "Cowork", icon: Sparkles },
       { to: "/agents", label: "Agents", icon: Workflow },
       { to: "/insights", label: "Insights", icon: Radar },
       { to: "/reports", label: "Rapports", icon: FileText },
-    ],
-  },
-  {
-    title: "Travail", icon: Sparkles, defaultOpen: true,
-    items: [
-      { to: "/cowork", label: "Cowork", icon: Sparkles },
-      { to: "/tasks", label: "Tâches", icon: CheckSquare },
-      { to: "/planning", label: "Planning", icon: CalendarDays },
-      { to: "/validation", label: "Validation", icon: Layers },
-    ],
-  },
-  {
-    title: "Ressources", icon: FileText,
-    items: [
-      { to: "/documents", label: "Documents", icon: FileText },
       { to: "/activity", label: "Activité", icon: ScrollText },
     ],
   },
@@ -87,6 +81,7 @@ const GROUPS: NavGroupDef[] = [
     items: [
       { to: "/sources", label: "Sources", icon: Database },
       { to: "/integrations", label: "Intégrations", icon: Plug },
+      { to: "/documents", label: "Documents", icon: FileText },
       { to: "/settings", label: "Paramètres", icon: Settings },
     ],
   },
@@ -114,7 +109,7 @@ function OrgSwitcher() {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton size="lg" tooltip={team.name} className="data-[state=open]:bg-white/[0.05]">
+            <SidebarMenuButton size="lg" tooltip={team.name} className="data-[state=open]:bg-[var(--surface-2)]">
               <span className="grid size-8 shrink-0 place-items-center rounded-[9px] bg-champagne-500/15 text-champagne-300">
                 <team.icon size={15} strokeWidth={1.6} />
               </span>
@@ -129,7 +124,7 @@ function OrgSwitcher() {
             <DropdownMenuLabel>Organisations</DropdownMenuLabel>
             {TEAMS.map((t, i) => (
               <DropdownMenuItem key={t.name} onClick={() => setTeam(t)}>
-                <span className="grid size-6 place-items-center rounded-[7px] border border-white/[0.08] bg-white/[0.03]">
+                <span className="grid size-6 place-items-center rounded-[7px] border border-[var(--hairline)] bg-[var(--surface-2)]">
                   <t.icon size={12} strokeWidth={1.6} />
                 </span>
                 <span className="flex-1">{t.name}</span>
@@ -144,13 +139,14 @@ function OrgSwitcher() {
 }
 
 /* ————— Lien de sous-menu actif ————— */
-function NavSubLink({ to, label, end }: NavItemDef) {
+function NavSubLink({ to, label, icon, end }: NavItemDef) {
   const location = useLocation();
   const active = end ? location.pathname === to : location.pathname.startsWith(to);
   return (
     <SidebarMenuSubItem>
       <SidebarMenuSubButton href={`#${to}`} isActive={active}>
-        {label}
+        <ConceptGlyph icon={icon} active={active} size={15} />
+        <span className="flex-1 truncate">{label}</span>
       </SidebarMenuSubButton>
     </SidebarMenuSubItem>
   );
@@ -167,7 +163,7 @@ function UserMenu({ onHelp }: { onHelp: () => void }) {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton size="lg" tooltip={user.name} className="data-[state=open]:bg-white/[0.05]">
+            <SidebarMenuButton size="lg" tooltip={user.name} className="data-[state=open]:bg-[var(--surface-2)]">
               <Avatar initials={user.initials} name={user.name} size={30} />
               <span className="grid flex-1 text-left leading-tight group-data-[state=collapsed]/sidebar:hidden">
                 <span className="truncate text-[13px] font-semibold">{user.name}</span>
@@ -189,7 +185,7 @@ function UserMenu({ onHelp }: { onHelp: () => void }) {
               <HelpCircle size={14} strokeWidth={1.6} /> Aide <DropdownMenuShortcut>⌘/</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => { signOut(); navigate("/login"); }} className="text-[#e28d85] focus:text-[#e28d85]">
+            <DropdownMenuItem onClick={() => { signOut(); navigate("/login"); }} className="text-ember focus:text-ember">
               <LogOut size={14} strokeWidth={1.6} /> Se déconnecter
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -321,7 +317,7 @@ function NotificationsBell() {
         onClick={() => setOpen((v) => !v)}
         className={cn(
           "relative grid h-9 w-9 place-items-center rounded-[10px] border transition-all duration-200",
-          open ? "border-white/[0.14] bg-white/[0.06] text-cream" : "border-white/[0.07] bg-white/[0.03] text-cream/60 hover:border-white/[0.13] hover:text-cream"
+          open ? "border-[var(--hairline-strong)] bg-[var(--surface-3)] text-cream" : "border-[var(--hairline)] bg-[var(--surface-2)] text-cream/60 hover:border-[var(--hairline-strong)] hover:text-cream"
         )}
       >
         <Bell size={16} strokeWidth={1.6} />
@@ -352,7 +348,7 @@ function NotificationsBell() {
             </div>
             <div className="max-h-80 overflow-y-auto">
               {items.map((n) => (
-                <div key={n.id} className={cn("flex gap-2.5 rounded-[11px] px-3 py-2.5 transition-colors hover:bg-white/[0.04]", !n.read && "bg-white/[0.025]")}>
+                <div key={n.id} className={cn("flex gap-2.5 rounded-[11px] px-3 py-2.5 transition-colors hover:bg-[var(--row-hover)]", !n.read && "bg-[var(--surface-2)]")}>
                   <span className={cn("mt-1.5 h-[6px] w-[6px] shrink-0 rounded-full", toneDot[n.tone], !n.read && "pulse-dot")} />
                   <div className="min-w-0 flex-1">
                     <p className="text-[12.5px] font-medium leading-snug">{n.title}</p>
@@ -374,7 +370,7 @@ function InsetHeader({ onSearch }: { onSearch: () => void }) {
   const location = useLocation();
   const title = pageTitle(location.pathname);
   return (
-    <header className="sticky top-0 z-30 border-b border-[color-mix(in_srgb,var(--color-cream)_8%,transparent)] bg-ink-950/75 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 border-b border-[var(--hairline)] bg-[var(--surface-1)]">
       <div className="flex h-14 items-center gap-3 px-4 sm:px-6 lg:h-16">
         <span className="flex items-center gap-2.5 lg:hidden">
           <span className="text-cream"><LogoMark size={20} /></span>
@@ -398,7 +394,7 @@ function InsetHeader({ onSearch }: { onSearch: () => void }) {
         <div className="ml-auto flex items-center gap-2">
           <button
             onClick={onSearch} aria-label="Rechercher (Ctrl K)"
-            className="hidden h-9 w-60 items-center gap-2 rounded-[11px] border border-white/[0.07] bg-white/[0.03] px-3 text-[12.5px] text-cream/40 transition-all duration-200 hover:border-white/[0.14] hover:bg-white/[0.05] hover:text-cream/60 md:flex"
+            className="hidden h-9 w-60 items-center gap-2 rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] px-3 text-[12.5px] text-cream/40 transition-all duration-200 hover:border-[var(--hairline-strong)] hover:bg-[var(--row-hover)] hover:text-cream/60 md:flex"
           >
             <Search size={14} strokeWidth={1.6} />
             Rechercher…
@@ -406,7 +402,7 @@ function InsetHeader({ onSearch }: { onSearch: () => void }) {
           </button>
           <button
             onClick={onSearch} aria-label="Rechercher"
-            className="grid h-9 w-9 place-items-center rounded-[10px] border border-white/[0.07] bg-white/[0.03] text-cream/60 transition-colors hover:text-cream md:hidden"
+            className="grid h-9 w-9 place-items-center rounded-[10px] border border-[var(--hairline)] bg-[var(--surface-2)] text-cream/60 transition-colors hover:text-cream md:hidden"
           >
             <Search size={16} strokeWidth={1.6} />
           </button>
@@ -423,7 +419,7 @@ function MobileNav({ onMenu }: { onMenu: () => void }) {
   return (
     <nav
       aria-label="Navigation principale mobile"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-[color-mix(in_srgb,var(--color-cream)_10%,transparent)] bg-ink-950/92 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--hairline)] bg-[var(--surface-1)] pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
       <div className="grid h-[60px] grid-cols-5">
         {MOBILE_NAV.map((n) => (
@@ -515,7 +511,7 @@ function HelpModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         <div className="fixed inset-0 z-[95]" role="dialog" aria-modal="true" aria-label="Aide">
           <motion.button
             aria-label="Fermer l'aide"
-            className="absolute inset-0 cursor-default bg-ink-950/70 backdrop-blur-sm"
+            className="absolute inset-0 cursor-default bg-ink-950/70"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={onClose}
           />
@@ -534,7 +530,7 @@ function HelpModal({ open, onClose }: { open: boolean; onClose: () => void }) {
                 { k: "⌘/", d: "Ouvrir ce panneau d'aide" },
                 { k: "Esc", d: "Fermer fenêtres et panneaux" },
               ].map((s) => (
-                <div key={s.k} className="flex items-center gap-3 rounded-[11px] border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
+                <div key={s.k} className="flex items-center gap-3 rounded-[11px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3 py-2.5">
                   <span className="kbd">{s.k}</span>
                   <span className="text-xs text-cream/65">{s.d}</span>
                 </div>

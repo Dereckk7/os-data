@@ -40,7 +40,7 @@ export function useToast() {
 
 const toneStyles: Record<Tone, { cls: string; icon: ReactNode }> = {
   success: { cls: "text-jade", icon: <CheckCircle2 size={16} strokeWidth={1.75} /> },
-  danger: { cls: "text-[#e28d85]", icon: <AlertTriangle size={16} strokeWidth={1.75} /> },
+  danger: { cls: "text-ember", icon: <AlertTriangle size={16} strokeWidth={1.75} /> },
   warning: { cls: "text-saffron", icon: <AlertTriangle size={16} strokeWidth={1.75} /> },
   gold: { cls: "text-champagne-300", icon: <Sparkles size={16} strokeWidth={1.75} /> },
   neutral: { cls: "text-cream/60", icon: <Info size={16} strokeWidth={1.75} /> },
@@ -86,7 +86,7 @@ function ToastCard({ item, onClose }: { item: ToastItem; onClose: () => void }) 
           {item.action && (
             <button
               onClick={() => { item.action?.onClick(); onClose(); }}
-              className="mt-2.5 inline-flex h-7 items-center rounded-[8px] border border-white/[0.1] bg-white/[0.04] px-2.5 text-[11px] font-semibold text-cream/85 transition-all duration-150 hover:border-white/20 hover:bg-white/[0.08]"
+              className="mt-2.5 inline-flex h-7 items-center rounded-[8px] border border-[var(--hairline-strong)] bg-[var(--surface-2)] px-2.5 text-[11px] font-semibold text-cream/85 transition-all duration-150 hover:border-white/20 hover:bg-[var(--row-hover)]"
             >
               {item.action.label}
             </button>
@@ -94,7 +94,7 @@ function ToastCard({ item, onClose }: { item: ToastItem; onClose: () => void }) 
         </div>
         <button
           onClick={onClose} aria-label="Fermer la notification"
-          className="grid h-7 w-7 shrink-0 place-items-center rounded-[7px] text-cream/40 transition-colors hover:bg-white/[0.06] hover:text-cream"
+          className="grid h-7 w-7 shrink-0 place-items-center rounded-[7px] text-cream/40 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
         >
           <X size={13} strokeWidth={1.75} />
         </button>

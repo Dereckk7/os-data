@@ -54,7 +54,7 @@ function applyTheme(resolved: ResolvedTheme, comfort: boolean, animate = true) {
   root.dataset.theme = resolved;
   if (comfort) root.dataset.comfort = "true";
   else delete root.dataset.comfort;
-  root.style.backgroundColor = resolved === "light" ? "#f8f9fa" : "#08090b";
+  root.style.backgroundColor = resolved === "light" ? "#f4f3ef" : "#08090a";
 }
 
 function prefersReducedMotionRaw(): boolean {
@@ -120,7 +120,7 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     const root = document.documentElement;
     root.dataset.motion = prefs.motion;
     root.dataset.contrast = prefs.contrast;
-    root.style.fontSize = `${15 * densityScale[prefs.density] * fontScale[prefs.fontSize]}px`;
+    root.style.fontSize = `${16 * densityScale[prefs.density] * fontScale[prefs.fontSize]}px`;
     try { localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); } catch { /* noop */ }
   }, [prefs]);
 

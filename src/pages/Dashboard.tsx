@@ -6,7 +6,6 @@ import type { Kpi } from "../lib/types";
 import { GlassButton } from "../components/glass";
 import { AgentGlyph } from "../components/icons";
 import { ActivityFeed, AnimatedNumber, AgentStatusBadge, EASE, PriorityBadge, Reveal, Skeleton } from "../components/ui";
-import { BorderBeamPanel } from "../components/border-beam";
 import { toast } from "../components/toast";
 import { motion } from "framer-motion";
 
@@ -33,7 +32,7 @@ export default function Dashboard() {
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Maison Ekwata · {todayLabel()}</p>
-            <h1 className="mt-2.5 text-[24px] font-semibold tracking-tight sm:text-[27px]">Bonjour, {firstName}</h1>
+            <h1 className="mt-2.5 t-display">Bonjour, {firstName}</h1>
             <p className="font-serif mt-1 text-[19px] italic text-cream/75 sm:text-[21px]">
               Votre entreprise est <em className="text-champagne-300">sous contrôle</em>.
             </p>
@@ -93,50 +92,43 @@ export default function Dashboard() {
             </div>
           ) : (
             <div className="grid gap-4 md:grid-cols-2">
-              {/* Opportunité IA — comète champagne */}
+              {/* Opportunité IA — moment card champagne (les 5%), theme-aware */}
               {opportunity && (
                 <Reveal delay={0.12}>
-                  <BorderBeamPanel
-                    beams={1}
-                    colors={["#D4AF37"]}
-                    idleSpeed={25}
-                    hoverSpeed={150}
-                    glow={true}
-                    radius={16}
-                    thickness={1.5}
-                    className="h-full border-0 bg-[#0B0B0B]"
-                  >
-                    <div className="relative z-10 flex h-full flex-col p-6">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-[#D4AF37] text-xs font-semibold uppercase tracking-wider">
-                          Intelligence DATA OS
-                        </span>
-                        <span className="ai-tag"><Sparkles size={11} strokeWidth={2} /> IA</span>
-                      </div>
-                      <div className="mt-2 text-4xl font-bold text-[#ffffff]">
-                        {opportunity.metric?.replace(" XAF", "")}{" "}
-                        <span className="text-[#C9A96E] text-xl">XAF</span>
-                      </div>
-                      <p className="mt-2 text-[13px] font-semibold text-[#ffffff]/90">{opportunity.title}</p>
-                      <p className="mt-1 text-[12.5px] leading-relaxed text-[#ffffff]/55">{opportunity.body}</p>
-                      <div className="mt-auto flex items-center justify-between pt-4">
-                        <span className="num text-[9px] uppercase tracking-[0.12em] text-[#ffffff]/35">
-                          {opportunity.agent} · {opportunity.time}
-                        </span>
-                        <button
-                          onClick={() => {
-                            toast.gold("Opportunité ouverte", {
-                              description: "3 profils VIP à réactiver — potentiel 1 850 000 XAF.",
-                              action: { label: "Voir", onClick: () => navigate("/insights") },
-                            });
-                          }}
-                          className="inline-flex h-9 items-center rounded-[10px] bg-[#D4AF37] px-4 text-[13px] font-semibold text-[#0B0B0B] transition-all duration-200 hover:brightness-110 active:scale-[0.98]"
-                        >
-                          Examiner
-                        </button>
-                      </div>
+                  <article className="relative flex h-full flex-col overflow-hidden rounded-md bg-[color-mix(in_srgb,var(--color-champagne-500)_10%,transparent)] p-6 shadow-[var(--shadow-2),var(--highlight-top)] ring-1 ring-[color-mix(in_srgb,var(--color-champagne-500)_22%,transparent)]">
+                    <span className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-champagne-500)_20%,transparent),transparent_68%)]" aria-hidden />
+                    <span className="absolute inset-y-5 left-0 w-[2px] rounded-r bg-champagne-500/75" aria-hidden />
+                    <div className="relative flex items-center justify-between gap-2 pl-2.5">
+                      <span className="text-[9.5px] font-[590] uppercase tracking-[0.14em] text-champagne-300">
+                        Intelligence DATA OS
+                      </span>
+                      <span className="ai-tag"><Sparkles size={11} strokeWidth={2} /> IA</span>
                     </div>
-                  </BorderBeamPanel>
+                    {opportunity.metric && (
+                      <div className="num relative mt-2 pl-2.5 text-[34px] font-[590] tracking-[-0.022em]">
+                        {opportunity.metric.replace(" XAF", "")}{" "}
+                        <span className="text-xl text-champagne-300">XAF</span>
+                      </div>
+                    )}
+                    <p className="relative mt-2 pl-2.5 text-[13px] font-[510]">{opportunity.title}</p>
+                    <p className="relative mt-1 pl-2.5 text-[12.5px] leading-relaxed text-cream/55">{opportunity.body}</p>
+                    <div className="relative mt-auto flex items-center justify-between pl-2.5 pt-4">
+                      <span className="num text-[9px] uppercase tracking-[0.12em] text-cream/35">
+                        {opportunity.agent} · {opportunity.time}
+                      </span>
+                      <button
+                        onClick={() => {
+                          toast.gold(opportunity.title, {
+                            description: opportunity.body,
+                            action: { label: "Voir", onClick: () => navigate("/insights") },
+                          });
+                        }}
+                        className="inline-flex h-9 items-center rounded-sm bg-champagne-500 px-4 text-[13px] font-[590] text-ink-950 transition-[filter,transform] duration-200 hover:brightness-105 active:scale-[0.98]"
+                      >
+                        Examiner
+                      </button>
+                    </div>
+                  </article>
                 </Reveal>
               )}
 

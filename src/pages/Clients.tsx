@@ -37,7 +37,7 @@ export default function Clients() {
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Portefeuille client</p>
-            <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Clients</h1>
+            <h1 className="mt-2 t-title">Clients</h1>
             <p className="num mt-1.5 text-[11.5px] text-cream/45">
               {clientsQ.data.length} clients · {fmtMoney(totalValue)} de valeur cumulée
             </p>
@@ -58,7 +58,7 @@ export default function Clients() {
               key={t} onClick={() => setTab(t)}
               className={cn(
                 "h-9 rounded-full border px-4 text-xs font-medium transition-all duration-200",
-                tab === t ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-white/[0.08] bg-white/[0.02] text-cream/55 hover:border-white/[0.15] hover:text-cream/85"
+                tab === t ? "border-transparent bg-[color-mix(in_srgb,var(--color-cream)_10%,transparent)] text-cream" : "border-transparent bg-[var(--surface-2)] text-cream/55 shadow-[var(--highlight-top)] hover:text-cream/85"
               )}
             >
               {t}
@@ -79,7 +79,7 @@ export default function Clients() {
             action={
               <button
                 onClick={() => { setTab("Tous"); setQuery(""); }}
-                className="rounded-[9px] border border-white/[0.09] px-3.5 py-2 text-xs font-medium text-cream/70 transition-colors hover:bg-white/[0.05]"
+                className="rounded-[9px] border border-[var(--hairline-strong)] px-3.5 py-2 text-xs font-medium text-cream/70 transition-colors hover:bg-[var(--row-hover)]"
               >
                 Afficher tous les clients
               </button>
@@ -92,7 +92,7 @@ export default function Clients() {
             <GlassSurface className="hidden overflow-hidden p-0 lg:block">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-white/[0.07]">
+                  <tr className="border-b border-[var(--hairline)]">
                     {["Client", "Segment", "Dernier contact", "Valeur", "Activité", "Risque", "Responsable"].map((h) => (
                       <th key={h} className="card-eyebrow px-4 py-3 first:pl-5 last:pr-5">{h}</th>
                     ))}
@@ -121,7 +121,7 @@ export default function Clients() {
                     </span>
                     <GlassBadge tone={segmentTone[c.segment]}>{c.segment}</GlassBadge>
                   </span>
-                  <span className="mt-3 flex items-end justify-between border-t border-white/[0.06] pt-3">
+                  <span className="mt-3 flex items-end justify-between border-t border-[var(--card-divider)] pt-3">
                     <span>
                       <span className="num block text-[16px] font-semibold">{fmtMoney(c.value)}</span>
                       <span className="text-[9.5px] uppercase tracking-[0.1em] text-cream/30">valeur client</span>
@@ -143,7 +143,7 @@ export default function Clients() {
 
 function ClientRow({ client: c, onOpen }: { client: Client; onOpen: () => void }) {
   return (
-    <tr onClick={onOpen} className="group cursor-pointer border-b border-white/[0.04] transition-colors duration-150 last:border-0 hover:bg-white/[0.022]">
+    <tr onClick={onOpen} className="group cursor-pointer border-b border-[var(--card-divider)] transition-colors duration-150 last:border-0 hover:bg-[var(--row-hover)]">
       <td className="py-3 pl-5 pr-4">
         <span className="flex items-center gap-2.5">
           <Avatar initials={c.initials} name={c.name} size={30} />
@@ -158,7 +158,7 @@ function ClientRow({ client: c, onOpen }: { client: Client; onOpen: () => void }
       <td className="num px-4 py-3 text-[12px] font-semibold">{fmtMoney(c.value)}</td>
       <td className="px-4 py-3">
         <span className="flex items-center gap-2">
-          <span className="h-[3px] w-16 overflow-hidden rounded-full bg-white/[0.07]">
+          <span className="h-[3px] w-16 overflow-hidden rounded-full bg-[var(--surface-3)]">
             <span
               className={cn("block h-full rounded-full transition-all duration-700", c.activity > 60 ? "bg-jade/80" : c.activity > 30 ? "bg-saffron/80" : "bg-ember/80")}
               style={{ width: `${c.activity}%` }}

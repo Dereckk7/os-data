@@ -17,7 +17,7 @@ const TONE: Record<WorkTone, { bar: string; text: string; fill: string; ring: st
   blue: { bar: "bg-[var(--type-blue)]", text: "text-[var(--type-blue)]", fill: "var(--type-blue)", ring: "border-[var(--type-blue)]" },
   violet: { bar: "bg-[var(--type-violet)]", text: "text-[var(--type-violet)]", fill: "var(--type-violet)", ring: "border-[var(--type-violet)]" },
   orange: { bar: "bg-[var(--type-orange)]", text: "text-[var(--type-orange)]", fill: "var(--type-orange)", ring: "border-[var(--type-orange)]" },
-  ember: { bar: "bg-ember/85", text: "text-[#e28d85]", fill: "#c9635a", ring: "border-ember/60" },
+  ember: { bar: "bg-ember/85", text: "text-ember", fill: "#c9635a", ring: "border-ember/60" },
   jade: { bar: "bg-jade/85", text: "text-jade", fill: "#8ab291", ring: "border-jade/60" },
   gold: { bar: "bg-champagne-500/85", text: "text-champagne-300", fill: "#c9b27c", ring: "border-champagne-500/60" },
   neutral: { bar: "bg-cream/45", text: "text-cream/55", fill: "rgba(245,245,242,0.45)", ring: "border-cream/30" },
@@ -106,7 +106,7 @@ function CardMenu({ items }: { items: { label: string; onClick: () => void }[] }
     <div className="relative" ref={ref}>
       <button
         aria-label="Options de la carte" aria-expanded={open} onClick={() => setOpen((v) => !v)}
-        className={cn("grid h-7 w-7 place-items-center rounded-[8px] transition-all duration-150", open ? "bg-white/[0.07] text-cream" : "text-cream/35 hover:bg-white/[0.05] hover:text-cream")}
+        className={cn("grid h-7 w-7 place-items-center rounded-[8px] transition-all duration-150", open ? "bg-[var(--surface-3)] text-cream" : "text-cream/35 hover:bg-[var(--row-hover)] hover:text-cream")}
       >
         <MoreHorizontal size={15} strokeWidth={1.75} />
       </button>
@@ -116,7 +116,7 @@ function CardMenu({ items }: { items: { label: string; onClick: () => void }[] }
             <button
               key={it.label}
               onClick={() => { setOpen(false); it.onClick(); }}
-              className="block w-full rounded-[8px] px-2.5 py-2 text-left text-xs font-medium text-cream/70 transition-colors hover:bg-white/[0.06] hover:text-cream"
+              className="block w-full rounded-[8px] px-2.5 py-2 text-left text-xs font-medium text-cream/70 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
             >
               {it.label}
             </button>
@@ -157,7 +157,7 @@ export function WorkCard({
       ref={lightRef}
       className={cn(
         "glass glass-sweep group relative flex h-full flex-col overflow-hidden p-5 pl-6 transition-all duration-200",
-        "hover:-translate-y-[2px] hover:border-white/[0.14] hover:bg-white/[0.032]",
+        "hover:-translate-y-[2px] hover:border-[var(--hairline-strong)] hover:bg-[var(--row-hover)]",
         urgent && "border-ember/25",
         className
       )}
@@ -181,7 +181,7 @@ export function WorkCard({
           <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-cream/35">Progression</span>
           <span className="num text-[11px] font-semibold text-cream/80">{progress}%</span>
         </div>
-        <div className="mt-1.5 h-[4px] overflow-hidden rounded-full bg-white/[0.06]">
+        <div className="mt-1.5 h-[4px] overflow-hidden rounded-full bg-[var(--surface-3)]">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
@@ -198,7 +198,7 @@ export function WorkCard({
         </ul>
       )}
 
-      <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/[0.06] pt-3.5" style={{ marginTop: "auto" }}>
+      <div className="mt-4 flex items-center justify-between gap-3 border-t border-[var(--card-divider)] pt-3.5" style={{ marginTop: "auto" }}>
         <div className="flex min-w-0 items-center gap-2.5">
           {agents.length > 0 && (
             <span className="flex items-center -space-x-2">
@@ -223,7 +223,7 @@ export function WorkCard({
 
         {dueIn !== undefined &&
           (overdue ? (
-            <span className="num flex shrink-0 items-center gap-1.5 rounded-full border border-ember/35 bg-ember/[0.08] px-2.5 py-1 text-[9.5px] font-semibold text-[#e28d85]">
+            <span className="num flex shrink-0 items-center gap-1.5 rounded-full border border-ember/35 bg-ember/[0.08] px-2.5 py-1 text-[9.5px] font-semibold text-ember">
               <Clock size={11} strokeWidth={1.75} /> Dépassée
             </span>
           ) : (
@@ -232,7 +232,7 @@ export function WorkCard({
                 "num flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[9.5px] font-semibold",
                 dueSoon || urgent
                   ? "border-[color-mix(in_srgb,var(--type-orange)_40%,transparent)] bg-[color-mix(in_srgb,var(--type-orange)_10%,transparent)] text-[var(--type-orange)]"
-                  : "border-white/[0.09] bg-white/[0.03] text-cream/55"
+                  : "border-[var(--hairline)] bg-[var(--surface-2)] text-cream/55"
               )}
               title="Échéance"
             >
@@ -246,7 +246,7 @@ export function WorkCard({
       {onOpen && openLabel && (
         <button
           onClick={onOpen}
-          className="mt-3.5 inline-flex h-10 w-full items-center justify-center rounded-[10px] border border-white/[0.09] text-xs font-semibold text-cream/80 transition-all duration-200 hover:border-white/[0.2] hover:bg-white/[0.05] hover:text-cream active:scale-[0.99]"
+          className="mt-3.5 inline-flex h-10 w-full items-center justify-center rounded-[10px] border border-[var(--hairline)] text-xs font-semibold text-cream/80 transition-all duration-200 hover:border-[var(--hairline-strong)] hover:bg-[var(--row-hover)] hover:text-cream active:scale-[0.99]"
         >
           {openLabel}
         </button>
@@ -255,7 +255,7 @@ export function WorkCard({
       {onQuickAdd && (
         <button
           aria-label={quickAddLabel} title={quickAddLabel} onClick={onQuickAdd}
-          className="absolute right-4 bottom-4 grid h-7 w-7 place-items-center rounded-full border border-dashed border-white/[0.16] text-cream/40 transition-all duration-200 hover:border-cream/40 hover:bg-white/[0.05] hover:text-cream"
+          className="absolute right-4 bottom-4 grid h-7 w-7 place-items-center rounded-full border border-dashed border-[var(--hairline-strong)] text-cream/40 transition-all duration-200 hover:border-cream/40 hover:bg-[var(--row-hover)] hover:text-cream"
           style={onOpen ? { bottom: "4.25rem" } : undefined}
         >
           <Plus size={13} strokeWidth={1.75} />

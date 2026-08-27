@@ -81,7 +81,7 @@ export default function Sources() {
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Infrastructure de données</p>
-            <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Sources</h1>
+            <h1 className="mt-2 t-title">Sources</h1>
             <p className="mt-1.5 text-[13.5px] text-cream/50">Vos données, connectées et organisées en continu.</p>
           </div>
           <GlassButton
@@ -106,17 +106,17 @@ export default function Sources() {
                 className={cn("group flex h-full flex-col p-5 transition-colors duration-300", s.status === "connected" && "border-jade/20", s.status === "error" && "border-ember/30")}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <AnimatedIcon trigger="hover" className={cn("grid h-9 w-9 place-items-center rounded-[10px] border border-white/[0.08] bg-ink-950/55", s.status === "error" ? "text-[#e28d85]" : "text-cream/70")}>
+                  <AnimatedIcon trigger="hover" className={cn("grid h-9 w-9 place-items-center rounded-[10px] border border-[var(--hairline)] bg-ink-950/55", s.status === "error" ? "text-ember" : "text-cream/70")}>
                     <SourceIcon sourceKey={s.key} size={16} strokeWidth={1.6} />
                   </AnimatedIcon>
                   <SourceStatusBadge s={s} />
                 </div>
                 <p className="mt-3.5 flex items-center gap-2 text-[14px] font-semibold tracking-tight">
                   {s.name}
-                  <span className="num rounded-[5px] border border-white/[0.08] bg-white/[0.03] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/40">{s.method}</span>
+                  <span className="num rounded-[5px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/40">{s.method}</span>
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-cream/50">{s.description}</p>
-                <div className="mt-4 grid grid-cols-3 gap-2 border-t border-white/[0.06] pt-3.5">
+                <div className="mt-4 grid grid-cols-3 gap-2 border-t border-[var(--card-divider)] pt-3.5">
                   {[
                     { k: "Dernière sync", v: s.lastSync },
                     { k: "Données", v: s.records > 0 ? fmtInt(s.records) : "—" },
@@ -132,7 +132,7 @@ export default function Sources() {
                   {s.status === "error" ? (
                     <div>
                       <div className="rounded-[11px] border border-ember/25 bg-ember/[0.07] p-3">
-                        <p className="text-[11.5px] font-medium text-[#e28d85]">Cette source n'a pas pu être synchronisée.</p>
+                        <p className="text-[11.5px] font-medium text-ember">Cette source n'a pas pu être synchronisée.</p>
                         <p className="mt-1 text-[11px] leading-relaxed text-cream/50">{s.error}</p>
                       </div>
                       <div className="mt-2.5 flex gap-2">
@@ -156,7 +156,7 @@ export default function Sources() {
                         {syncingKey === s.key ? "Synchronisation…" : "Synchroniser"}
                       </GlassButton>
                       {syncingKey === s.key && (
-                        <div className="mt-2 h-[3px] overflow-hidden rounded-full bg-white/[0.06]">
+                        <div className="mt-2 h-[3px] overflow-hidden rounded-full bg-[var(--surface-3)]">
                           <div className="h-full rounded-full bg-champagne-500/80 transition-all duration-200" style={{ width: `${progress}%` }} />
                         </div>
                       )}
@@ -177,7 +177,7 @@ export default function Sources() {
             { icon: RefreshCw, label: "REST APIs", desc: "Connecteurs normalisés" },
             { icon: Check, label: "OAuth", desc: "Flux d'autorisation sécurisés" },
           ].map((a) => (
-            <div key={a.label} className="rounded-[12px] border border-white/[0.06] bg-white/[0.018] p-3.5">
+            <div key={a.label} className="rounded-[12px] border border-[var(--card-divider)] bg-[var(--surface-2)] p-3.5">
               <a.icon size={15} strokeWidth={1.6} className="text-cream/60" />
               <p className="mt-2 text-xs font-semibold">{a.label}</p>
               <p className="num mt-0.5 text-[9.5px] leading-relaxed text-cream/40">{a.desc}</p>
@@ -194,7 +194,7 @@ export default function Sources() {
             return (
               <div
                 key={label}
-                className={cn("flex items-center gap-3 rounded-[11px] border px-3.5 py-3 transition-all duration-300", done ? "border-jade/25 bg-jade/[0.05]" : current ? "border-champagne-500/30 bg-champagne-500/[0.05]" : "border-white/[0.06] bg-white/[0.015] opacity-50")}
+                className={cn("flex items-center gap-3 rounded-[11px] border px-3.5 py-3 transition-all duration-300", done ? "border-jade/25 bg-jade/[0.05]" : current ? "border-champagne-500/30 bg-champagne-500/[0.05]" : "border-[var(--card-divider)] bg-[var(--surface-2)] opacity-50")}
               >
                 {done ? <Check size={14} strokeWidth={2} className="shrink-0 text-jade" />
                   : current ? <Loader2 size={14} strokeWidth={1.75} className="shrink-0 animate-spin text-champagne-300" />

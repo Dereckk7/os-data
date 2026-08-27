@@ -48,9 +48,9 @@ type ButtonSize = "sm" | "md" | "lg";
 const btnVariants: Record<ButtonVariant, string> = {
   primary: "bg-cream text-ink-950 hover:bg-white shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_2px_18px_rgba(0,0,0,0.18)]",
   gold: "bg-champagne-500/10 text-champagne-300 border border-champagne-500/25 hover:bg-champagne-500/[0.17] hover:border-champagne-500/40",
-  ghost: "border border-white/[0.08] text-cream/85 bg-transparent hover:bg-white/[0.045] hover:text-cream hover:border-white/[0.14]",
-  soft: "bg-white/[0.05] text-cream/85 hover:bg-white/[0.085] hover:text-cream",
-  danger: "bg-ember/10 text-[#e28d85] border border-ember/25 hover:bg-ember/[0.17] hover:border-ember/40",
+  ghost: "border border-[var(--hairline)] text-cream/85 bg-transparent hover:bg-[var(--row-hover)] hover:text-cream hover:border-[var(--hairline-strong)]",
+  soft: "bg-[var(--surface-2)] text-cream/85 hover:bg-[var(--row-hover)] hover:text-cream",
+  danger: "bg-ember/10 text-ember border border-ember/25 hover:bg-ember/[0.17] hover:border-ember/40",
 };
 const btnSizes: Record<ButtonSize, string> = {
   sm: "h-8 px-3 text-xs rounded-[9px] gap-1.5",
@@ -109,15 +109,15 @@ export function GlassInput({ label, icon, right, error, className, id, ...rest }
       {label && <label htmlFor={inputId} className="mb-1.5 block text-xs font-medium text-cream/65">{label}</label>}
       <div
         className={cn(
-          "flex h-10 items-center gap-2 rounded-[11px] border bg-white/[0.03] px-3 transition-all duration-200 focus-within:border-cream/35 focus-within:bg-white/[0.05] focus-within:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-cream)_9%,transparent)]",
-          error ? "border-ember/45" : "border-white/[0.08] hover:border-white/[0.14]"
+          "flex h-10 items-center gap-2 rounded-[11px] border bg-[var(--surface-2)] px-3 transition-all duration-200 focus-within:border-cream/35 focus-within:bg-[var(--surface-2)] focus-within:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-cream)_9%,transparent)]",
+          error ? "border-ember/45" : "border-[var(--hairline)] hover:border-[var(--hairline-strong)]"
         )}
       >
         {icon && <span className="text-cream/35">{icon}</span>}
         <input id={inputId} className="h-full w-full bg-transparent text-[13px] text-cream outline-none placeholder:text-cream/30" {...rest} />
         {right}
       </div>
-      {error && <p className="mt-1.5 text-[11px] text-[#e28d85]">{error}</p>}
+      {error && <p className="mt-1.5 text-[11px] text-ember">{error}</p>}
     </div>
   );
 }
@@ -132,7 +132,7 @@ export function GlassSelect({ label, value, onChange, options, className, id }: 
       {label && <label htmlFor={selectId} className="mb-1.5 block text-xs font-medium text-cream/65">{label}</label>}
       <select
         id={selectId} value={value} onChange={(e) => onChange(e.target.value)}
-        className="h-10 w-full cursor-pointer appearance-none rounded-[11px] border border-white/[0.08] bg-ink-800 px-3 text-[13px] text-cream outline-none transition-colors hover:border-white/[0.14] focus:border-cream/35"
+        className="h-10 w-full cursor-pointer appearance-none rounded-[11px] border border-[var(--hairline)] bg-ink-800 px-3 text-[13px] text-cream outline-none transition-colors hover:border-[var(--hairline-strong)] focus:border-cream/35"
       >
         {options.map((o) => <option key={o.value} value={o.value} className="bg-ink-800">{o.label}</option>)}
       </select>
@@ -142,11 +142,11 @@ export function GlassSelect({ label, value, onChange, options, className, id }: 
 
 /* ————— Badges ————— */
 const badgeTones: Record<Tone, string> = {
-  neutral: "bg-white/[0.05] text-cream/60 border-white/[0.08]",
+  neutral: "bg-[var(--surface-2)] text-cream/60 border-[var(--hairline)]",
   gold: "bg-champagne-500/[0.09] text-champagne-300 border-champagne-500/22",
   success: "bg-jade/[0.09] text-jade border-jade/25",
   warning: "bg-saffron/[0.09] text-saffron border-saffron/25",
-  danger: "bg-ember/[0.09] text-[#e28d85] border-ember/28",
+  danger: "bg-ember/[0.09] text-ember border-ember/28",
 };
 
 export function GlassBadge({ tone = "neutral", dot, pulse, children, className }: {
@@ -165,7 +165,7 @@ export function IconContainer({ children, size = "md", className }: { children: 
   return (
     <span
       className={cn(
-        "grid shrink-0 place-items-center rounded-[10px] border border-white/[0.08] bg-ink-950/55 text-cream/70 transition-all duration-300 group-hover:border-white/20 group-hover:text-cream",
+        "grid shrink-0 place-items-center rounded-[10px] border border-[var(--hairline)] bg-ink-950/55 text-cream/70 transition-all duration-300 group-hover:border-white/20 group-hover:text-cream",
         size === "md" ? "h-9 w-9" : "h-8 w-8", className
       )}
     >
@@ -198,7 +198,7 @@ export function GlassModal({ open, onClose, title, eyebrow, children, footer, wi
         <div className="fixed inset-0 z-[90] flex items-end justify-center p-3 sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={typeof title === "string" ? title : "Fenêtre de dialogue"}>
           <motion.button
             aria-label="Fermer la fenêtre"
-            className="absolute inset-0 cursor-default bg-ink-950/70 backdrop-blur-sm"
+            className="absolute inset-0 cursor-default bg-ink-950/70"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={onClose}
           />
@@ -210,20 +210,20 @@ export function GlassModal({ open, onClose, title, eyebrow, children, footer, wi
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             className={cn("glass-raised liquid relative flex max-h-[86vh] w-full flex-col overflow-hidden", wide ? "max-w-2xl" : "max-w-md")}
           >
-            <div className="flex items-start justify-between gap-4 border-b border-white/[0.06] px-5 py-4 sm:px-6">
+            <div className="flex items-start justify-between gap-4 border-b border-[var(--card-divider)] px-5 py-4 sm:px-6">
               <div>
                 {eyebrow && <p className="card-eyebrow mb-1">{eyebrow}</p>}
                 {title && <h2 className="text-[15px] font-semibold tracking-tight">{title}</h2>}
               </div>
               <button
                 onClick={onClose} aria-label="Fermer"
-                className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] text-cream/45 transition-colors hover:bg-white/[0.06] hover:text-cream"
+                className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] text-cream/45 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
               >
                 <X size={15} strokeWidth={1.75} />
               </button>
             </div>
             <div className="overflow-y-auto px-5 py-4 sm:px-6 sm:py-5">{children}</div>
-            {footer && <div className="flex items-center justify-end gap-2 border-t border-white/[0.06] px-5 py-3.5 sm:px-6">{footer}</div>}
+            {footer && <div className="flex items-center justify-end gap-2 border-t border-[var(--card-divider)] px-5 py-3.5 sm:px-6">{footer}</div>}
           </motion.div>
         </div>
       )}
