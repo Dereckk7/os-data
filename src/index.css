@@ -74,7 +74,7 @@
 
   /* Hairline quasi invisible — la séparation vient d'abord de la tonalité,
      de l'ombre et du highlight, PAS d'une bordure visible sur chaque carte. */
-  --hairline: rgba(255, 255, 255, 0.06);
+  --hairline: rgba(255, 255, 255, 0.11);
   --hairline-strong: rgba(255, 255, 255, 0.10);
 
   /* Ombres douces empilées + highlight supérieur (lumière rasante). */
@@ -92,8 +92,8 @@
   /* — Système de cartes (hérité, retonalisé vers le solide). — */
   --card-bg: var(--surface-1);
   --card-border: var(--hairline);
-  --card-title: rgba(244, 242, 236, 0.46);
-  --card-divider: rgba(255, 255, 255, 0.06);
+  --card-title: rgba(244, 242, 236, 0.66);
+  --card-divider: rgba(255, 255, 255, 0.11);
 
   --delta-up-bg: rgba(123, 174, 127, 0.15);
   --delta-up-fg: #96c79b;
@@ -307,7 +307,7 @@ body {
   }
   .t-caption {        /* Caption / meta — 400 / 12px / 1.40 / 0 */
     font-weight: 400; font-size: 0.75rem; line-height: 1.40;
-    color: color-mix(in srgb, var(--color-cream) 55%, transparent);
+    color: color-mix(in srgb, var(--color-cream) 66%, transparent);
   }
   .t-numeric,
   .num {              /* tabular-nums sur tous les chiffres/montants/timestamps */
@@ -328,7 +328,7 @@ body {
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: color-mix(in srgb, var(--color-cream) 42%, transparent);
+    color: color-mix(in srgb, var(--color-cream) 62%, transparent);
   }
 
   .kbd {
