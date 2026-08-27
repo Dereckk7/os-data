@@ -33,16 +33,14 @@ export function FadeSwitch({ k, children, className }: { k: string; children: Re
 }
 
 /* ————— Révélation au scroll ————— */
-export function Reveal({ children, delay = 0, y = 8, className }: { children: ReactNode; delay?: number; y?: number; className?: string }) {
+export function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; y?: number; className?: string }) {
+  // Rendu direct : la visibilité du contenu ne dépend d'AUCUNE animation.
+  // Un fondu d'entrée purement CSS (classe .reveal-in) qui, s'il ne s'exécute
+  // pas, laisse le contenu à opacity:1 — jamais masqué.
   return (
-    <motion.div
-      initial={{ opacity: 0, y }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: EASE }}
-      className={className}
-    >
+    <div className={["reveal-in", className].filter(Boolean).join(" ")} style={delay ? { animationDelay: `${delay}s` } : undefined}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 

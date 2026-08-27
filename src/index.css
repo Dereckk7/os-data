@@ -613,3 +613,11 @@ body {
   .glass-sweep::after { display: none; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+
+/* Fondu d'entrée robuste : l'état de base est VISIBLE (opacity:1) ;
+   l'animation ne fait qu'ajouter une entrée. Si elle ne s'exécute pas
+   (JS/anim indisponible), le contenu reste visible. */
+.reveal-in { opacity: 1; animation: reveal-in-kf 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes reveal-in-kf { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .reveal-in { animation: none; opacity: 1; } }
