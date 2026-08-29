@@ -313,7 +313,7 @@ const DotField = memo(function DotField({
           </defs>
           <circle
             ref={glowRef}
-            cx="-9999" cy="-9999" r={glowRadius}
+            cx="-9999" cy="-9999" r={Number.isFinite(glowRadius) ? glowRadius : 140}
             fill={`url(#${glowIdRef.current})`}
             style={{ opacity: 0, willChange: "opacity" }}
           />

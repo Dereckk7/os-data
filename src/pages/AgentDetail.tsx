@@ -118,7 +118,7 @@ export default function AgentDetail() {
             <GlassPanel eyebrow="Rythme" title="7 derniers jours" className="lg:col-span-5">
               <Sparkline data={agent.week} width={300} height={72} className="w-full" />
               <div className="mt-3 flex items-center justify-between">
-                <span className="num text-[10px] text-cream/35">moyenne {Math.round(agent.week.reduce((a, b) => a + b, 0) / 7)} actions/jour</span>
+                <span className="num text-[10px] text-cream/35">moyenne {Math.round((agent.week ?? []).reduce((a, b) => a + (Number.isFinite(b) ? b : 0), 0) / 7)} actions/jour</span>
                 <GlassBadge tone={isRunning ? "success" : "neutral"} dot pulse={isRunning}>{agent.current}</GlassBadge>
               </div>
             </GlassPanel>

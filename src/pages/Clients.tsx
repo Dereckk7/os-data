@@ -25,11 +25,11 @@ export default function Clients() {
     if (tab === "Inactifs") out = out.filter((c) => c.state === "Inactif");
     if (tab === "À risque") out = out.filter((c) => c.state === "À risque" || c.risk === "Élevé");
     const q = query.trim().toLowerCase();
-    if (q) out = out.filter((c) => c.name.toLowerCase().includes(q) || c.city.toLowerCase().includes(q));
+    if (q) out = out.filter((c) => (c.name ?? "").toLowerCase().includes(q) || (c.city ?? "").toLowerCase().includes(q));
     return out;
   }, [clientsQ.data, tab, query]);
 
-  const totalValue = clientsQ.data.reduce((acc, c) => acc + c.value, 0);
+  const totalValue = (clientsQ.data ?? []).reduce((acc, c) => acc + (Number.isFinite(c.value) ? c.value : 0), 0);
 
   return (
     <div className="space-y-5">
@@ -127,7 +127,7 @@ export default function Clients() {
                       <span className="text-[9.5px] uppercase tracking-[0.1em] text-cream/30">valeur client</span>
                     </span>
                     <span className="flex items-center gap-2">
-                      <GlassBadge tone={riskTone[c.risk]}>Risque {c.risk.toLowerCase()}</GlassBadge>
+                      <GlassBadge tone={riskTone[c.risk]}>Risque {(c.risk ?? "").toLowerCase()}</GlassBadge>
                       <ChevronRight size={15} strokeWidth={1.6} className="text-cream/25" />
                     </span>
                   </span>

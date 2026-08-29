@@ -31,7 +31,7 @@ export default function Planning() {
     const fromRequests: CalEvent[] = requestsQ.data
       .filter((r) => r.status !== "Traitée")
       .map((r) => ({ id: r.id, day: r.day, time: r.time, title: r.title, kind: "demande", ref: r.ref, status: r.status }));
-    return [...APPOINTMENTS, ...fromRequests].sort((a, b) => a.day - b.day || a.time.localeCompare(b.time));
+    return [...APPOINTMENTS, ...fromRequests].sort((a, b) => a.day - b.day || (a.time ?? "").localeCompare(b.time ?? ""));
   }, [requestsQ.data]);
 
   const now = new Date();

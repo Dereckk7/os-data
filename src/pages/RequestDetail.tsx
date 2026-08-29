@@ -63,7 +63,7 @@ export default function RequestDetail() {
                 to={`/clients/${request.clientId}`}
                 className="group mt-4 inline-flex items-center gap-2.5 rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] py-1.5 pl-1.5 pr-3 transition-all duration-200 hover:border-[var(--hairline-strong)]"
               >
-                <Avatar initials={request.client.split(" ").map((p) => p[0]).join("")} name={request.client} size={26} />
+                <Avatar initials={(request.client ?? "").split(" ").map((p) => p[0]).join("")} name={request.client} size={26} />
                 <span className="text-[12.5px] font-medium">{request.client}</span>
                 <span className="flex items-center gap-1 text-[10.5px] text-cream/40 transition-colors group-hover:text-cream">
                   Voir la fiche <ArrowUpRight size={11} strokeWidth={1.75} />

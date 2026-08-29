@@ -208,7 +208,7 @@ export default function Settings() {
                 <div className="divide-y divide-[var(--card-divider)]">
                   {mockOrganization.members.map((m) => (
                     <div key={m.id} className="flex items-center gap-3 py-3">
-                      <Avatar initials={m.name.split(" ").map((p) => p[0]).join("")} name={m.name} size={32} />
+                      <Avatar initials={(m.name ?? "").split(" ").map((p) => p[0]).join("")} name={m.name} size={32} />
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[13px] font-medium">{m.name}</p>
                         <p className="num truncate text-[10.5px] text-cream/40">{m.email}</p>

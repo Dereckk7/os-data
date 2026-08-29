@@ -33,6 +33,7 @@ import {
   SidebarTrigger, useIsMobile, useSidebar,
 } from "./sidebar";
 import { CommandPalette, type CommandItem } from "./command-palette";
+import { PageErrorBoundary } from "./page-error-boundary";
 
 /* ————— Données de navigation ————— */
 const PAGE_TITLES: Record<string, string> = {
@@ -614,7 +615,9 @@ export function AppShell() {
             transition={pageAnim.transition}
             className="mx-auto w-full max-w-[1160px] flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-8 lg:pb-16"
           >
-            <Outlet />
+            <PageErrorBoundary key={location.pathname}>
+              <Outlet />
+            </PageErrorBoundary>
           </motion.main>
         </AnimatePresence>
       </SidebarInset>

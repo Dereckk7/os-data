@@ -172,7 +172,7 @@ export default function Requests() {
                     >
                       <td className="py-3 pl-5 pr-4">
                         <span className="flex items-center gap-2.5">
-                          <Avatar initials={r.client.split(" ").map((p) => p[0]).join("")} name={r.client} size={28} />
+                          <Avatar initials={(r.client ?? "").split(" ").map((p) => p[0]).join("")} name={r.client} size={28} />
                           <span className="text-[13px] font-medium">
                             {r.client}
                             {r.vip && <span className="num ml-1.5 rounded-[5px] border border-champagne-500/25 bg-champagne-500/[0.08] px-1.5 py-px text-[8.5px] font-semibold tracking-[0.1em] text-champagne-300">VIP</span>}
@@ -210,7 +210,7 @@ export default function Requests() {
                 <button onClick={() => navigate(`/requests/${r.id}`)} className="glass glass-sweep w-full p-4 text-left">
                   <span className="flex items-center justify-between gap-2">
                     <span className="flex items-center gap-2 text-[13px] font-medium">
-                      <Avatar initials={r.client.split(" ").map((p) => p[0]).join("")} name={r.client} size={24} />
+                      <Avatar initials={(r.client ?? "").split(" ").map((p) => p[0]).join("")} name={r.client} size={24} />
                       {r.client}
                     </span>
                     <StatusBadge status={r.status} pulse />

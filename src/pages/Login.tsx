@@ -50,7 +50,10 @@ function DataPaths() {
           ))}
           {NODES.map(([cx, cy, r], i) => (
             <circle
-              key={i} cx={cx} cy={cy} r={r}
+              key={i}
+              cx={Number.isFinite(cx) ? cx : 0}
+              cy={Number.isFinite(cy) ? cy : 0}
+              r={Number.isFinite(r) ? r : 2}
               fill={i === 0 ? "var(--color-champagne-500)" : "var(--color-cream)"}
               className={reduce ? undefined : "auth-node"}
               style={{ opacity: i === 0 ? 0.5 : 0.3, animationDelay: `${i * 0.7}s` }}

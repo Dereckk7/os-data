@@ -21,7 +21,7 @@ export default function Dashboard() {
   const operationsQ = useOperations(850);
   const navigate = useNavigate();
 
-  const firstName = user?.name.split(" ")[0] ?? "";
+  const firstName = user?.name?.split(" ")[0] ?? "";
   const opportunity = insightsQ.data.find((i) => i.type === "opportunity");
   const recommendation = insightsQ.data.find((i) => i.type === "recommendation");
   const activeAgents = mockAgents.slice(0, 4);
