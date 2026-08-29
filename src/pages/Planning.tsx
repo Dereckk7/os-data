@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn, useRequests } from "../lib/services";
+import type { RequestStatus } from "../lib/types";
 import { GlassBadge, GlassSurface } from "../components/glass";
 import { FadeSwitch, Reveal, SegmentedControl, Skeleton, StatusBadge } from "../components/ui";
 
@@ -8,7 +9,7 @@ import { FadeSwitch, Reveal, SegmentedControl, Skeleton, StatusBadge } from "../
 type View = "Jour" | "Semaine" | "Mois";
 
 interface CalEvent {
-  id: string; day: number; time: string; title: string; kind: "demande" | "rdv"; ref?: string; status?: string;
+  id: string; day: number; time: string; title: string; kind: "demande" | "rdv"; ref?: string; status?: RequestStatus;
 }
 
 const APPOINTMENTS: CalEvent[] = [
@@ -88,7 +89,7 @@ export default function Planning() {
                             {e.kind === "rdv" ? "Rendez-vous" : e.ref}
                           </span>
                         </span>
-                        {e.kind === "demande" && e.status && <StatusBadge status={e.status as never} />}
+                        {e.kind === "demande" && e.status && <StatusBadge status={e.status} />}
                       </span>
                     </button>
                   </li>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CalendarDays, ChevronRight, Columns, Layers, List, Plus, Search } from "lucide-react";
 import { mockAgents, mockClients } from "../lib/mock";

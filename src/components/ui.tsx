@@ -207,8 +207,11 @@ const statusTone: Record<RequestStatus, Tone> = {
   "Confirmée": "success", "En retard": "danger", "Traitée": "neutral",
 };
 export function StatusBadge({ status, pulse }: { status: RequestStatus; pulse?: boolean }) {
+  // Repli sûr : un statut hors de l'ensemble attendu retombe sur "neutral"
+  // (jamais de crash / de tone undefined).
+  const tone = statusTone[status] ?? "neutral";
   return (
-    <GlassBadge tone={statusTone[status]} dot pulse={pulse && (status === "En recherche" || status === "En retard")}>
+    <GlassBadge tone={tone} dot pulse={pulse && (status === "En recherche" || status === "En retard")}>
       {status}
     </GlassBadge>
   );

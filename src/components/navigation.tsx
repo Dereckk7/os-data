@@ -202,7 +202,6 @@ function SidebarBody({ onHelp }: { onHelp: () => void }) {
   const requestsQ = useRequests(200);
   const agentsQ = useAgents(200);
   const navigate = useNavigate();
-  const openCount = requestsQ.data.filter((r) => r.status !== "Traitée").length;
   const hasError = sources.some((s) => s.status === "error");
   const topAgents = agentsQ.data.filter((a) => a.status === "Opérationnel").slice(0, 3);
 

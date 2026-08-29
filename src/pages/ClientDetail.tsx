@@ -6,7 +6,6 @@ import { cn, fmtMoney, useClients } from "../lib/services";
 import type { Segment, Tone } from "../lib/types";
 import { GlassBadge, GlassButton, GlassPanel, GlassSurface } from "../components/glass";
 import { ActivityFeed, Avatar, ErrorState, Reveal, Skeleton, StatusBadge } from "../components/ui";
-import { riskTone } from "./Clients";
 import { toast } from "../components/toast";
 
 const segmentTone: Record<Segment, Tone> = { VIP: "gold", "Fidèle": "neutral", Nouveau: "success", "À risque": "danger" };
