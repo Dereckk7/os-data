@@ -11,25 +11,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <script>
-      /* Anti-flash : pose le thème avant le premier rendu React. */
-      (function () {
-        try {
-          var t = localStorage.getItem("dataos.theme.v1") || "light";
-          if (t !== "dark" && t !== "light" && t !== "system" && t !== "comfort") t = "light";
-          var resolved = t;
-          if (t === "system") {
-            resolved = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-          } else if (t === "comfort") {
-            resolved = "dark";
-          }
-          var root = document.documentElement;
-          root.dataset.theme = resolved;
-          if (t === "comfort") root.dataset.comfort = "true";
-          root.style.backgroundColor = resolved === "light" ? "#f4f3ef" : "#08090a";
-        } catch (e) { /* noop */ }
-      })();
-    </script>
+    <!-- Anti-flash thème : script externe (compatible CSP script-src 'self', sans inline). -->
+    <script src="/theme-init.js"></script>
   </head>
   <body>
     <div id="root"></div>
