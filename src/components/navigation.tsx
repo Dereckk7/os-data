@@ -116,9 +116,9 @@ function OrgSwitcher() {
               </span>
               <span className="grid flex-1 text-left leading-tight group-data-[state=collapsed]/sidebar:hidden">
                 <span className="truncate text-[13px] font-semibold">{team.name}</span>
-                <span className="truncate text-[10.5px] text-cream/40">{team.plan}</span>
+                <span className="truncate text-[10.5px] text-cream/60">{team.plan}</span>
               </span>
-              <ChevronsUpDown size={14} className="ml-auto shrink-0 text-cream/40 group-data-[state=collapsed]/sidebar:hidden" />
+              <ChevronsUpDown size={14} className="ml-auto shrink-0 text-cream/60 group-data-[state=collapsed]/sidebar:hidden" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-60" align="start" side={isMobile ? "bottom" : "right"} sideOffset={6}>
@@ -168,15 +168,15 @@ function UserMenu({ onHelp }: { onHelp: () => void }) {
               <Avatar initials={user.initials} name={user.name} size={30} />
               <span className="grid flex-1 text-left leading-tight group-data-[state=collapsed]/sidebar:hidden">
                 <span className="truncate text-[13px] font-semibold">{user.name}</span>
-                <span className="truncate text-[10.5px] text-cream/40">{user.role}</span>
+                <span className="truncate text-[10.5px] text-cream/60">{user.role}</span>
               </span>
-              <ChevronsUpDown size={14} className="ml-auto shrink-0 text-cream/40 group-data-[state=collapsed]/sidebar:hidden" />
+              <ChevronsUpDown size={14} className="ml-auto shrink-0 text-cream/60 group-data-[state=collapsed]/sidebar:hidden" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-60" align="end" side={isMobile ? "bottom" : "right"} sideOffset={6}>
             <DropdownMenuLabel>
               <span className="block truncate normal-case tracking-normal text-[13px] font-semibold text-cream">{user.name}</span>
-              <span className="num block truncate text-[10px] font-normal text-cream/40">{user.email}</span>
+              <span className="num block truncate text-[10px] font-normal text-cream/60">{user.email}</span>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => navigate("/settings")}>
@@ -228,7 +228,7 @@ function SidebarBody({ onHelp }: { onHelp: () => void }) {
                       <span className="flex-1 truncate group-data-[state=collapsed]/sidebar:hidden">{g.title}</span>
                       <ChevronRight
                         size={14}
-                        className="ml-auto shrink-0 text-cream/35 transition-transform duration-300 group-data-[state=open]/collapsible:rotate-90 group-data-[state=collapsed]/sidebar:hidden"
+                        className="ml-auto shrink-0 text-cream/56 transition-transform duration-300 group-data-[state=open]/collapsible:rotate-90 group-data-[state=collapsed]/sidebar:hidden"
                       />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
@@ -352,9 +352,9 @@ function NotificationsBell() {
                   <span className={cn("mt-1.5 h-[6px] w-[6px] shrink-0 rounded-full", toneDot[n.tone], !n.read && "pulse-dot")} />
                   <div className="min-w-0 flex-1">
                     <p className="text-[12.5px] font-medium leading-snug">{n.title}</p>
-                    <p className="mt-0.5 text-[11.5px] leading-relaxed text-cream/45">{n.desc}</p>
+                    <p className="mt-0.5 text-[11.5px] leading-relaxed text-cream/62">{n.desc}</p>
                   </div>
-                  <span className="num shrink-0 text-[9.5px] text-cream/35">{n.time}</span>
+                  <span className="num shrink-0 text-[9.5px] text-cream/56">{n.time}</span>
                 </div>
               ))}
             </div>
@@ -381,7 +381,7 @@ function InsetHeader({ onSearch }: { onSearch: () => void }) {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <Link to="/dashboard" className="text-cream/45 transition-colors hover:text-cream">Maison Ekwata</Link>
+                <Link to="/dashboard" className="text-cream/62 transition-colors hover:text-cream">Maison Ekwata</Link>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
@@ -394,7 +394,7 @@ function InsetHeader({ onSearch }: { onSearch: () => void }) {
         <div className="ml-auto flex items-center gap-2">
           <button
             onClick={onSearch} aria-label="Rechercher (Ctrl K)"
-            className="hidden h-9 w-60 items-center gap-2 rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] px-3 text-[12.5px] text-cream/40 transition-all duration-200 hover:border-[var(--hairline-strong)] hover:bg-[var(--row-hover)] hover:text-cream/60 md:flex"
+            className="hidden h-9 w-60 items-center gap-2 rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] px-3 text-[12.5px] text-cream/60 transition-all duration-200 hover:border-[var(--hairline-strong)] hover:bg-[var(--row-hover)] hover:text-cream/60 md:flex"
           >
             <Search size={14} strokeWidth={1.6} />
             Rechercher…
@@ -425,7 +425,7 @@ function MobileNav({ onMenu }: { onMenu: () => void }) {
         {MOBILE_NAV.map((n) => (
           <NavLink key={n.to} to={n.to} end={n.end}>
             {({ isActive }) => (
-              <span className={cn("relative flex h-full flex-col items-center justify-center gap-1 text-[9.5px] font-medium tracking-wide transition-colors", isActive ? "text-cream" : "text-cream/40")}>
+              <span className={cn("relative flex h-full flex-col items-center justify-center gap-1 text-[9.5px] font-medium tracking-wide transition-colors", isActive ? "text-cream" : "text-cream/60")}>
                 <n.icon size={19} strokeWidth={1.6} />
                 {n.label}
                 <span className={cn("absolute top-0 h-[2px] w-8 rounded-b bg-cream transition-opacity", isActive ? "opacity-100" : "opacity-0")} />
@@ -435,7 +435,7 @@ function MobileNav({ onMenu }: { onMenu: () => void }) {
         ))}
         <button
           onClick={onMenu} aria-label="Ouvrir le menu"
-          className="relative flex h-full flex-col items-center justify-center gap-1 text-[9.5px] font-medium tracking-wide text-cream/40 transition-colors hover:text-cream/80"
+          className="relative flex h-full flex-col items-center justify-center gap-1 text-[9.5px] font-medium tracking-wide text-cream/60 transition-colors hover:text-cream/80"
         >
           <Menu size={19} strokeWidth={1.6} />
           Menu
@@ -540,7 +540,7 @@ function HelpModal({ open, onClose }: { open: boolean; onClose: () => void }) {
               <p className="text-xs font-semibold text-champagne-300">Support dédié Enterprise</p>
               <p className="mt-1 text-xs leading-relaxed text-cream/55">support@dataos.app · réponse garantie sous 2 h ouvrées.</p>
             </div>
-            <p className="num mt-4 text-center text-[10px] text-cream/25">DATA OS v2.4.1 — build 8f3k2</p>
+            <p className="num mt-4 text-center text-[10px] text-cream/50">DATA OS v2.4.1 — build 8f3k2</p>
           </motion.div>
         </div>
       )}

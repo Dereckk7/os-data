@@ -86,12 +86,12 @@ export default function Agents() {
             ))}
           </div>
           <div className="relative w-full lg:w-64">
-            <Search size={14} strokeWidth={1.6} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-cream/35" />
+            <Search size={14} strokeWidth={1.6} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-cream/56" />
             <label htmlFor="agent-search" className="sr-only">Rechercher un agent</label>
             <input
               id="agent-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)}
               placeholder="Rechercher un agent…"
-              className="h-10 w-full rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] pl-9 pr-3 text-[13px] text-cream outline-none transition-all placeholder:text-cream/30 hover:border-[var(--hairline-strong)] focus:border-cream/35"
+              className="h-10 w-full rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] pl-9 pr-3 text-[13px] text-cream outline-none transition-all placeholder:text-cream/52 hover:border-[var(--hairline-strong)] focus:border-cream/35"
             />
           </div>
         </div>
@@ -131,7 +131,7 @@ export default function Agents() {
                     <span className="mt-3 flex items-start gap-2 rounded-sm bg-[var(--surface-2)] px-2.5 py-2 shadow-[var(--highlight-top)]">
                       <span className={cn("mt-[5px] h-[5px] w-[5px] shrink-0 rounded-full", a.status === "Opérationnel" ? "bg-champagne-500/80 pulse-dot" : "bg-cream/30")} aria-hidden />
                       <span className="min-w-0">
-                        <span className="num block text-[8px] uppercase tracking-[0.12em] text-cream/35">Tâche courante</span>
+                        <span className="num block text-[8px] uppercase tracking-[0.12em] text-cream/56">Tâche courante</span>
                         <span className="mt-0.5 block truncate text-[11.5px] leading-snug text-cream/65">{a.current}</span>
                       </span>
                     </span>
@@ -139,15 +139,15 @@ export default function Agents() {
                   <span className="mt-4 grid grid-cols-2 gap-3 border-t border-[var(--card-divider)] pt-3.5">
                     <span>
                       <span className="block text-[17px] font-semibold leading-none"><AnimatedNumber value={String(a.actionsToday)} /></span>
-                      <span className="mt-1 block text-[9.5px] uppercase tracking-[0.1em] text-cream/35">tâches aujourd'hui</span>
+                      <span className="mt-1 block text-[9.5px] uppercase tracking-[0.1em] text-cream/56">tâches aujourd'hui</span>
                     </span>
                     <span>
                       <span className="num block text-[17px] font-semibold leading-none">{a.accuracy}%</span>
-                      <span className="mt-1 block text-[9.5px] uppercase tracking-[0.1em] text-cream/35">réussite</span>
+                      <span className="mt-1 block text-[9.5px] uppercase tracking-[0.1em] text-cream/56">réussite</span>
                     </span>
                   </span>
                   <span className="mt-3.5 flex items-center justify-between border-t border-[var(--card-divider)] pt-3">
-                    <span className="num text-[9.5px] uppercase tracking-[0.12em] text-cream/30">Dernière activité · {a.lastActivity}</span>
+                    <span className="num text-[9.5px] uppercase tracking-[0.12em] text-cream/52">Dernière activité · {a.lastActivity}</span>
                     <span className="flex items-center gap-1 text-[11px] font-medium text-cream/55 transition-colors duration-200 group-hover:text-cream">
                       Voir l'activité
                       <ArrowUpRight size={12} strokeWidth={1.75} className="transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px" />
@@ -170,11 +170,11 @@ export default function Agents() {
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[14px] font-semibold tracking-tight">{a.name}</span>
                     <span className="block truncate text-[11.5px] text-cream/50">{a.role}</span>
-                    <span className="num mt-1.5 block text-[10.5px] text-cream/40">{a.actionsToday} tâches · {a.accuracy}% · {a.lastActivity}</span>
+                    <span className="num mt-1.5 block text-[10.5px] text-cream/60">{a.actionsToday} tâches · {a.accuracy}% · {a.lastActivity}</span>
                   </span>
                   <span className="flex shrink-0 flex-col items-end gap-2">
                     <AgentStatusBadge status={a.status} withSymbol={false} />
-                    <ArrowUpRight size={14} strokeWidth={1.6} className="text-cream/30" />
+                    <ArrowUpRight size={14} strokeWidth={1.6} className="text-cream/52" />
                   </span>
                 </button>
               </Reveal>

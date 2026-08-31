@@ -177,7 +177,7 @@ export function CommandPalette({
           )}
         >
           <div className="flex items-center gap-3 border-b border-[var(--hairline)] px-4">
-            <Search className="h-4 w-4 text-cream/40" strokeWidth={1.75} />
+            <Search className="h-4 w-4 text-cream/60" strokeWidth={1.75} />
             <input
               ref={inputRef}
               value={query}
@@ -189,14 +189,14 @@ export function CommandPalette({
               aria-controls={`${uid}-list`}
               aria-activedescendant={filtered.length > 0 ? `${uid}-opt-${active}` : undefined}
               aria-autocomplete="list"
-              className="h-12 flex-1 bg-transparent text-sm text-cream placeholder:text-cream/35 outline-none"
+              className="h-12 flex-1 bg-transparent text-sm text-cream placeholder:text-cream/56 outline-none"
             />
             <span className="kbd hidden sm:inline-block">ESC</span>
           </div>
 
           <div ref={listRef} id={`${uid}-list`} role="listbox" aria-label="Commandes" className="max-h-[60vh] overflow-y-auto p-2">
             {filtered.length === 0 ? (
-              <div className="p-8 text-center text-sm text-cream/45">{emptyMessage}</div>
+              <div className="p-8 text-center text-sm text-cream/62">{emptyMessage}</div>
             ) : (
               grouped.map(([group, list]) => (
                 <div key={group} className="mb-1 last:mb-0">
@@ -231,7 +231,7 @@ export function CommandPalette({
                         {Icon ? <Icon className="relative z-10 h-4 w-4" strokeWidth={1.6} /> : hasIcons ? <span className="relative z-10 h-4 w-4" /> : null}
                         <span className="relative z-10 flex-1 truncate">{item.label}</span>
                         {item.badge ? <span className="relative z-10 shrink-0">{item.badge}</span> : null}
-                        {item.hint ? <span className="num relative z-10 hidden text-[10px] text-cream/35 sm:block">{item.hint}</span> : null}
+                        {item.hint ? <span className="num relative z-10 hidden text-[10px] text-cream/56 sm:block">{item.hint}</span> : null}
                       </button>
                     );
                   })}

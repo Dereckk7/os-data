@@ -79,7 +79,7 @@ export default function Onboarding() {
                 <div className="min-h-[52px]">
                   <p className="flex items-center gap-2 text-[14px] font-semibold tracking-tight">
                     {s.name}
-                    <span className="num rounded-[5px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/40">{s.method}</span>
+                    <span className="num rounded-[5px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/60">{s.method}</span>
                   </p>
                   <p className="mt-1 text-xs leading-relaxed text-cream/50">{s.description}</p>
                 </div>
@@ -87,13 +87,13 @@ export default function Onboarding() {
                   {isConnected ? (
                     <>
                       <span className="num text-[10.5px] text-jade">{fmtInt(s.records)} données</span>
-                      <span className="flex items-center gap-1 text-[11px] font-medium text-cream/45">
+                      <span className="flex items-center gap-1 text-[11px] font-medium text-cream/62">
                         <Check size={13} strokeWidth={1.75} className="text-jade" /> Connecté
                       </span>
                     </>
                   ) : (
                     <>
-                      <span className="num text-[10px] uppercase tracking-[0.1em] text-cream/30">{isDocs ? "Import local" : "OAuth sécurisé"}</span>
+                      <span className="num text-[10px] uppercase tracking-[0.1em] text-cream/52">{isDocs ? "Import local" : "OAuth sécurisé"}</span>
                       <GlassButton
                         size="sm"
                         variant={isDocs ? "soft" : "gold"}
@@ -121,7 +121,7 @@ export default function Onboarding() {
       >
         <GlassButton variant="ghost" onClick={() => finish(true)}>Passer pour l'instant</GlassButton>
         <div className="flex items-center justify-between gap-3 sm:justify-end">
-          <span className="num text-[10.5px] text-cream/35">
+          <span className="num text-[10.5px] text-cream/56">
             {connectedCount} source{connectedCount > 1 ? "s" : ""} connectée{connectedCount > 1 ? "s" : ""}
           </span>
           <GlassButton variant="primary" size="lg" disabled={connectedCount === 0} onClick={() => finish(false)}>

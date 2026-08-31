@@ -94,7 +94,7 @@ function ToastCard({ item, onClose }: { item: ToastItem; onClose: () => void }) 
         </div>
         <button
           onClick={onClose} aria-label="Fermer la notification"
-          className="grid h-7 w-7 shrink-0 place-items-center rounded-[7px] text-cream/40 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
+          className="grid h-7 w-7 shrink-0 place-items-center rounded-[7px] text-cream/60 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
         >
           <X size={13} strokeWidth={1.75} />
         </button>

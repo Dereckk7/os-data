@@ -69,7 +69,7 @@ export default function Tasks() {
           {COLUMNS.map((col) => (
             <section key={col.status} aria-label={`Colonne ${col.label}`} className="flex min-h-[180px] flex-col">
               <div className="mb-2.5 flex items-center justify-between px-1">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-cream/45">{col.label}</span>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-cream/62">{col.label}</span>
                 <span className="num rounded-[6px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[9.5px] text-cream/50">{counts(col.status)}</span>
               </div>
               <div className="flex-1 space-y-2.5 rounded-[14px] border border-[var(--card-divider)] bg-[var(--surface-2)] p-2">
@@ -82,15 +82,15 @@ export default function Tasks() {
                     className={cn("glass p-3.5 transition-all duration-200 hover:-translate-y-px", col.status === "Terminé" && "opacity-70")}
                   >
                     <div className="flex items-start gap-2">
-                      <span className="mt-0.5 text-cream/25"><GripVertical size={13} strokeWidth={1.75} /></span>
+                      <span className="mt-0.5 text-cream/50"><GripVertical size={13} strokeWidth={1.75} /></span>
                       <div className="min-w-0 flex-1">
                         <p className={cn("text-[12.5px] font-medium leading-snug", col.status === "Terminé" && "line-through decoration-cream/30")}>{t.title}</p>
                         <div className="mt-2 flex flex-wrap items-center gap-1.5">
                           <PriorityBadge priority={t.priority} />
-                          {t.count && <span className="num rounded-full border border-[var(--hairline)] px-2 py-px text-[9px] text-cream/45">{t.count}</span>}
+                          {t.count && <span className="num rounded-full border border-[var(--hairline)] px-2 py-px text-[9px] text-cream/62">{t.count}</span>}
                         </div>
                         <div className="mt-2 flex items-center justify-between gap-2 border-t border-[var(--card-divider)] pt-2">
-                          <span className="num truncate text-[8.5px] uppercase tracking-[0.12em] text-cream/30">{t.agent} · {t.due}</span>
+                          <span className="num truncate text-[8.5px] uppercase tracking-[0.12em] text-cream/52">{t.agent} · {t.due}</span>
                           {t.ref && (
                             <button
                               onClick={() => navigate(`/requests/${t.ref?.toLowerCase()}`)}
@@ -118,7 +118,7 @@ export default function Tasks() {
                   </motion.article>
                 ))}
                 {counts(col.status) === 0 && (
-                  <p className="rounded-[10px] border border-dashed border-[var(--hairline)] p-4 text-center text-[11px] text-cream/25">Aucune tâche</p>
+                  <p className="rounded-[10px] border border-dashed border-[var(--hairline)] p-4 text-center text-[11px] text-cream/50">Aucune tâche</p>
                 )}
               </div>
             </section>

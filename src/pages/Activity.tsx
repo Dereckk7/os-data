@@ -56,7 +56,7 @@ export default function Activity() {
           <ol className="space-y-0">
             {filtered.map((a, i) => (
               <li key={a.id} className="grid grid-cols-[52px_14px_1fr] gap-x-1">
-                <span className="num pt-[3px] text-right text-[10.5px] leading-5 text-cream/40">{a.time}</span>
+                <span className="num pt-[3px] text-right text-[10.5px] leading-5 text-cream/60">{a.time}</span>
                 <span className="relative flex justify-center">
                   <span className={cn("z-10 mt-[7px] h-[7px] w-[7px] rounded-full", KIND_DOT[a.kind])} />
                   {i < filtered.length - 1 && <span className="absolute top-0 bottom-0 w-px bg-[var(--surface-3)]" aria-hidden />}
@@ -64,17 +64,17 @@ export default function Activity() {
                 <span className={cn("block", i < filtered.length - 1 ? "pb-4" : "pb-0.5")}>
                   <span className="flex flex-wrap items-center gap-2">
                     <span className="text-[13px] font-medium leading-5">{a.title}</span>
-                    <span className="num rounded-[5px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/40">
+                    <span className="num rounded-[5px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/60">
                       {KIND_LABEL[a.kind]}
                     </span>
                   </span>
-                  {a.desc && <span className="mt-0.5 block text-xs leading-relaxed text-cream/45">{a.desc}</span>}
-                  <span className="num mt-1 block text-[9.5px] uppercase tracking-[0.12em] text-cream/30">{a.actor}</span>
+                  {a.desc && <span className="mt-0.5 block text-xs leading-relaxed text-cream/62">{a.desc}</span>}
+                  <span className="num mt-1 block text-[9.5px] uppercase tracking-[0.12em] text-cream/52">{a.actor}</span>
                 </span>
               </li>
             ))}
           </ol>
-          {filtered.length === 0 && <p className="py-10 text-center text-[13px] text-cream/40">Aucune activité pour ce filtre.</p>}
+          {filtered.length === 0 && <p className="py-10 text-center text-[13px] text-cream/60">Aucune activité pour ce filtre.</p>}
         </GlassSurface>
       )}
     </div>

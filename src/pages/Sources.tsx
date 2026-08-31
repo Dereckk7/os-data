@@ -113,7 +113,7 @@ export default function Sources() {
                 </div>
                 <p className="mt-3.5 flex items-center gap-2 text-[14px] font-semibold tracking-tight">
                   {s.name}
-                  <span className="num rounded-[5px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/40">{s.method}</span>
+                  <span className="num rounded-[5px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[8.5px] uppercase tracking-[0.12em] text-cream/60">{s.method}</span>
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-cream/50">{s.description}</p>
                 <div className="mt-4 grid grid-cols-3 gap-2 border-t border-[var(--card-divider)] pt-3.5">
@@ -123,7 +123,7 @@ export default function Sources() {
                     { k: "Activité", v: s.lastActivity },
                   ].map((st) => (
                     <div key={st.k} className="min-w-0">
-                      <p className="text-[8.5px] uppercase tracking-[0.12em] text-cream/30">{st.k}</p>
+                      <p className="text-[8.5px] uppercase tracking-[0.12em] text-cream/52">{st.k}</p>
                       <p className={cn("mt-0.5 truncate text-[10.5px] font-medium", st.k === "Données" ? "num text-cream/80" : "text-cream/55")} title={st.v}>{st.v}</p>
                     </div>
                   ))}
@@ -180,7 +180,7 @@ export default function Sources() {
             <div key={a.label} className="rounded-[12px] border border-[var(--card-divider)] bg-[var(--surface-2)] p-3.5">
               <a.icon size={15} strokeWidth={1.6} className="text-cream/60" />
               <p className="mt-2 text-xs font-semibold">{a.label}</p>
-              <p className="num mt-0.5 text-[9.5px] leading-relaxed text-cream/40">{a.desc}</p>
+              <p className="num mt-0.5 text-[9.5px] leading-relaxed text-cream/60">{a.desc}</p>
             </div>
           ))}
         </GlassPanel>
@@ -203,7 +203,7 @@ export default function Sources() {
               </div>
             );
           })}
-          <p className="pt-1 text-[10.5px] leading-relaxed text-cream/35">
+          <p className="pt-1 text-[10.5px] leading-relaxed text-cream/56">
             Environnement de démonstration — aucun accès réel au fournisseur. Le flux OAuth production est câblé via /lib/services.
           </p>
         </div>

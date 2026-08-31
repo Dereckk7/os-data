@@ -47,12 +47,12 @@ export default function Documents() {
             ))}
           </div>
           <div className="relative w-full lg:w-72">
-            <Search size={14} strokeWidth={1.6} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-cream/35" />
+            <Search size={14} strokeWidth={1.6} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-cream/56" />
             <label htmlFor="doc-search" className="sr-only">Rechercher dans vos documents</label>
             <input
               id="doc-search" type="search" value={query} onChange={(e) => setQuery(e.target.value)}
               placeholder="Rechercher dans vos documents…"
-              className="h-10 w-full rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] pl-9 pr-3 text-[13px] text-cream outline-none transition-all placeholder:text-cream/30 hover:border-[var(--hairline-strong)] focus:border-cream/35"
+              className="h-10 w-full rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] pl-9 pr-3 text-[13px] text-cream outline-none transition-all placeholder:text-cream/52 hover:border-[var(--hairline-strong)] focus:border-cream/35"
             />
           </div>
         </div>
@@ -82,12 +82,12 @@ export default function Documents() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[13px] font-medium">{d.name}</p>
-                    <p className="num mt-0.5 flex flex-wrap items-center gap-x-2 text-[9.5px] uppercase tracking-[0.1em] text-cream/30">
+                    <p className="num mt-0.5 flex flex-wrap items-center gap-x-2 text-[9.5px] uppercase tracking-[0.1em] text-cream/52">
                       {d.category} · {d.size} · {d.updated} · source {d.source}
                     </p>
                   </div>
                   <div className="hidden shrink-0 items-center gap-1.5 md:flex">
-                    {d.tags.map((t) => <span key={t} className="rounded-full border border-[var(--hairline)] px-2 py-0.5 text-[10px] text-cream/45">{t}</span>)}
+                    {d.tags.map((t) => <span key={t} className="rounded-full border border-[var(--hairline)] px-2 py-0.5 text-[10px] text-cream/62">{t}</span>)}
                   </div>
                   <div className="flex shrink-0 items-center gap-1.5">
                     <button
@@ -131,14 +131,14 @@ export default function Documents() {
           <div className="space-y-4">
             <div className="flex aspect-[4/3] items-center justify-center rounded-[12px] border border-dashed border-[var(--hairline-strong)] bg-[var(--surface-2)]">
               <div className="text-center">
-                <FileText size={26} strokeWidth={1.25} className="mx-auto text-cream/25" />
-                <p className="num mt-2 text-[10px] uppercase tracking-[0.14em] text-cream/30">Aperçu — {preview.size}</p>
+                <FileText size={26} strokeWidth={1.25} className="mx-auto text-cream/50" />
+                <p className="num mt-2 text-[10px] uppercase tracking-[0.14em] text-cream/52">Aperçu — {preview.size}</p>
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <GlassBadge tone="neutral">{preview.category}</GlassBadge>
               {preview.tags.map((t) => <GlassBadge key={t} tone="gold">{t}</GlassBadge>)}
-              <span className="num ml-auto text-[9.5px] uppercase tracking-[0.1em] text-cream/30">Classé automatiquement · {preview.source}</span>
+              <span className="num ml-auto text-[9.5px] uppercase tracking-[0.1em] text-cream/52">Classé automatiquement · {preview.source}</span>
             </div>
           </div>
         )}

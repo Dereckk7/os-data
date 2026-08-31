@@ -74,7 +74,7 @@ export default function AgentDetail() {
                   <AgentStatusBadge status={status} />
                 </div>
                 <p className="mt-1 text-[13px] text-cream/55">{agent.role}</p>
-                <p className="mt-2 max-w-xl text-xs leading-relaxed text-cream/45">{agent.description}</p>
+                <p className="mt-2 max-w-xl text-xs leading-relaxed text-cream/62">{agent.description}</p>
               </div>
             </div>
             <GlassButton variant={isRunning ? "ghost" : "primary"} iconLeft={isRunning ? <Pause size={14} strokeWidth={1.75} /> : <Play size={14} strokeWidth={1.75} />} onClick={toggleRun}>
@@ -89,7 +89,7 @@ export default function AgentDetail() {
               { k: "Temps moyen", v: <span className="num">{agent.avgTime}</span> },
             ].map((s) => (
               <div key={s.k} className="bg-ink-900/70 px-4 py-3 text-center sm:text-left">
-                <p className="text-[9.5px] uppercase tracking-[0.12em] text-cream/35">{s.k}</p>
+                <p className="text-[9.5px] uppercase tracking-[0.12em] text-cream/56">{s.k}</p>
                 <p className="mt-1 text-[19px] font-semibold leading-none">{s.v}</p>
               </div>
             ))}
@@ -113,12 +113,12 @@ export default function AgentDetail() {
                   </li>
                 ))}
               </ul>
-              <p className="num mt-4 text-[9.5px] uppercase tracking-[0.12em] text-cream/30">Dernière activité · {agent.lastActivity}</p>
+              <p className="num mt-4 text-[9.5px] uppercase tracking-[0.12em] text-cream/52">Dernière activité · {agent.lastActivity}</p>
             </GlassPanel>
             <GlassPanel eyebrow="Rythme" title="7 derniers jours" className="lg:col-span-5">
               <Sparkline data={agent.week} width={300} height={72} className="w-full" />
               <div className="mt-3 flex items-center justify-between">
-                <span className="num text-[10px] text-cream/35">moyenne {Math.round((agent.week ?? []).reduce((a, b) => a + (Number.isFinite(b) ? b : 0), 0) / 7)} actions/jour</span>
+                <span className="num text-[10px] text-cream/56">moyenne {Math.round((agent.week ?? []).reduce((a, b) => a + (Number.isFinite(b) ? b : 0), 0) / 7)} actions/jour</span>
                 <GlassBadge tone={isRunning ? "success" : "neutral"} dot pulse={isRunning}>{agent.current}</GlassBadge>
               </div>
             </GlassPanel>
@@ -136,7 +136,7 @@ export default function AgentDetail() {
                 <li key={t.id} className="flex items-center justify-between gap-3 py-3">
                   <span className="min-w-0">
                     <span className="block truncate text-[13px] font-medium">{t.label}</span>
-                    <span className="num mt-0.5 block text-[9.5px] uppercase tracking-[0.12em] text-cream/30">Échéance · {t.due}</span>
+                    <span className="num mt-0.5 block text-[9.5px] uppercase tracking-[0.12em] text-cream/52">Échéance · {t.due}</span>
                   </span>
                   <GlassBadge tone={taskTone(t.status)} dot={t.status === "En cours"} pulse={t.status === "En cours"}>{t.status}</GlassBadge>
                 </li>
@@ -155,7 +155,7 @@ export default function AgentDetail() {
                 </li>
               ))}
             </ul>
-            <p className="mt-4 rounded-[10px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3 py-2.5 text-[11.5px] leading-relaxed text-cream/45">
+            <p className="mt-4 rounded-[10px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3 py-2.5 text-[11.5px] leading-relaxed text-cream/62">
               Les accès sont révoqués automatiquement si une source passe en erreur.
             </p>
           </GlassPanel>
@@ -194,7 +194,7 @@ export default function AgentDetail() {
               <div className="flex items-center justify-between gap-4 py-3.5">
                 <div>
                   <p className="text-[13px] font-medium">Agent activé</p>
-                  <p className="mt-0.5 text-[11.5px] text-cream/45">Un agent désactivé ne traite plus aucune tâche.</p>
+                  <p className="mt-0.5 text-[11.5px] text-cream/62">Un agent désactivé ne traite plus aucune tâche.</p>
                 </div>
                 <Toggle
                   checked={enabled}
@@ -209,7 +209,7 @@ export default function AgentDetail() {
               <div className="flex items-center justify-between gap-4 py-3.5">
                 <div>
                   <p className="text-[13px] font-medium">Niveau d'autonomie</p>
-                  <p className="mt-0.5 text-[11.5px] text-cream/45">Standard exécute, Supervisée demande avant d'agir.</p>
+                  <p className="mt-0.5 text-[11.5px] text-cream/62">Standard exécute, Supervisée demande avant d'agir.</p>
                 </div>
                 <div className="w-44">
                   <GlassSelect value={autonomy} onChange={setAutonomy} options={["Standard", "Renforcée", "Supervisée"].map((o) => ({ value: o, label: o }))} />
@@ -218,12 +218,12 @@ export default function AgentDetail() {
               <div className="flex items-center justify-between gap-4 py-3.5">
                 <div>
                   <p className="text-[13px] font-medium">Validation humaine requise</p>
-                  <p className="mt-0.5 text-[11.5px] text-cream/45">Les actions sensibles passent par le centre de validation.</p>
+                  <p className="mt-0.5 text-[11.5px] text-cream/62">Les actions sensibles passent par le centre de validation.</p>
                 </div>
                 <Toggle checked={humanValidation} onChange={setHumanValidation} label="Validation humaine requise" />
               </div>
             </div>
-            <p className={cn("num mt-4 text-[9.5px] uppercase tracking-[0.12em]", enabled ? "text-cream/30" : "text-saffron")}>
+            <p className={cn("num mt-4 text-[9.5px] uppercase tracking-[0.12em]", enabled ? "text-cream/52" : "text-saffron")}>
               {enabled ? "Configuration appliquée à la prochaine tâche" : "Agent en pause — les tâches en cours seront terminées"}
             </p>
           </GlassPanel>

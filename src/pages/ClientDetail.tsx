@@ -62,8 +62,8 @@ export default function ClientDetail() {
                   <GlassBadge tone={segmentTone[client.segment]} dot={client.segment === "VIP"}>{client.segment}</GlassBadge>
                   <GlassBadge tone={client.state === "Actif" ? "success" : client.state === "Inactif" ? "neutral" : "danger"}>{client.state}</GlassBadge>
                 </div>
-                <p className="num mt-1.5 text-[11px] text-cream/45">{client.email} · {client.phone}</p>
-                <p className="mt-1 text-[12px] text-cream/45">
+                <p className="num mt-1.5 text-[11px] text-cream/62">{client.email} · {client.phone}</p>
+                <p className="mt-1 text-[12px] text-cream/62">
                   {client.city} · client depuis {client.since} · suivi par <span className="text-cream/70">{client.owner}</span>
                 </p>
               </div>
@@ -71,7 +71,7 @@ export default function ClientDetail() {
             <div className="text-right">
               <p className="card-eyebrow">Valeur client</p>
               <p className="num mt-1.5 t-title text-champagne-300">{fmtMoney(client.value)}</p>
-              <p className="num mt-1 text-[9.5px] uppercase tracking-[0.12em] text-cream/30">cumulée depuis {client.since}</p>
+              <p className="num mt-1 text-[9.5px] uppercase tracking-[0.12em] text-cream/52">cumulée depuis {client.since}</p>
             </div>
           </div>
 
@@ -83,7 +83,7 @@ export default function ClientDetail() {
               { k: "Risque", v: client.risk, cls: client.risk === "Élevé" ? "text-ember" : client.risk === "Modéré" ? "text-saffron" : "text-jade" },
             ].map((s) => (
               <div key={s.k} className="bg-ink-900/70 px-4 py-3">
-                <p className="text-[9.5px] uppercase tracking-[0.12em] text-cream/35">{s.k}</p>
+                <p className="text-[9.5px] uppercase tracking-[0.12em] text-cream/56">{s.k}</p>
                 <p className={cn("num mt-1 text-[15px] font-semibold", s.cls)}>{s.v}</p>
               </div>
             ))}
@@ -99,7 +99,7 @@ export default function ClientDetail() {
           <Reveal delay={0.14}>
             <GlassPanel eyebrow="Demandes" title={`${clientRequests.length} demandes liées`}>
               {clientRequests.length === 0 ? (
-                <p className="py-4 text-center text-xs text-cream/40">Aucune demande associée à ce client.</p>
+                <p className="py-4 text-center text-xs text-cream/60">Aucune demande associée à ce client.</p>
               ) : (
                 <ul className="divide-y divide-[var(--card-divider)]">
                   {clientRequests.map((r) => (
@@ -107,12 +107,12 @@ export default function ClientDetail() {
                       <Link to={`/requests/${r.id}`} className="group flex items-center justify-between gap-3 py-3 transition-colors hover:bg-[var(--row-hover)] first:pt-0 last:pb-0">
                         <span className="min-w-0">
                           <span className="block truncate text-[13px] font-medium">{r.title}</span>
-                          <span className="num mt-0.5 block text-[9.5px] text-cream/35">{r.ref} · {r.time}</span>
+                          <span className="num mt-0.5 block text-[9.5px] text-cream/56">{r.ref} · {r.time}</span>
                         </span>
                         <span className="flex shrink-0 items-center gap-3">
                           <span className="num hidden text-[12px] font-semibold sm:block">{r.amountLabel}</span>
                           <StatusBadge status={r.status} />
-                          <ArrowUpRight size={13} strokeWidth={1.75} className="text-cream/25 transition-colors group-hover:text-cream" />
+                          <ArrowUpRight size={13} strokeWidth={1.75} className="text-cream/50 transition-colors group-hover:text-cream" />
                         </span>
                       </Link>
                     </li>
@@ -134,7 +134,7 @@ export default function ClientDetail() {
                       <span className="min-w-0 flex-1">
                         <span className="flex items-baseline justify-between gap-2">
                           <span className="text-[12.5px] font-medium">{cm.channel}</span>
-                          <span className="num shrink-0 text-[9.5px] text-cream/35">{cm.date}</span>
+                          <span className="num shrink-0 text-[9.5px] text-cream/56">{cm.date}</span>
                         </span>
                         <span className="mt-0.5 block text-xs leading-relaxed text-cream/50">{cm.summary}</span>
                       </span>
@@ -168,7 +168,7 @@ export default function ClientDetail() {
                     <div key={a.id} className={cn("flex items-center justify-between gap-3 rounded-[12px] border p-3 transition-all duration-300", done ? "border-jade/25 bg-jade/[0.05]" : "border-[var(--hairline)] bg-[var(--surface-2)] hover:border-[var(--hairline-strong)]")}>
                       <span className="min-w-0">
                         <span className="block text-[12.5px] font-medium leading-snug">{a.label}</span>
-                        <span className="num mt-1 block text-[9px] uppercase tracking-[0.12em] text-cream/30">{a.agent}</span>
+                        <span className="num mt-1 block text-[9px] uppercase tracking-[0.12em] text-cream/52">{a.agent}</span>
                       </span>
                       {done ? <GlassBadge tone="success" dot>Planifiée</GlassBadge> : (
                         <GlassButton size="sm" variant="gold" onClick={() => planAction(a.label, a.agent, a.id)}>Planifier</GlassButton>

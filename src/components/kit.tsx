@@ -144,13 +144,13 @@ export function Input({ label, icon, right, error, hint, className, id, ...rest 
             : "ring-[var(--hairline)] focus-within:ring-[color-mix(in_srgb,var(--color-champagne-500)_50%,transparent)]",
         )}
       >
-        {icon && <span className="shrink-0 text-cream/35">{icon}</span>}
-        <input id={inputId} className="h-full w-full bg-transparent text-[13px] text-cream outline-none placeholder:text-cream/30" {...rest} />
+        {icon && <span className="shrink-0 text-cream/56">{icon}</span>}
+        <input id={inputId} className="h-full w-full bg-transparent text-[13px] text-cream outline-none placeholder:text-cream/52" {...rest} />
         {right}
       </div>
       {error
         ? <p className="mt-1.5 text-[11px] text-ember">{error}</p>
-        : hint ? <p className="mt-1.5 text-[11px] text-cream/40">{hint}</p> : null}
+        : hint ? <p className="mt-1.5 text-[11px] text-cream/60">{hint}</p> : null}
     </div>
   );
 }
@@ -163,19 +163,19 @@ export interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElem
 export function SearchInput({ value, onValueChange, onClear, placeholder = "Rechercher…", className, ...rest }: SearchInputProps) {
   return (
     <div className={cn("flex h-9 items-center gap-2 rounded-sm bg-[var(--surface-2)] px-3 shadow-[var(--highlight-top)] ring-1 ring-[var(--hairline)] transition-[box-shadow] duration-200 ease-[var(--ease-standard)] focus-within:ring-2 focus-within:ring-[color-mix(in_srgb,var(--color-champagne-500)_45%,transparent)]", className)}>
-      <SearchIcon size={15} strokeWidth={1.75} className="shrink-0 text-cream/35" />
+      <SearchIcon size={15} strokeWidth={1.75} className="shrink-0 text-cream/56" />
       <input
         value={value}
         onChange={(e) => onValueChange(e.target.value)}
         placeholder={placeholder}
-        className="h-full w-full bg-transparent text-[13px] text-cream outline-none placeholder:text-cream/30"
+        className="h-full w-full bg-transparent text-[13px] text-cream outline-none placeholder:text-cream/52"
         {...rest}
       />
       {value && (
         <button
           type="button" aria-label="Effacer"
           onClick={() => { onValueChange(""); onClear?.(); }}
-          className="grid h-5 w-5 shrink-0 place-items-center rounded-xs text-cream/40 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
+          className="grid h-5 w-5 shrink-0 place-items-center rounded-xs text-cream/60 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
         >
           <X size={13} strokeWidth={2} />
         </button>
@@ -206,7 +206,7 @@ export function Select({ label, value, onChange, options, className, id }: Selec
         >
           {options.map((o) => <option key={o.value} value={o.value} style={{ background: "var(--surface-3)" }}>{o.label}</option>)}
         </select>
-        <ChevronDown size={15} strokeWidth={1.75} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-cream/40" />
+        <ChevronDown size={15} strokeWidth={1.75} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-cream/60" />
       </div>
     </div>
   );
@@ -447,12 +447,12 @@ export function Tabs<T extends string>({ options, value, onChange, className }: 
             key={o.value} role="tab" aria-selected={active} onClick={() => onChange(o.value)}
             className={cn(
               "relative inline-flex items-center gap-1.5 px-3 pb-2.5 pt-1 text-[13px] font-[510] transition-colors duration-200",
-              active ? "text-cream" : "text-cream/45 hover:text-cream/75",
+              active ? "text-cream" : "text-cream/62 hover:text-cream/75",
             )}
           >
             {o.icon}
             {o.label}
-            {typeof o.count === "number" && <span className="num text-[11px] text-cream/35">{o.count}</span>}
+            {typeof o.count === "number" && <span className="num text-[11px] text-cream/56">{o.count}</span>}
             {active && (
               <motion.span layoutId="tabs-underline" className="absolute inset-x-1.5 -bottom-px h-[2px] rounded-full bg-champagne-500" />
             )}
@@ -686,7 +686,7 @@ export function DataTable<T extends { id: string }>({
           <tbody>
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={columns.length + (selectable ? 1 : 0) + (rowActions ? 1 : 0)} className="px-3 py-10 text-center text-[13px] text-cream/45">
+                <td colSpan={columns.length + (selectable ? 1 : 0) + (rowActions ? 1 : 0)} className="px-3 py-10 text-center text-[13px] text-cream/62">
                   {empty ?? "Aucune donnée."}
                 </td>
               </tr>

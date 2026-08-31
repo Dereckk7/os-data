@@ -38,7 +38,7 @@ export default function Clients() {
           <div>
             <p className="eyebrow">Portefeuille client</p>
             <h1 className="mt-2 t-title">Clients</h1>
-            <p className="num mt-1.5 text-[11.5px] text-cream/45">
+            <p className="num mt-1.5 text-[11.5px] text-cream/62">
               {clientsQ.data.length} clients · {fmtMoney(totalValue)} de valeur cumulée
             </p>
           </div>
@@ -116,7 +116,7 @@ export default function Clients() {
                       <Avatar initials={c.initials} name={c.name} size={32} />
                       <span>
                         <span className="block text-[13.5px] font-semibold">{c.name}</span>
-                        <span className="block text-[11px] text-cream/40">{c.city} · {c.lastContact}</span>
+                        <span className="block text-[11px] text-cream/60">{c.city} · {c.lastContact}</span>
                       </span>
                     </span>
                     <GlassBadge tone={segmentTone[c.segment]}>{c.segment}</GlassBadge>
@@ -124,11 +124,11 @@ export default function Clients() {
                   <span className="mt-3 flex items-end justify-between border-t border-[var(--card-divider)] pt-3">
                     <span>
                       <span className="num block text-[16px] font-semibold">{fmtMoney(c.value)}</span>
-                      <span className="text-[9.5px] uppercase tracking-[0.1em] text-cream/30">valeur client</span>
+                      <span className="text-[9.5px] uppercase tracking-[0.1em] text-cream/52">valeur client</span>
                     </span>
                     <span className="flex items-center gap-2">
                       <GlassBadge tone={riskTone[c.risk]}>Risque {(c.risk ?? "").toLowerCase()}</GlassBadge>
-                      <ChevronRight size={15} strokeWidth={1.6} className="text-cream/25" />
+                      <ChevronRight size={15} strokeWidth={1.6} className="text-cream/50" />
                     </span>
                   </span>
                 </button>
@@ -143,13 +143,19 @@ export default function Clients() {
 
 function ClientRow({ client: c, onOpen }: { client: Client; onOpen: () => void }) {
   return (
-    <tr onClick={onOpen} className="group cursor-pointer border-b border-[var(--card-divider)] transition-colors duration-150 last:border-0 hover:bg-[var(--row-hover)]">
+    <tr
+      role="button" tabIndex={0}
+      onClick={onOpen}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
+      aria-label={`Ouvrir la fiche de ${c.name ?? "client"}`}
+      className="group cursor-pointer border-b border-[var(--card-divider)] transition-colors duration-150 last:border-0 hover:bg-[var(--row-hover)] focus-visible:bg-[var(--row-hover)]"
+    >
       <td className="py-3 pl-5 pr-4">
         <span className="flex items-center gap-2.5">
           <Avatar initials={c.initials} name={c.name} size={30} />
           <span>
             <span className="block text-[13px] font-medium">{c.name}</span>
-            <span className="block text-[10.5px] text-cream/35">{c.city}</span>
+            <span className="block text-[10.5px] text-cream/56">{c.city}</span>
           </span>
         </span>
       </td>
@@ -164,13 +170,13 @@ function ClientRow({ client: c, onOpen }: { client: Client; onOpen: () => void }
               style={{ width: `${c.activity}%` }}
             />
           </span>
-          <span className="num text-[10px] text-cream/40">{c.activity}%</span>
+          <span className="num text-[10px] text-cream/60">{c.activity}%</span>
         </span>
       </td>
       <td className="px-4 py-3"><GlassBadge tone={riskTone[c.risk]}>{c.risk}</GlassBadge></td>
       <td className="px-4 py-3 text-[11.5px] text-cream/55">{c.owner}</td>
       <td className="py-3 pl-2 pr-5">
-        <ChevronRight size={15} strokeWidth={1.6} className="text-cream/20 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-cream" />
+        <ChevronRight size={15} strokeWidth={1.6} className="text-cream/48 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-cream" />
       </td>
     </tr>
   );

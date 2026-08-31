@@ -88,7 +88,7 @@ export default function Requests() {
           <div>
             <p className="eyebrow">Pilotage des demandes</p>
             <h1 className="mt-2 t-title">Demandes</h1>
-            <p className="num mt-1.5 text-[11.5px] text-cream/45">
+            <p className="num mt-1.5 text-[11.5px] text-cream/62">
               {openCount} ouvertes · {lateCount} en retard · {validateCount} à valider
             </p>
           </div>
@@ -167,8 +167,11 @@ export default function Requests() {
                   {filtered.map((r) => (
                     <tr
                       key={r.id}
+                      role="button" tabIndex={0}
                       onClick={() => navigate(`/requests/${r.id}`)}
-                      className="group cursor-pointer border-b border-[var(--card-divider)] transition-colors duration-150 last:border-0 hover:bg-[var(--row-hover)]"
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); navigate(`/requests/${r.id}`); } }}
+                      aria-label={`Ouvrir la demande ${r.ref}`}
+                      className="group cursor-pointer border-b border-[var(--card-divider)] transition-colors duration-150 last:border-0 hover:bg-[var(--row-hover)] focus-visible:bg-[var(--row-hover)]"
                     >
                       <td className="py-3 pl-5 pr-4">
                         <span className="flex items-center gap-2.5">
@@ -181,20 +184,20 @@ export default function Requests() {
                       </td>
                       <td className="px-4 py-3">
                         <span className="flex items-center gap-2">
-                          <TypeIcon type={r.type} size={14} strokeWidth={1.5} className="shrink-0 text-cream/35" />
+                          <TypeIcon type={r.type} size={14} strokeWidth={1.5} className="shrink-0 text-cream/56" />
                           <span>
                             <span className="block max-w-[240px] truncate text-[13px] font-medium">{r.title}</span>
-                            <span className="num block text-[9.5px] text-cream/30">{r.ref}</span>
+                            <span className="num block text-[9.5px] text-cream/52">{r.ref}</span>
                           </span>
                         </span>
                       </td>
                       <td className="px-4 py-3"><StatusBadge status={r.status} pulse /></td>
                       <td className="px-4 py-3"><PriorityBadge priority={r.priority} /></td>
-                      <td className="num px-4 py-3 text-[10.5px] text-cream/45">{r.agent}</td>
-                      <td className="num py-3 pl-4 pr-5 text-[11px] text-cream/45">
+                      <td className="num px-4 py-3 text-[10.5px] text-cream/62">{r.agent}</td>
+                      <td className="num py-3 pl-4 pr-5 text-[11px] text-cream/62">
                         <span className="flex items-center justify-between gap-2">
                           {r.time}
-                          <ChevronRight size={14} strokeWidth={1.6} className="text-cream/20 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-cream" />
+                          <ChevronRight size={14} strokeWidth={1.6} className="text-cream/48 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-cream" />
                         </span>
                       </td>
                     </tr>
@@ -216,12 +219,12 @@ export default function Requests() {
                     <StatusBadge status={r.status} pulse />
                   </span>
                   <span className="mt-2.5 flex items-start gap-2">
-                    <TypeIcon type={r.type} size={14} strokeWidth={1.5} className="mt-0.5 shrink-0 text-cream/35" />
+                    <TypeIcon type={r.type} size={14} strokeWidth={1.5} className="mt-0.5 shrink-0 text-cream/56" />
                     <span className="text-[13.5px] font-medium leading-snug">{r.title}</span>
                   </span>
                   <span className="mt-3 flex items-center justify-between border-t border-[var(--card-divider)] pt-2.5">
                     <PriorityBadge priority={r.priority} />
-                    <span className="num text-[10px] text-cream/35">{r.ref} · {r.time}</span>
+                    <span className="num text-[10px] text-cream/56">{r.ref} · {r.time}</span>
                   </span>
                 </button>
               </Reveal>
@@ -237,7 +240,7 @@ export default function Requests() {
                 return (
                   <div key={col} className="w-[262px] shrink-0">
                     <div className="mb-2.5 flex items-center justify-between px-1">
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-cream/45">{col}</span>
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-cream/62">{col}</span>
                       <span className="num rounded-[6px] border border-[var(--hairline)] bg-[var(--surface-2)] px-1.5 py-px text-[9.5px] text-cream/50">{items.length}</span>
                     </div>
                     <div className="space-y-2">
@@ -247,15 +250,15 @@ export default function Requests() {
                             <span className="text-xs font-medium leading-snug">{r.title}</span>
                             {r.vip && <span className="num shrink-0 rounded-[5px] border border-champagne-500/25 bg-champagne-500/[0.08] px-1.5 py-px text-[8px] font-semibold tracking-[0.1em] text-champagne-300">VIP</span>}
                           </span>
-                          <span className="mt-1 block text-[11px] text-cream/45">{r.client}</span>
+                          <span className="mt-1 block text-[11px] text-cream/62">{r.client}</span>
                           <span className="mt-2.5 flex items-center justify-between border-t border-[var(--card-divider)] pt-2">
                             <PriorityBadge priority={r.priority} />
-                            <span className="num text-[9.5px] text-cream/35">{r.time}</span>
+                            <span className="num text-[9.5px] text-cream/56">{r.time}</span>
                           </span>
                         </button>
                       ))}
                       {items.length === 0 && (
-                        <div className="rounded-[12px] border border-dashed border-[var(--hairline)] p-4 text-center text-[11px] text-cream/25">Aucune demande</div>
+                        <div className="rounded-[12px] border border-dashed border-[var(--hairline)] p-4 text-center text-[11px] text-cream/50">Aucune demande</div>
                       )}
                     </div>
                   </div>
@@ -309,11 +312,11 @@ export default function Requests() {
           <GlassSurface className="p-5 sm:p-6">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-[15px] font-semibold capitalize tracking-tight">{monthLabel}</h2>
-              <span className="num text-[10.5px] text-cream/40">{filtered.length} demandes planifiées</span>
+              <span className="num text-[10.5px] text-cream/60">{filtered.length} demandes planifiées</span>
             </div>
             <div className="grid grid-cols-7 gap-1.5">
               {["L", "M", "M", "J", "V", "S", "D"].map((d, i) => (
-                <span key={`${d}${i}`} className="pb-1 text-center text-[9.5px] font-semibold uppercase tracking-[0.14em] text-cream/30">{d}</span>
+                <span key={`${d}${i}`} className="pb-1 text-center text-[9.5px] font-semibold uppercase tracking-[0.14em] text-cream/52">{d}</span>
               ))}
               {Array.from({ length: firstOffset }).map((_, i) => <span key={`e${i}`} />)}
               {Array.from({ length: daysInMonth }).map((_, i) => {
@@ -349,7 +352,7 @@ export default function Requests() {
                           ))}
                         </span>
                       )}
-                      {dayReqs.length > 2 && <span className="num hidden text-[7.5px] text-cream/40 sm:block">+{dayReqs.length - 2}</span>}
+                      {dayReqs.length > 2 && <span className="num hidden text-[7.5px] text-cream/60 sm:block">+{dayReqs.length - 2}</span>}
                     </span>
                   </div>
                 );
@@ -389,7 +392,7 @@ export default function Requests() {
             label="Priorité" value={form.priority} onChange={(v) => setForm((f) => ({ ...f, priority: v }))}
             options={["Critique", "Haute", "Normale", "Basse"].map((p) => ({ value: p, label: p }))}
           />
-          <p className="rounded-[10px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3 py-2.5 text-[11.5px] leading-relaxed text-cream/45">
+          <p className="rounded-[10px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3 py-2.5 text-[11.5px] leading-relaxed text-cream/62">
             L'Agent Réservation qualifiera la demande et lancera la recherche d'options automatiquement.
           </p>
         </div>

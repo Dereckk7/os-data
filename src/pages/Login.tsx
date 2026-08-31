@@ -106,7 +106,7 @@ export default function Login() {
               Vos sources, vos agents et vos décisions — réunis dans un seul système, connecté en continu.
             </p>
           </div>
-          <p className="num text-[10px] uppercase tracking-[0.14em] text-cream/30">Flux de données · réseaux d'intelligence</p>
+          <p className="num text-[10px] uppercase tracking-[0.14em] text-cream/52">Flux de données · réseaux d'intelligence</p>
         </div>
       </aside>
 
@@ -148,7 +148,7 @@ export default function Login() {
               value={password} onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               right={
-                <button type="button" onClick={() => setShowPw((v) => !v)} aria-label={showPw ? "Masquer le mot de passe" : "Afficher le mot de passe"} className="text-cream/40 transition-colors hover:text-cream">
+                <button type="button" onClick={() => setShowPw((v) => !v)} aria-label={showPw ? "Masquer le mot de passe" : "Afficher le mot de passe"} className="text-cream/60 transition-colors hover:text-cream">
                   {showPw ? <EyeOff size={15} strokeWidth={1.6} /> : <Eye size={15} strokeWidth={1.6} />}
                 </button>
               }
@@ -169,7 +169,7 @@ export default function Login() {
 
           <div className="my-5 flex items-center gap-3">
             <span className="h-px flex-1 bg-[var(--hairline)]" />
-            <span className="text-[10px] uppercase tracking-[0.14em] text-cream/35">ou</span>
+            <span className="text-[10px] uppercase tracking-[0.14em] text-cream/56">ou</span>
             <span className="h-px flex-1 bg-[var(--hairline)]" />
           </div>
 
@@ -195,7 +195,7 @@ export default function Login() {
               Créer un accès
             </button>
           </p>
-          <p className="num mt-4 text-center text-[10px] text-cream/35">
+          <p className="num mt-4 text-center text-[10px] text-cream/56">
             Démo — compte pré-rempli · aucune donnée réelle
           </p>
         </motion.div>

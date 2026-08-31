@@ -251,7 +251,7 @@ export function SidebarMenuAction({ children, className, showOnHover, onClick, l
       onClick={onClick}
       aria-label={label ?? "Actions"}
       className={cn(
-        "absolute right-1.5 top-1/2 z-10 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-[8px] text-cream/45 transition-all hover:bg-[var(--row-hover)] hover:text-cream",
+        "absolute right-1.5 top-1/2 z-10 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-[8px] text-cream/62 transition-all hover:bg-[var(--row-hover)] hover:text-cream",
         showOnHover && "opacity-0 focus:opacity-100 group-hover/menu-item:opacity-100",
         className
       )}

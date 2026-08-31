@@ -78,10 +78,10 @@ export default function Integrations() {
                   <GlassBadge tone={statusTone(it.status)} dot pulse={it.status === "Synchronisation"}>{it.status}</GlassBadge>
                 </div>
                 <p className="mt-3.5 text-[14px] font-semibold tracking-tight">{it.name}</p>
-                <p className="num mt-0.5 text-[9px] uppercase tracking-[0.12em] text-cream/35">{it.category}</p>
+                <p className="num mt-0.5 text-[9px] uppercase tracking-[0.12em] text-cream/56">{it.category}</p>
                 <p className="mt-1.5 text-xs leading-relaxed text-cream/50">{it.description}</p>
                 <div className="mt-3.5 flex items-center justify-between border-t border-[var(--card-divider)] pt-3">
-                  <span className="num text-[10px] text-cream/40">
+                  <span className="num text-[10px] text-cream/60">
                     {it.records > 0 ? `${fmtInt(it.records)} données` : "Aucune donnée"} · {it.lastSync}
                   </span>
                 </div>
@@ -131,7 +131,7 @@ export default function Integrations() {
               { k: "Mode", v: "Bidirectionnel" },
             ].map((row) => (
               <div key={row.k} className="flex items-center justify-between gap-3">
-                <span className="text-xs text-cream/45">{row.k}</span>
+                <span className="text-xs text-cream/62">{row.k}</span>
                 <span className="num text-xs font-medium text-cream/80">{row.v}</span>
               </div>
             ))}
@@ -141,7 +141,7 @@ export default function Integrations() {
             {configTarget.status === "Erreur"
               ? "Le jeton d'accès a expiré. Relancez l'autorisation sécurisée pour rétablir la synchronisation."
               : "Autorisez DATA OS à accéder à vos données. Aucune information n'est partagée en dehors de votre organisation."}
-            <span className="mt-2 block text-[10.5px] text-cream/35">Environnement de démonstration — connexion simulée.</span>
+            <span className="mt-2 block text-[10.5px] text-cream/56">Environnement de démonstration — connexion simulée.</span>
           </p>
         ))}
       </GlassModal>

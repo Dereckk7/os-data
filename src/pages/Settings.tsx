@@ -36,7 +36,7 @@ function Row({ label, desc, children }: { label: string; desc?: string; children
     <div className="flex items-center justify-between gap-4 py-3.5">
       <div className="min-w-0">
         <p className="text-[13px] font-medium">{label}</p>
-        {desc && <p className="mt-0.5 text-[11.5px] leading-relaxed text-cream/45">{desc}</p>}
+        {desc && <p className="mt-0.5 text-[11.5px] leading-relaxed text-cream/62">{desc}</p>}
       </div>
       <div className="shrink-0">{children}</div>
     </div>
@@ -51,7 +51,7 @@ function OptionGroup<T extends string>({ options, value, onChange, label }: {
       {options.map((o) => (
         <button
           key={o.value} role="radio" aria-checked={value === o.value} onClick={() => onChange(o.value)}
-          className={cn("h-8 rounded-[8px] px-3 text-xs font-medium transition-all duration-200", value === o.value ? "bg-cream text-ink-950" : "text-cream/45 hover:text-cream/80")}
+          className={cn("h-8 rounded-[8px] px-3 text-xs font-medium transition-all duration-200", value === o.value ? "bg-cream text-ink-950" : "text-cream/62 hover:text-cream/80")}
         >
           {o.label}
         </button>
@@ -134,7 +134,7 @@ export default function Settings() {
                   <Avatar initials={user?.initials ?? "?"} name={user?.name ?? ""} size={48} />
                   <div>
                     <p className="text-[14px] font-semibold">{user?.name}</p>
-                    <p className="num text-[11px] text-cream/40">{user?.email}</p>
+                    <p className="num text-[11px] text-cream/60">{user?.email}</p>
                   </div>
                 </div>
                 <div className="grid gap-3.5 sm:grid-cols-2">
@@ -158,7 +158,7 @@ export default function Settings() {
                 <div className="flex items-center justify-between rounded-[12px] border border-champagne-500/15 bg-champagne-500/[0.04] px-4 py-3.5">
                   <div>
                     <p className="text-[13px] font-medium">Plan Enterprise</p>
-                    <p className="num mt-0.5 text-[10.5px] text-cream/40">{mockOrganization.members.length} membres · agents illimités · support dédié</p>
+                    <p className="num mt-0.5 text-[10.5px] text-cream/60">{mockOrganization.members.length} membres · agents illimités · support dédié</p>
                   </div>
                   <GlassBadge tone="gold" dot>Actif</GlassBadge>
                 </div>
@@ -197,7 +197,7 @@ export default function Settings() {
                   <OptionGroup<FontPref> label="Taille du texte" value={prefs.fontSize} onChange={(v) => prefs.set("fontSize", v)}
                     options={[{ value: "default", label: "Défaut" }, { value: "large", label: "Grande" }]} />
                 </Row>
-                <p className="pt-4 text-[11.5px] leading-relaxed text-cream/40">
+                <p className="pt-4 text-[11.5px] leading-relaxed text-cream/60">
                   Vos préférences s'appliquent immédiatement et seront synchronisées via Supabase prochainement.
                 </p>
               </div>
@@ -211,7 +211,7 @@ export default function Settings() {
                       <Avatar initials={(m.name ?? "").split(" ").map((p) => p[0]).join("")} name={m.name} size={32} />
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[13px] font-medium">{m.name}</p>
-                        <p className="num truncate text-[10.5px] text-cream/40">{m.email}</p>
+                        <p className="num truncate text-[10.5px] text-cream/60">{m.email}</p>
                       </div>
                       <GlassBadge tone={m.role === "Direction" ? "gold" : "neutral"}>{m.role}</GlassBadge>
                       <GlassBadge tone={m.status === "Actif" ? "success" : "warning"} dot>{m.status}</GlassBadge>
@@ -235,11 +235,11 @@ export default function Settings() {
                   <div key={r.role} className="flex flex-wrap items-center justify-between gap-3 py-3.5">
                     <div>
                       <p className="text-[13px] font-medium">{r.role}</p>
-                      <p className="mt-0.5 text-[11.5px] text-cream/45">{r.desc}</p>
+                      <p className="mt-0.5 text-[11.5px] text-cream/62">{r.desc}</p>
                     </div>
                     <div className="flex gap-1.5">
                       {["Lecture", "Écriture", "Admin"].map((p, i) => (
-                        <span key={p} className={cn("rounded-full border px-2 py-0.5 text-[9.5px] font-medium", r.perms[i] ? "border-jade/30 bg-jade/[0.08] text-jade" : "border-[var(--hairline)] text-cream/30")}>
+                        <span key={p} className={cn("rounded-full border px-2 py-0.5 text-[9.5px] font-medium", r.perms[i] ? "border-jade/30 bg-jade/[0.08] text-jade" : "border-[var(--hairline)] text-cream/52")}>
                           {p}
                         </span>
                       ))}
@@ -272,7 +272,7 @@ export default function Settings() {
                     <div>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-cream/55">Volume</span>
-                        <span className="num text-[10.5px] text-cream/40">{sounds.volume}%</span>
+                        <span className="num text-[10.5px] text-cream/60">{sounds.volume}%</span>
                       </div>
                       <input
                         type="range" min={0} max={100} value={sounds.volume}
@@ -310,7 +310,7 @@ export default function Settings() {
                       </span>
                       <div>
                         <p className="text-[13px] font-medium">{a.name}</p>
-                        <p className="text-[11px] text-cream/45">{a.current}</p>
+                        <p className="text-[11px] text-cream/62">{a.current}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -332,7 +332,7 @@ export default function Settings() {
                     </div>
                   </div>
                 ))}
-                <p className="pt-4 text-[11.5px] leading-relaxed text-cream/45">
+                <p className="pt-4 text-[11.5px] leading-relaxed text-cream/62">
                   Les actions sensibles des agents passent toujours par le{" "}
                   <Link to="/validation" className="font-medium text-cream/70 underline-offset-2 hover:underline">centre de validation</Link>.
                 </p>
@@ -346,7 +346,7 @@ export default function Settings() {
                     <div key={s.id} className="flex items-center justify-between gap-3 py-3">
                       <div>
                         <p className="text-[13px] font-medium">{s.name}</p>
-                        <p className="num mt-0.5 text-[10.5px] text-cream/40">
+                        <p className="num mt-0.5 text-[10.5px] text-cream/60">
                           Dernière sync : {s.lastSync} · {s.records > 0 ? fmtInt(s.records) : "0"} données
                         </p>
                       </div>
@@ -382,7 +382,7 @@ export default function Settings() {
                 <div className="flex items-center justify-between rounded-[12px] border border-[var(--hairline)] bg-[var(--surface-2)] px-4 py-3.5">
                   <div>
                     <p className="text-[13.5px] font-semibold">Enterprise — 249 000 XAF / mois</p>
-                    <p className="num mt-0.5 text-[10.5px] text-cream/40">Prochaine échéance : 1er sept. · Carte •• 4821</p>
+                    <p className="num mt-0.5 text-[10.5px] text-cream/60">Prochaine échéance : 1er sept. · Carte •• 4821</p>
                   </div>
                   <GlassBadge tone="success" dot>À jour</GlassBadge>
                 </div>
@@ -394,13 +394,13 @@ export default function Settings() {
                   ].map((inv) => (
                     <div key={inv.ref} className="flex items-center justify-between gap-3 py-3">
                       <span className="num text-[11.5px] text-cream/60">{inv.ref}</span>
-                      <span className="hidden text-xs text-cream/45 sm:block">{inv.date}</span>
+                      <span className="hidden text-xs text-cream/62 sm:block">{inv.date}</span>
                       <span className="num text-xs font-semibold">{inv.amount}</span>
                       <GlassBadge tone="success">Payée</GlassBadge>
                       <button
                         aria-label={`Télécharger ${inv.ref}`}
                         onClick={() => toast.success("Facture téléchargée", { description: `${inv.ref} · PDF` })}
-                        className="grid h-8 w-8 place-items-center rounded-[8px] text-cream/40 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
+                        className="grid h-8 w-8 place-items-center rounded-[8px] text-cream/60 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
                       >
                         <ArrowUpRight size={13} strokeWidth={1.75} />
                       </button>
@@ -434,7 +434,7 @@ export default function Settings() {
                           <span className={cn("h-[7px] w-[7px] rounded-full", ses.current ? "bg-jade pulse-dot" : "bg-cream/30")} />
                           <span className="text-xs font-medium">{ses.d}</span>
                         </span>
-                        <span className="num text-[9.5px] uppercase tracking-[0.1em] text-cream/35">{ses.s}</span>
+                        <span className="num text-[9.5px] uppercase tracking-[0.1em] text-cream/56">{ses.s}</span>
                       </div>
                     ))}
                   </div>
@@ -458,7 +458,7 @@ export default function Settings() {
                     <span className="num min-w-0 flex-1 truncate text-[11.5px] text-cream/70">
                       {showKey ? "sk_live_ekw_7f3K2mQ9xRt41WpLz86vB4821" : "sk_live_••••••••••••••••••••4821"}
                     </span>
-                    <button aria-label={showKey ? "Masquer la clé" : "Révéler la clé"} onClick={() => setShowKey((v) => !v)} className="grid h-8 w-8 place-items-center rounded-[8px] text-cream/40 transition-colors hover:bg-[var(--row-hover)] hover:text-cream">
+                    <button aria-label={showKey ? "Masquer la clé" : "Révéler la clé"} onClick={() => setShowKey((v) => !v)} className="grid h-8 w-8 place-items-center rounded-[8px] text-cream/60 transition-colors hover:bg-[var(--row-hover)] hover:text-cream">
                       {showKey ? <EyeOff size={13.5} strokeWidth={1.6} /> : <Eye size={13.5} strokeWidth={1.6} />}
                     </button>
                     <button
@@ -467,7 +467,7 @@ export default function Settings() {
                         await copyText("sk_live_ekw_7f3K2mQ9xRt41WpLz86vB4821");
                         toast.success("Clé copiée", { description: "Ne la partagez jamais publiquement." });
                       }}
-                      className="grid h-8 w-8 place-items-center rounded-[8px] text-cream/40 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
+                      className="grid h-8 w-8 place-items-center rounded-[8px] text-cream/60 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
                     >
                       <Copy size={13.5} strokeWidth={1.6} />
                     </button>
@@ -483,7 +483,7 @@ export default function Settings() {
                 <GlassButton variant="gold" size="sm" iconLeft={<Plus size={13} strokeWidth={1.75} />} onClick={() => toast.gold("Nouvelle clé générée", { description: "sk_live_ekw_9…B7302 — copiez-la maintenant." })}>
                   Créer une clé
                 </GlassButton>
-                <p className="rounded-[10px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3 py-2.5 text-[11px] leading-relaxed text-cream/40">
+                <p className="rounded-[10px] border border-[var(--card-divider)] bg-[var(--surface-2)] px-3 py-2.5 text-[11px] leading-relaxed text-cream/60">
                   L'API DATA OS expose demandes, clients, insights et rapports. Documentation sur{" "}
                   <span className="num text-champagne-300">docs.dataos.app</span>.
                 </p>

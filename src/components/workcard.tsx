@@ -76,7 +76,7 @@ function StepRow({ step, tone }: { step: WorkStep; tone: WorkTone }) {
           "text-xs leading-relaxed",
           step.state === "done" && "text-cream/60",
           step.state === "active" && "font-medium text-cream/90",
-          step.state === "todo" && "text-cream/35"
+          step.state === "todo" && "text-cream/56"
         )}
       >
         {step.label}
@@ -106,7 +106,7 @@ function CardMenu({ items }: { items: { label: string; onClick: () => void }[] }
     <div className="relative" ref={ref}>
       <button
         aria-label="Options de la carte" aria-expanded={open} onClick={() => setOpen((v) => !v)}
-        className={cn("grid h-7 w-7 place-items-center rounded-[8px] transition-all duration-150", open ? "bg-[var(--surface-3)] text-cream" : "text-cream/35 hover:bg-[var(--row-hover)] hover:text-cream")}
+        className={cn("grid h-7 w-7 place-items-center rounded-[8px] transition-all duration-150", open ? "bg-[var(--surface-3)] text-cream" : "text-cream/56 hover:bg-[var(--row-hover)] hover:text-cream")}
       >
         <MoreHorizontal size={15} strokeWidth={1.75} />
       </button>
@@ -168,7 +168,7 @@ export function WorkCard({
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p className={cn("num truncate text-[9px] font-semibold uppercase tracking-[0.16em]", t.text)}>{eyebrow}</p>
-          {when && <p className="num mt-1 text-[10px] text-cream/35">{when}</p>}
+          {when && <p className="num mt-1 text-[10px] text-cream/56">{when}</p>}
         </div>
         {menu && <CardMenu items={menu} />}
       </div>
@@ -178,7 +178,7 @@ export function WorkCard({
 
       <div className="mt-3.5">
         <div className="flex items-center justify-between">
-          <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-cream/35">Progression</span>
+          <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-cream/56">Progression</span>
           <span className="num text-[11px] font-semibold text-cream/80">{progress}%</span>
         </div>
         <div className="mt-1.5 h-[4px] overflow-hidden rounded-full bg-[var(--surface-3)]">
@@ -213,7 +213,7 @@ export function WorkCard({
           {working.length > 0 && (
             <span className="flex min-w-0 items-center gap-1.5">
               <span className="h-[5px] w-[5px] shrink-0 rounded-full bg-jade pulse-dot" />
-              <span className="num truncate text-[8.5px] uppercase tracking-[0.14em] text-cream/40">
+              <span className="num truncate text-[8.5px] uppercase tracking-[0.14em] text-cream/60">
                 {working[0].name.replace("Agent ", "")} · processing
               </span>
             </span>
@@ -255,7 +255,7 @@ export function WorkCard({
       {onQuickAdd && (
         <button
           aria-label={quickAddLabel} title={quickAddLabel} onClick={onQuickAdd}
-          className="absolute right-4 bottom-4 grid h-7 w-7 place-items-center rounded-full border border-dashed border-[var(--hairline-strong)] text-cream/40 transition-all duration-200 hover:border-cream/40 hover:bg-[var(--row-hover)] hover:text-cream"
+          className="absolute right-4 bottom-4 grid h-7 w-7 place-items-center rounded-full border border-dashed border-[var(--hairline-strong)] text-cream/60 transition-all duration-200 hover:border-cream/40 hover:bg-[var(--row-hover)] hover:text-cream"
           style={onOpen ? { bottom: "4.25rem" } : undefined}
         >
           <Plus size={13} strokeWidth={1.75} />

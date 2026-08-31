@@ -30,7 +30,7 @@ export function Wordmark({ size = 22, withTagline = false, className }: { size?:
       <span className="text-cream"><LogoMark size={size} /></span>
       <span className="flex flex-col leading-none">
         <span className="text-[15px] font-semibold tracking-[0.24em] text-cream">DATA&nbsp;OS</span>
-        {withTagline && <span className="mt-1 text-[10px] tracking-[0.08em] text-cream/40">Votre entreprise, enfin connectée</span>}
+        {withTagline && <span className="mt-1 text-[10px] tracking-[0.08em] text-cream/60">Votre entreprise, enfin connectée</span>}
       </span>
     </span>
   );

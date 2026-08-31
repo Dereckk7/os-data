@@ -26,8 +26,8 @@ const riskOf = (a: Approval): { label: string; tone: Tone } => {
 function Field({ icon, label, children, mono }: { icon: ReactNode; label: string; children: ReactNode; mono?: boolean }) {
   return (
     <div>
-      <dt className="flex items-center gap-1.5 text-[9px] font-[590] uppercase tracking-[0.14em] text-cream/35">{icon}{label}</dt>
-      <dd className={cn("mt-1 leading-relaxed text-cream/65", mono ? "num text-[10.5px] text-cream/45" : "text-xs")}>{children}</dd>
+      <dt className="flex items-center gap-1.5 text-[9px] font-[590] uppercase tracking-[0.14em] text-cream/56">{icon}{label}</dt>
+      <dd className={cn("mt-1 leading-relaxed text-cream/65", mono ? "num text-[10.5px] text-cream/62" : "text-xs")}>{children}</dd>
     </div>
   );
 }
@@ -69,7 +69,7 @@ export default function Validation() {
           <div className="mb-3 flex flex-wrap items-baseline gap-2.5">
             <h2 className="t-section">En attente</h2>
             <span className="num text-[22px] font-[590] text-champagne-300"><AnimatedNumber value={String(pending.length)} /></span>
-            <span className="text-xs text-cream/45">actions nécessitent votre attention</span>
+            <span className="text-xs text-cream/62">actions nécessitent votre attention</span>
           </div>
         </Reveal>
 
@@ -112,7 +112,7 @@ export default function Validation() {
                     <span className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-champagne-500/60 to-transparent" aria-hidden />
 
                     <div className="flex items-start justify-between gap-3">
-                      <span className="num text-[9px] uppercase tracking-[0.14em] text-cream/35">{a.agent} · {a.time}</span>
+                      <span className="num text-[9px] uppercase tracking-[0.14em] text-cream/56">{a.agent} · {a.time}</span>
                       <GlassBadge tone={risk.tone} dot>Risque {risk.label.toLowerCase()}</GlassBadge>
                     </div>
 
@@ -176,7 +176,7 @@ export default function Validation() {
         </Reveal>
         <GlassSurface className="overflow-hidden p-0">
           {history.length === 0 ? (
-            <p className="px-6 py-10 text-center text-[13px] text-cream/40">
+            <p className="px-6 py-10 text-center text-[13px] text-cream/60">
               {historyTab === "Automatiques" ? "Les actions automatiques (sans risque) seront journalisées ici." : `Aucune action ${historyTab.toLowerCase()} pour le moment.`}
             </p>
           ) : (
@@ -191,7 +191,7 @@ export default function Validation() {
                 >
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[13px] font-medium">{a.title}</span>
-                    <span className="num mt-0.5 block text-[9.5px] uppercase tracking-[0.1em] text-cream/30">{a.agent} · {a.category} · {a.time}</span>
+                    <span className="num mt-0.5 block text-[9.5px] uppercase tracking-[0.1em] text-cream/52">{a.agent} · {a.category} · {a.time}</span>
                   </span>
                   <GlassBadge tone={a.status === "validee" ? "success" : a.status === "rejetee" ? "danger" : "neutral"} dot>
                     {a.status === "validee" ? "Validée" : a.status === "rejetee" ? "Rejetée" : "Modifiée"}

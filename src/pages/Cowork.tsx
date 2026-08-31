@@ -46,7 +46,7 @@ function AnalysisBlock() {
       <div className="grid grid-cols-3 gap-2">
         {kpis.map((s) => (
           <div key={s.k} className="rounded-sm border border-[var(--hairline)] bg-[var(--surface-2)] p-3">
-            <p className="text-[8.5px] uppercase tracking-[0.1em] text-cream/30">{s.k}</p>
+            <p className="text-[8.5px] uppercase tracking-[0.1em] text-cream/52">{s.k}</p>
             <p className="num mt-1 text-[15px] font-[590]"><AnimatedNumber value={s.v} /></p>
             <p className="num text-[9px] text-jade">{s.d}</p>
           </div>
@@ -71,7 +71,7 @@ function LateBlock({ onOpen }: { onOpen: (id: string) => void }) {
         >
           <span className="min-w-0">
             <span className="block truncate text-xs font-medium">{r.title}</span>
-            <span className="num mt-0.5 block text-[9px] uppercase tracking-[0.1em] text-cream/35">{r.ref} · {r.client}</span>
+            <span className="num mt-0.5 block text-[9px] uppercase tracking-[0.1em] text-cream/56">{r.ref} · {r.client}</span>
           </span>
           <GlassBadge tone="danger" dot>En retard</GlassBadge>
         </button>
@@ -94,10 +94,10 @@ function ClientsBlock({ onOpen }: { onOpen: (id: string) => void }) {
         >
           <span className="min-w-0">
             <span className="flex items-center gap-2 text-xs font-medium">
-              <span className="num text-cream/35">{i + 1}.</span> {c.name}
+              <span className="num text-cream/56">{i + 1}.</span> {c.name}
               {c.segment === "VIP" && <GlassBadge tone="gold" className="px-1.5 py-0 text-[8px]">VIP</GlassBadge>}
             </span>
-            <span className="num mt-0.5 block text-[9px] uppercase tracking-[0.1em] text-cream/35">
+            <span className="num mt-0.5 block text-[9px] uppercase tracking-[0.1em] text-cream/56">
               {c.requestsCount} demandes · satisfaction {c.satisfaction}%
             </span>
           </span>
@@ -116,7 +116,7 @@ function ReportBlock({ onValidate, onCancel, onModify }: { onValidate: () => voi
         <p className="mt-1 text-[11px] leading-relaxed text-cream/50">
           CA 74,2 M XAF (+11%) · 186 réservations · 23 nouveaux clients · 2 comptes à risque suivis.
         </p>
-        <p className="num mt-2 text-[9px] uppercase tracking-[0.1em] text-cream/30">Sources : CRM · Paiement · Calendar — vérifiées à 09:12</p>
+        <p className="num mt-2 text-[9px] uppercase tracking-[0.1em] text-cream/52">Sources : CRM · Paiement · Calendar — vérifiées à 09:12</p>
       </div>
       <div className="rounded-md border border-saffron/25 bg-saffron/[0.05] p-3.5">
         <p className="flex items-center gap-2 text-[11px] font-[590] text-saffron">
@@ -148,7 +148,7 @@ const PROPOSED = ["Créer le rapport", "Envoyer pour validation", "Ajouter aux t
 function ActionChips({ onChip }: { onChip: (label: string) => void }) {
   return (
     <div className="mt-3 flex flex-wrap gap-1.5 border-t border-[var(--card-divider)] pt-3">
-      <p className="num w-full text-[8.5px] uppercase tracking-[0.14em] text-cream/30">Actions proposées</p>
+      <p className="num w-full text-[8.5px] uppercase tracking-[0.14em] text-cream/52">Actions proposées</p>
       {PROPOSED.map((a) => (
         <button
           key={a} onClick={() => onChip(a)}
@@ -196,7 +196,7 @@ function DataBlock({ data, source }: { data: unknown; source?: string }) {
           <table className="w-full text-left">
             <thead>
               <tr>{cols.map((c) => (
-                <th key={c} className="bg-[var(--surface-2)] px-3 py-2 text-[8.5px] font-medium uppercase tracking-[0.08em] text-cream/35">{c}</th>
+                <th key={c} className="bg-[var(--surface-2)] px-3 py-2 text-[8.5px] font-medium uppercase tracking-[0.08em] text-cream/56">{c}</th>
               ))}</tr>
             </thead>
             <tbody>
@@ -224,7 +224,7 @@ function DataBlock({ data, source }: { data: unknown; source?: string }) {
         <div className="grid grid-cols-2 gap-2">
           {entries.slice(0, 6).map(([k, v]) => (
             <div key={k} className="rounded-sm border border-[var(--hairline)] bg-[var(--surface-2)] p-3">
-              <p className="text-[8.5px] uppercase tracking-[0.1em] text-cream/30">{k.replace(/_/g, " ")}</p>
+              <p className="text-[8.5px] uppercase tracking-[0.1em] text-cream/52">{k.replace(/_/g, " ")}</p>
               <p className="num mt-1 text-[15px] font-[590]">{fmtCell(v)}</p>
             </div>
           ))}
@@ -249,7 +249,7 @@ function ContextPanel({ traces, reports, onChip, onClose }: {
     <aside className="lcard hidden min-h-0 flex-col overflow-hidden lg:flex">
       <div className="flex items-center justify-between gap-2 border-b border-[var(--card-divider)] px-4 py-3">
         <p className="t-label">Contexte du travail</p>
-        <button onClick={onClose} aria-label="Replier le panneau contextuel" className="grid h-6 w-6 place-items-center rounded-xs text-cream/45 transition-colors hover:bg-[var(--row-hover)] hover:text-cream">
+        <button onClick={onClose} aria-label="Replier le panneau contextuel" className="grid h-6 w-6 place-items-center rounded-xs text-cream/62 transition-colors hover:bg-[var(--row-hover)] hover:text-cream">
           <PanelRightClose size={15} strokeWidth={1.75} />
         </button>
       </div>
@@ -257,9 +257,9 @@ function ContextPanel({ traces, reports, onChip, onClose }: {
       <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-4 py-4">
         {/* Travail en cours / trace */}
         <section>
-          <p className="num mb-2 text-[8.5px] uppercase tracking-[0.14em] text-cream/30">Traçabilité</p>
+          <p className="num mb-2 text-[8.5px] uppercase tracking-[0.14em] text-cream/52">Traçabilité</p>
           {traces.length === 0 ? (
-            <p className="text-[11.5px] leading-relaxed text-cream/40">Le détail du travail du Data OS — sources consultées, agents impliqués — apparaîtra ici.</p>
+            <p className="text-[11.5px] leading-relaxed text-cream/60">Le détail du travail du Data OS — sources consultées, agents impliqués — apparaîtra ici.</p>
           ) : (
             <ol className="space-y-2">
               {traces.slice(0, 8).map((t) => (
@@ -276,9 +276,9 @@ function ContextPanel({ traces, reports, onChip, onClose }: {
 
         {/* Sources consultées */}
         <section>
-          <p className="num mb-2 flex items-center gap-1.5 text-[8.5px] uppercase tracking-[0.14em] text-cream/30"><Database size={10} strokeWidth={2} /> Sources consultées</p>
+          <p className="num mb-2 flex items-center gap-1.5 text-[8.5px] uppercase tracking-[0.14em] text-cream/52"><Database size={10} strokeWidth={2} /> Sources consultées</p>
           {sources.length === 0 ? (
-            <p className="text-[11.5px] text-cream/35">—</p>
+            <p className="text-[11.5px] text-cream/56">—</p>
           ) : (
             <div className="flex flex-wrap gap-1.5">
               {sources.map((s) => <span key={s} className="num rounded-full bg-[color-mix(in_srgb,var(--color-champagne-500)_11%,transparent)] px-2 py-0.5 text-[9.5px] text-champagne-300">{s.replace(/^core\./, "")}</span>)}
@@ -288,9 +288,9 @@ function ContextPanel({ traces, reports, onChip, onClose }: {
 
         {/* Agents impliqués */}
         <section>
-          <p className="num mb-2 flex items-center gap-1.5 text-[8.5px] uppercase tracking-[0.14em] text-cream/30"><Users size={10} strokeWidth={2} /> Agents impliqués</p>
+          <p className="num mb-2 flex items-center gap-1.5 text-[8.5px] uppercase tracking-[0.14em] text-cream/52"><Users size={10} strokeWidth={2} /> Agents impliqués</p>
           {agents.length === 0 ? (
-            <p className="text-[11.5px] text-cream/35">—</p>
+            <p className="text-[11.5px] text-cream/56">—</p>
           ) : (
             <ul className="space-y-1.5">
               {agents.map((a) => (
@@ -304,13 +304,13 @@ function ContextPanel({ traces, reports, onChip, onClose }: {
 
         {/* Rapports générés */}
         <section>
-          <p className="num mb-2 flex items-center gap-1.5 text-[8.5px] uppercase tracking-[0.14em] text-cream/30"><Sparkles size={10} strokeWidth={2} /> Rapports générés</p>
+          <p className="num mb-2 flex items-center gap-1.5 text-[8.5px] uppercase tracking-[0.14em] text-cream/52"><Sparkles size={10} strokeWidth={2} /> Rapports générés</p>
           <p className="num text-[13px] text-cream/70">{reports > 0 ? `${reports} sur cette session` : "—"}</p>
         </section>
 
         {/* Actions proposées */}
         <section>
-          <p className="num mb-2 text-[8.5px] uppercase tracking-[0.14em] text-cream/30">Actions proposées</p>
+          <p className="num mb-2 text-[8.5px] uppercase tracking-[0.14em] text-cream/52">Actions proposées</p>
           <div className="flex flex-col gap-1.5">
             {PROPOSED.map((a) => (
               <button key={a} onClick={() => onChip(a)} className="rounded-xs border border-[var(--hairline)] px-2.5 py-2 text-left text-[11.5px] text-cream/70 transition-colors hover:border-champagne-500/40 hover:bg-[color-mix(in_srgb,var(--color-champagne-500)_8%,transparent)] hover:text-cream">
@@ -433,7 +433,7 @@ export default function Cowork() {
             <p className="card-eyebrow px-2 py-1">Historique</p>
             {HISTORY.map((h) => (
               <div key={h.group} className="mb-3">
-                <p className="px-3 pb-1 text-[10px] font-[590] uppercase tracking-[0.12em] text-cream/30">{h.group}</p>
+                <p className="px-3 pb-1 text-[10px] font-[590] uppercase tracking-[0.12em] text-cream/52">{h.group}</p>
                 {h.items.map((it) => (
                   <button
                     key={it}
@@ -505,7 +505,7 @@ export default function Cowork() {
                         />
                       )}
                       {m.role === "os" && m.kind !== "report" && <ActionChips onChip={onChip} />}
-                      <p className={cn("num mt-2 text-[8.5px] uppercase tracking-[0.12em]", m.role === "user" ? "text-ink-950/45" : "text-cream/25")}>
+                      <p className={cn("num mt-2 text-[8.5px] uppercase tracking-[0.12em]", m.role === "user" ? "text-ink-950/45" : "text-cream/50")}>
                         {m.role === "user" ? "Vous" : "DATA OS"} · {m.at}
                       </p>
                     </div>
@@ -532,7 +532,7 @@ export default function Cowork() {
               <input
                 value={input} onChange={(e) => setInput(e.target.value)}
                 placeholder="Demandez quelque chose…" aria-label="Votre message"
-                className="h-10 min-w-0 flex-1 bg-transparent text-[13.5px] text-cream outline-none placeholder:text-cream/30"
+                className="h-10 min-w-0 flex-1 bg-transparent text-[13.5px] text-cream outline-none placeholder:text-cream/52"
               />
               <button
                 type="submit" disabled={!input.trim() || thinking} aria-label="Envoyer"
@@ -541,7 +541,7 @@ export default function Cowork() {
                 <ArrowUp size={16} strokeWidth={2} />
               </button>
             </form>
-            <p className="num mt-2 text-center text-[9px] uppercase tracking-[0.12em] text-cream/25">
+            <p className="num mt-2 text-center text-[9px] uppercase tracking-[0.12em] text-cream/50">
               Le DATA OS cite ses sources · les actions critiques passent toujours par validation
             </p>
           </div>

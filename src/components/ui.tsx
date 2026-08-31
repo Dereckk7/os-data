@@ -142,7 +142,7 @@ export function EmptyState({ icon, title, desc, action, className }: {
 }) {
   return (
     <div className={cn("flex flex-col items-center px-6 py-14 text-center", className)}>
-      <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-[var(--hairline)] bg-[var(--surface-2)] text-cream/40">
+      <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-[var(--hairline)] bg-[var(--surface-2)] text-cream/60">
         {icon ?? <Inbox size={18} strokeWidth={1.5} />}
       </span>
       <p className="mt-4 text-[15px] font-semibold">{title}</p>
@@ -255,7 +255,7 @@ export function SegmentedControl<T extends string>({ options, value, onChange, c
             className={cn(
               "inline-flex items-center gap-1.5 rounded-[9px] font-medium transition-all duration-200",
               size === "sm" ? "h-7 px-2.5 text-[11px]" : "h-8 px-3 text-xs",
-              active ? "bg-cream text-ink-950 shadow-[0_2px_10px_rgba(0,0,0,0.15)]" : "text-cream/45 hover:text-cream/80"
+              active ? "bg-cream text-ink-950 shadow-[0_2px_10px_rgba(0,0,0,0.15)]" : "text-cream/62 hover:text-cream/80"
             )}
           >
             {o.icon}
@@ -273,7 +273,7 @@ export function ActivityFeed({ events, className }: { events: ActivityEvent[]; c
     <ol className={cn("space-y-0", className)}>
       {events.map((e, i) => (
         <li key={e.id} className="grid grid-cols-[52px_14px_1fr] gap-x-1">
-          <span className={cn("num pt-[3px] text-right text-[10.5px] leading-5", e.live ? "text-jade" : "text-cream/40")}>{e.time}</span>
+          <span className={cn("num pt-[3px] text-right text-[10.5px] leading-5", e.live ? "text-jade" : "text-cream/60")}>{e.time}</span>
           <span className="relative flex justify-center">
             <span
               className={cn(
@@ -288,8 +288,8 @@ export function ActivityFeed({ events, className }: { events: ActivityEvent[]; c
               {e.title}
               {e.live && <span className="num ml-2 align-middle text-[9px] uppercase tracking-[0.14em] text-jade/80">direct</span>}
             </span>
-            {e.desc && <span className="mt-0.5 block text-xs leading-relaxed text-cream/45">{e.desc}</span>}
-            {e.agent && <span className="num mt-1 block text-[9.5px] uppercase tracking-[0.12em] text-cream/30">{e.agent}</span>}
+            {e.desc && <span className="mt-0.5 block text-xs leading-relaxed text-cream/62">{e.desc}</span>}
+            {e.agent && <span className="num mt-1 block text-[9.5px] uppercase tracking-[0.12em] text-cream/52">{e.agent}</span>}
           </span>
         </li>
       ))}

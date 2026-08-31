@@ -72,7 +72,7 @@ export default function Planning() {
               <GlassBadge tone="neutral">{dayEvents.length} événements</GlassBadge>
             </div>
             {dayEvents.length === 0 ? (
-              <p className="py-10 text-center text-[13px] text-cream/40">Aucun événement aujourd'hui — les nouvelles demandes apparaîtront ici.</p>
+              <p className="py-10 text-center text-[13px] text-cream/60">Aucun événement aujourd'hui — les nouvelles demandes apparaîtront ici.</p>
             ) : (
               <ul className="space-y-2">
                 {dayEvents.map((e) => (
@@ -85,7 +85,7 @@ export default function Planning() {
                       <span className="flex min-w-0 items-center justify-between gap-3">
                         <span className="min-w-0">
                           <span className="block truncate text-[13px] font-medium">{e.title}</span>
-                          <span className="num mt-0.5 block text-[9px] uppercase tracking-[0.1em] text-cream/30">
+                          <span className="num mt-0.5 block text-[9px] uppercase tracking-[0.1em] text-cream/52">
                             {e.kind === "rdv" ? "Rendez-vous" : e.ref}
                           </span>
                         </span>
@@ -109,7 +109,7 @@ export default function Planning() {
                     key={i}
                     className={cn("flex min-h-[280px] flex-col rounded-[12px] border p-2.5", isToday ? "border-champagne-500/40 bg-champagne-500/[0.05]" : "border-[var(--card-divider)] bg-[var(--surface-2)]")}
                   >
-                    <p className={cn("num mb-2 text-center text-[10.5px] font-semibold uppercase tracking-[0.1em]", isToday ? "text-champagne-300" : "text-cream/45")}>
+                    <p className={cn("num mb-2 text-center text-[10.5px] font-semibold uppercase tracking-[0.1em]", isToday ? "text-champagne-300" : "text-cream/62")}>
                       {label} {d}
                     </p>
                     <div className="space-y-1.5">
@@ -119,7 +119,7 @@ export default function Planning() {
                           onClick={() => e.kind === "demande" && navigate(`/requests/${e.id}`)}
                           className={cn("w-full rounded-[8px] border px-2 py-1.5 text-left transition-all duration-150 hover:border-[var(--hairline-strong)]", e.kind === "rdv" ? "border-[var(--hairline)] bg-[var(--surface-2)]" : "border-champagne-500/20 bg-champagne-500/[0.06]")}
                         >
-                          <span className="num block text-[8.5px] text-cream/40">{e.time}</span>
+                          <span className="num block text-[8.5px] text-cream/60">{e.time}</span>
                           <span className="mt-0.5 block truncate text-[10.5px] font-medium leading-tight">{e.title}</span>
                         </button>
                       ))}
@@ -133,11 +133,11 @@ export default function Planning() {
           <GlassSurface className="p-5 sm:p-6">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-[15px] font-semibold capitalize tracking-tight">{monthLabel}</h2>
-              <span className="num text-[10.5px] text-cream/40">{events.length} événements</span>
+              <span className="num text-[10.5px] text-cream/60">{events.length} événements</span>
             </div>
             <div className="grid grid-cols-7 gap-1.5">
               {["L", "M", "M", "J", "V", "S", "D"].map((d, i) => (
-                <span key={`${d}${i}`} className="pb-1 text-center text-[9.5px] font-semibold uppercase tracking-[0.14em] text-cream/30">{d}</span>
+                <span key={`${d}${i}`} className="pb-1 text-center text-[9.5px] font-semibold uppercase tracking-[0.14em] text-cream/52">{d}</span>
               ))}
               {Array.from({ length: firstOffset }).map((_, i) => <span key={`e${i}`} />)}
               {Array.from({ length: daysInMonth }).map((_, i) => {
@@ -167,7 +167,7 @@ export default function Planning() {
                           ))}
                         </span>
                       )}
-                      {dayEvts.length > 2 && <span className="num hidden text-[7.5px] text-cream/40 sm:block">+{dayEvts.length - 2}</span>}
+                      {dayEvts.length > 2 && <span className="num hidden text-[7.5px] text-cream/60 sm:block">+{dayEvts.length - 2}</span>}
                     </span>
                   </div>
                 );

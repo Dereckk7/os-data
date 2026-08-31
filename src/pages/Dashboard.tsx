@@ -36,7 +36,7 @@ export default function Dashboard() {
             <p className="font-serif mt-1 text-[19px] italic text-cream/75 sm:text-[21px]">
               Votre entreprise est <em className="text-champagne-300">sous contrôle</em>.
             </p>
-            <p className="num mt-2.5 text-[11.5px] text-cream/45">
+            <p className="num mt-2.5 text-[11.5px] text-cream/62">
               25 demandes traitées · 8 réservations confirmées · 3 décisions importantes
             </p>
           </div>
@@ -113,7 +113,7 @@ export default function Dashboard() {
                     <p className="relative mt-2 pl-2.5 text-[13px] font-[510]">{opportunity.title}</p>
                     <p className="relative mt-1 pl-2.5 text-[12.5px] leading-relaxed text-cream/55">{opportunity.body}</p>
                     <div className="relative mt-auto flex items-center justify-between pl-2.5 pt-4">
-                      <span className="num text-[9px] uppercase tracking-[0.12em] text-cream/35">
+                      <span className="num text-[9px] uppercase tracking-[0.12em] text-cream/56">
                         {opportunity.agent} · {opportunity.time}
                       </span>
                       <button

@@ -113,8 +113,8 @@ export function GlassInput({ label, icon, right, error, className, id, ...rest }
           error ? "border-ember/45" : "border-[var(--hairline)] hover:border-[var(--hairline-strong)]"
         )}
       >
-        {icon && <span className="text-cream/35">{icon}</span>}
-        <input id={inputId} className="h-full w-full bg-transparent text-[13px] text-cream outline-none placeholder:text-cream/30" {...rest} />
+        {icon && <span className="text-cream/56">{icon}</span>}
+        <input id={inputId} className="h-full w-full bg-transparent text-[13px] text-cream outline-none placeholder:text-cream/52" {...rest} />
         {right}
       </div>
       {error && <p className="mt-1.5 text-[11px] text-ember">{error}</p>}
@@ -217,7 +217,7 @@ export function GlassModal({ open, onClose, title, eyebrow, children, footer, wi
               </div>
               <button
                 onClick={onClose} aria-label="Fermer"
-                className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] text-cream/45 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
+                className="grid h-7 w-7 shrink-0 place-items-center rounded-[8px] text-cream/62 transition-colors hover:bg-[var(--row-hover)] hover:text-cream"
               >
                 <X size={15} strokeWidth={1.75} />
               </button>

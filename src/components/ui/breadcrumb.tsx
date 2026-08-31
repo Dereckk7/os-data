@@ -15,7 +15,7 @@ export function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li
 }
 
 export function BreadcrumbLink({ className, ...props }: React.ComponentProps<"a">) {
-  return <a className={cn("text-cream/45 transition-colors hover:text-cream", className)} {...props} />;
+  return <a className={cn("text-cream/62 transition-colors hover:text-cream", className)} {...props} />;
 }
 
 export function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
@@ -27,7 +27,7 @@ export function BreadcrumbPage({ className, ...props }: React.ComponentProps<"sp
 export function BreadcrumbSeparator({ children, className, ...props }: React.ComponentProps<"li">) {
   return (
     <li role="presentation" aria-hidden="true" className={cn("[&>svg]:size-3.5", className)} {...props}>
-      {children ?? <ChevronRight className="text-cream/30" />}
+      {children ?? <ChevronRight className="text-cream/52" />}
     </li>
   );
 }

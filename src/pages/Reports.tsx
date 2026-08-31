@@ -4,7 +4,7 @@ import { cn, useReports } from "../lib/services";
 import type { Report } from "../lib/types";
 import { GlassBadge, GlassButton, GlassModal, GlassSurface } from "../components/glass";
 import { MiniBars, Sparkline } from "../components/charts";
-import { Reveal, SegmentedControl, Skeleton } from "../components/ui";
+import { EmptyState, Reveal, SegmentedControl, Skeleton } from "../components/ui";
 import { toast } from "../components/toast";
 
 const PERIODS = ["Tous", "Quotidien", "Hebdomadaire", "Mensuel"] as const;
@@ -52,6 +52,15 @@ export default function Reports() {
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-[280px]" />)}
         </div>
+      ) : filtered.length === 0 ? (
+        <GlassSurface>
+          <EmptyState
+            icon={<FileText size={18} strokeWidth={1.5} />}
+            title="Aucun rapport pour cette période."
+            desc="L'Agent Reporting génère un rapport chaque matin — changez de période ou revenez plus tard."
+            action={period !== "Tous" ? <GlassButton variant="ghost" size="sm" onClick={() => setPeriod("Tous")}>Toutes les périodes</GlassButton> : undefined}
+          />
+        </GlassSurface>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map((r, i) => (
@@ -64,12 +73,12 @@ export default function Reports() {
                     </span>
                     <div>
                       <p className="text-[13.5px] font-semibold leading-tight tracking-tight">{r.title}</p>
-                      <p className="num mt-0.5 text-[9px] uppercase tracking-[0.12em] text-cream/35">{r.period} · {r.category}</p>
+                      <p className="num mt-0.5 text-[9px] uppercase tracking-[0.12em] text-cream/56">{r.period} · {r.category}</p>
                     </div>
                   </div>
                   {statusBadge(r)}
                 </div>
-                <p className="num mt-3 text-[10px] text-cream/35">{r.date}</p>
+                <p className="num mt-3 text-[10px] text-cream/56">{r.date}</p>
                 <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-cream/55">{r.summary}</p>
                 <div className="mt-4">
                   {r.status === "Génération" ? (
@@ -83,9 +92,9 @@ export default function Reports() {
                 <div className="mt-4 grid grid-cols-3 gap-2 border-t border-[var(--card-divider)] pt-3.5">
                   {r.highlights.map((h) => (
                     <div key={h.label} className="min-w-0">
-                      <p className="truncate text-[8.5px] uppercase tracking-[0.1em] text-cream/30">{h.label}</p>
+                      <p className="truncate text-[8.5px] uppercase tracking-[0.1em] text-cream/52">{h.label}</p>
                       <p className="num mt-0.5 truncate text-[11px] font-semibold text-cream/85">{h.value}</p>
-                      {h.delta && <p className={cn("num text-[9px]", h.delta.startsWith("+") ? "text-jade" : h.delta.startsWith("-") ? "text-ember" : "text-cream/35")}>{h.delta}</p>}
+                      {h.delta && <p className={cn("num text-[9px]", h.delta.startsWith("+") ? "text-jade" : h.delta.startsWith("-") ? "text-ember" : "text-cream/56")}>{h.delta}</p>}
                     </div>
                   ))}
                 </div>
@@ -120,26 +129,20 @@ export default function Reports() {
       >
         {preview && (
           <div className="space-y-4">
-            <p className="num text-[10.5px] text-cream/40">{preview.date} · {preview.pages} pages · Agent Reporting</p>
+            <p className="num text-[10.5px] text-cream/60">{preview.date} · {preview.pages} pages · Agent Reporting</p>
             <p className="text-[13px] leading-relaxed text-cream/65">{preview.summary}</p>
             <div className="grid grid-cols-3 gap-2">
               {preview.highlights.map((h) => (
                 <div key={h.label} className="rounded-[11px] border border-[var(--hairline)] bg-[var(--surface-2)] p-3">
-                  <p className="text-[8.5px] uppercase tracking-[0.1em] text-cream/30">{h.label}</p>
+                  <p className="text-[8.5px] uppercase tracking-[0.1em] text-cream/52">{h.label}</p>
                   <p className="num mt-1 text-[13px] font-semibold">{h.value}</p>
-                  {h.delta && <p className="num mt-0.5 text-[9.5px] text-cream/40">{h.delta}</p>}
+                  {h.delta && <p className="num mt-0.5 text-[9.5px] text-cream/60">{h.delta}</p>}
                 </div>
               ))}
             </div>
             <div className="rounded-[12px] border border-[var(--hairline)] bg-ink-950/50 p-4">
               <p className="card-eyebrow mb-3">Tendance — 7 dernières périodes</p>
               <Sparkline data={preview.trend} width={440} height={70} className="w-full" />
-            </div>
-            <div className="rounded-[11px] border border-champagne-500/15 bg-champagne-500/[0.04] px-3.5 py-3">
-              <p className="text-[11.5px] leading-relaxed text-cream/55">
-                <span className="font-semibold text-champagne-300">Note de l'agent — </span>
-                La dynamique reste portée par les clients VIP. Surveiller les impayés (2,94 M XAF) et l'escalade opérationnelle REQ-2477.
-              </p>
             </div>
           </div>
         )}
