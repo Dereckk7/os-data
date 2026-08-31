@@ -2,7 +2,7 @@
  * Visualisations DATA OS — minimales. Couleurs pilotées par variables
  * CSS (suit Dark / Light / Comfort).
  */
-import { useId } from "react";
+import { memo, useId } from "react";
 import { cn } from "../lib/services";
 
 interface SparklineProps {
@@ -14,7 +14,7 @@ interface SparklineProps {
   className?: string;
 }
 
-export function Sparkline({ data, width = 96, height = 30, strokeWidth = 1.5, fill = true, className }: SparklineProps) {
+export const Sparkline = memo(function Sparkline({ data, width = 96, height = 30, strokeWidth = 1.5, fill = true, className }: SparklineProps) {
   const gid = useId().replace(/[^a-zA-Z0-9]/g, "");
   // Garde-fou : on ne garde que des nombres finis (des données réelles
   // peuvent contenir NaN/undefined) — aucun attribut SVG ne reçoit NaN.
@@ -50,7 +50,7 @@ export function Sparkline({ data, width = 96, height = 30, strokeWidth = 1.5, fi
       <circle cx={last[0]} cy={last[1]} r="2" className="spark-dot" />
     </svg>
   );
-}
+});
 
 interface MiniBarsProps {
   ["data"]: number[];
@@ -58,7 +58,7 @@ interface MiniBarsProps {
   className?: string;
 }
 
-export function MiniBars({ data, height = 44, className }: MiniBarsProps) {
+export const MiniBars = memo(function MiniBars({ data, height = 44, className }: MiniBarsProps) {
   const clean = (Array.isArray(data) ? data : []).filter((n): n is number => Number.isFinite(n));
   const max = Math.max(...clean, 1);
   return (
@@ -72,4 +72,4 @@ export function MiniBars({ data, height = 44, className }: MiniBarsProps) {
       ))}
     </div>
   );
-}
+});

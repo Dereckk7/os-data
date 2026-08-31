@@ -2,7 +2,7 @@
  * Composants transverses : reveal, skeletons, états vides/erreur,
  * toggles, avatars, timeline, nombres animés, statuts d'agents…
  */
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { memo, useEffect, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, Inbox } from "lucide-react";
 import { cn } from "../lib/services";
@@ -188,7 +188,7 @@ const avatarPalette = [
   "bg-ink-600/40 text-cream/70 border-white/10",
   "bg-ember/12 text-ember border-ember/25",
 ];
-export function Avatar({ initials, name = "", size = 32, className }: { initials: string; name?: string; size?: number; className?: string }) {
+export const Avatar = memo(function Avatar({ initials, name = "", size = 32, className }: { initials: string; name?: string; size?: number; className?: string }) {
   const idx = Math.abs([...name].reduce((acc, c) => acc + c.charCodeAt(0), 0)) % avatarPalette.length;
   return (
     <span
@@ -199,14 +199,14 @@ export function Avatar({ initials, name = "", size = 32, className }: { initials
       {initials}
     </span>
   );
-}
+});
 
 /* ————— Badges métier ————— */
 const statusTone: Record<RequestStatus, Tone> = {
   "En recherche": "gold", "À valider": "warning", "En attente client": "neutral",
   "Confirmée": "success", "En retard": "danger", "Traitée": "neutral",
 };
-export function StatusBadge({ status, pulse }: { status: RequestStatus; pulse?: boolean }) {
+export const StatusBadge = memo(function StatusBadge({ status, pulse }: { status: RequestStatus; pulse?: boolean }) {
   // Repli sûr : un statut hors de l'ensemble attendu retombe sur "neutral"
   // (jamais de crash / de tone undefined).
   const tone = statusTone[status] ?? "neutral";
@@ -215,12 +215,12 @@ export function StatusBadge({ status, pulse }: { status: RequestStatus; pulse?: 
       {status}
     </GlassBadge>
   );
-}
+});
 
 const priorityTone: Record<Priority, Tone> = { Critique: "danger", Haute: "warning", Normale: "neutral", Basse: "neutral" };
-export function PriorityBadge({ priority }: { priority: Priority }) {
+export const PriorityBadge = memo(function PriorityBadge({ priority }: { priority: Priority }) {
   return <GlassBadge tone={priorityTone[priority]}>{priority}</GlassBadge>;
-}
+});
 
 /* ————— Statuts d'agents ————— */
 const agentStatusMeta: Record<AgentStatus, { tone: Tone; symbol: string; label: string }> = {
@@ -230,7 +230,7 @@ const agentStatusMeta: Record<AgentStatus, { tone: Tone; symbol: string; label: 
   "En attente": { tone: "warning", symbol: "○", label: "En attente" },
   "Erreur": { tone: "danger", symbol: "!", label: "Attention" },
 };
-export function AgentStatusBadge({ status, withSymbol = true }: { status: AgentStatus; withSymbol?: boolean }) {
+export const AgentStatusBadge = memo(function AgentStatusBadge({ status, withSymbol = true }: { status: AgentStatus; withSymbol?: boolean }) {
   const m = agentStatusMeta[status];
   return (
     <GlassBadge tone={m.tone} dot={status === "Opérationnel"} pulse={status === "Opérationnel"}>
@@ -238,7 +238,7 @@ export function AgentStatusBadge({ status, withSymbol = true }: { status: AgentS
       {m.label}
     </GlassBadge>
   );
-}
+});
 
 /* ————— Segmented control ————— */
 export function SegmentedControl<T extends string>({ options, value, onChange, className, size = "md" }: {

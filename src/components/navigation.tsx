@@ -3,7 +3,7 @@
  * switcher d'organisation, groupes dépliables, agents), header inset,
  * bottom nav mobile, command palette ⌘K, aide, thème.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -548,6 +548,20 @@ function HelpModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   );
 }
 
+/* ————— Repli de contenu pendant le chargement d'un chunk de page ————— */
+function ContentFallback() {
+  return (
+    <div className="space-y-5" aria-hidden="true">
+      <div className="skeleton h-8 w-52" />
+      <div className="skeleton h-24 w-full" />
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="skeleton h-40" />
+        <div className="skeleton h-40" />
+      </div>
+    </div>
+  );
+}
+
 /* ————— Coquille applicative ————— */
 export function AppShell() {
   const [paletteOpen, setPaletteOpen] = useState(false);
@@ -615,7 +629,9 @@ export function AppShell() {
             className="mx-auto w-full max-w-[1160px] flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-8 lg:pb-16"
           >
             <PageErrorBoundary key={location.pathname}>
-              <Outlet />
+              <Suspense fallback={<ContentFallback />}>
+                <Outlet />
+              </Suspense>
             </PageErrorBoundary>
           </motion.main>
         </AnimatePresence>
