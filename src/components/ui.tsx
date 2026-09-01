@@ -185,7 +185,7 @@ const avatarPalette = [
   "bg-champagne-500/15 text-champagne-300 border-champagne-500/25",
   "bg-jade/12 text-jade border-jade/25",
   "bg-saffron/12 text-saffron border-saffron/25",
-  "bg-ink-600/40 text-cream/70 border-white/10",
+  "bg-ink-600/40 text-cream/70 border-[var(--hairline)]",
   "bg-ember/12 text-ember border-ember/25",
 ];
 export const Avatar = memo(function Avatar({ initials, name = "", size = 32, className }: { initials: string; name?: string; size?: number; className?: string }) {

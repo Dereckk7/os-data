@@ -199,7 +199,6 @@ function UserMenu({ onHelp }: { onHelp: () => void }) {
 /* ————— Corps de la sidebar ————— */
 function SidebarBody({ onHelp }: { onHelp: () => void }) {
   const { sources } = useSourcesState();
-  const requestsQ = useRequests(200);
   const agentsQ = useAgents(200);
   const navigate = useNavigate();
   const hasError = sources.some((s) => s.status === "error");

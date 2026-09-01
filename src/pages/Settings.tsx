@@ -9,7 +9,7 @@ import { mockOrganization } from "../lib/mock";
 import { usePrefs, useTheme, type ContrastPref, type DensityPref, type FontPref, type MotionPref, type ThemeMode } from "../lib/theme";
 import { GlassBadge, GlassButton, GlassInput, GlassModal, GlassSelect, GlassSurface } from "../components/glass";
 import { AgentGlyph } from "../components/icons";
-import { Avatar, FadeSwitch, Reveal, Toggle } from "../components/ui";
+import { Avatar, EmptyState, FadeSwitch, Reveal, Toggle } from "../components/ui";
 import { toast } from "../components/toast";
 
 import type { Tone } from "../lib/types";
@@ -492,17 +492,10 @@ export default function Settings() {
 
             {section === "journal" && (
               <div className="glass-sunken p-4">
-                <pre className="num overflow-x-auto text-[10.5px] leading-[1.9] text-cream/55">
-{`09:42:18  auth        connexion réussie             marie@maison-ekwata.com
-09:42:05  ag-resa     options trouvées REQ-2481     4 options · 2 présélectionnées
-09:31:44  ag-ops      chauffeur confirmé            Riviera Prestige · 4,9/5
-09:18:02  ag-rep      rapport quotidien généré      6 pages · 08:00
-08:57:31  ag-ci       demande qualifiée             REQ-2481 · priorité haute
-08:44:10  ag-ops      escalade REQ-2477             chauffeur non assigné
-08:20:55  ag-ci       préférences appliquées        REQ-2479 · étage élevé
-08:02:47  sync        crm synchronisé               12 480 données vérifiées
-07:31:04  sync        whatsapp FAILED               token expiré · alerte envoyée`}
-                </pre>
+                <EmptyState
+                  title="Aucun événement récent"
+                  desc="Les événements du système apparaîtront ici dès qu'ils seront disponibles."
+                />
                 <Link to="/activity" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-cream/60 transition-colors hover:text-cream">
                   Ouvrir le centre d'activité <ArrowUpRight size={12} strokeWidth={1.75} />
                 </Link>

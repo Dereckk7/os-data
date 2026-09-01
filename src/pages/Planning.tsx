@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { cn, useRequests } from "../lib/services";
 import type { RequestStatus } from "../lib/types";
 import { GlassBadge, GlassSurface } from "../components/glass";
-import { FadeSwitch, Reveal, SegmentedControl, Skeleton, StatusBadge } from "../components/ui";
+import { EmptyState, FadeSwitch, Reveal, SegmentedControl, Skeleton, StatusBadge } from "../components/ui";
 
 
 type View = "Jour" | "Semaine" | "Mois";
@@ -11,16 +11,6 @@ type View = "Jour" | "Semaine" | "Mois";
 interface CalEvent {
   id: string; day: number; time: string; title: string; kind: "demande" | "rdv"; ref?: string; status?: RequestStatus;
 }
-
-const APPOINTMENTS: CalEvent[] = [
-  { id: "ap-1", day: 13, time: "10:00", title: "Briefing équipe opérations", kind: "rdv" },
-  { id: "ap-2", day: 14, time: "09:30", title: "Point trimestriel — Alex Williams", kind: "rdv" },
-  { id: "ap-3", day: 15, time: "15:00", title: "Visite rooftop — événement Dupuis", kind: "rdv" },
-  { id: "ap-4", day: 16, time: "06:15", title: "Départ vol privé — Nkoulou", kind: "rdv" },
-  { id: "ap-5", day: 18, time: "12:00", title: "Arrivée Groupe Meka — 12 collab.", kind: "rdv" },
-  { id: "ap-6", day: 20, time: "11:00", title: "Revue partenaires transport", kind: "rdv" },
-  { id: "ap-7", day: 24, time: "18:00", title: "Lancement produit — H. Dupuis", kind: "rdv" },
-];
 
 export default function Planning() {
   const requestsQ = useRequests(450);
@@ -32,7 +22,7 @@ export default function Planning() {
     const fromRequests: CalEvent[] = requestsQ.data
       .filter((r) => r.status !== "Traitée")
       .map((r) => ({ id: r.id, day: r.day, time: r.time, title: r.title, kind: "demande", ref: r.ref, status: r.status }));
-    return [...APPOINTMENTS, ...fromRequests].sort((a, b) => a.day - b.day || (a.time ?? "").localeCompare(b.time ?? ""));
+    return fromRequests.sort((a, b) => a.day - b.day || (a.time ?? "").localeCompare(b.time ?? ""));
   }, [requestsQ.data]);
 
   const now = new Date();
@@ -65,6 +55,13 @@ export default function Planning() {
       <FadeSwitch k={view}>
       {requestsQ.loading ? (
         <Skeleton className="h-96" />
+      ) : events.length === 0 ? (
+          <GlassSurface className="p-5 sm:p-6">
+            <EmptyState
+              title="Aucun rendez-vous planifié"
+              desc="Les demandes et échéances à venir apparaîtront ici dès qu'elles seront disponibles."
+            />
+          </GlassSurface>
       ) : view === "Jour" ? (
           <GlassSurface className="p-5 sm:p-6">
             <div className="mb-4 flex items-center justify-between">
