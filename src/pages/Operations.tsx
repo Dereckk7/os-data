@@ -46,7 +46,7 @@ export default function Operations() {
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Temps réel</p>
-            <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Activité opérationnelle</h1>
+            <h1 className="mt-2 t-title">Activité opérationnelle</h1>
             <p className="mt-1.5 text-[13.5px] text-cream/50">Chaque action de chaque agent, tracée et horodatée.</p>
           </div>
           <GlassBadge tone="success" dot pulse className="mb-1">En direct</GlassBadge>
@@ -57,7 +57,7 @@ export default function Operations() {
         <section aria-label="Opérations en cours">
           <div className="mb-3 flex items-center justify-between gap-3">
             <h2 className="text-[15px] font-semibold tracking-tight">Opérations en cours</h2>
-            <span className="num text-[9.5px] uppercase tracking-[0.14em] text-cream/30">{mockOpsCards.length} chantiers · mise à jour en direct</span>
+            <span className="num text-[9.5px] uppercase tracking-[0.14em] text-cream/52">{mockOpsCards.length} chantiers · mise à jour en direct</span>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {mockOpsCards.map((c, i) => {
@@ -90,7 +90,7 @@ export default function Operations() {
               key={a} onClick={() => setFilter(a)}
               className={cn(
                 "h-9 rounded-full border px-4 text-xs font-medium transition-all duration-200",
-                filter === a ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-white/[0.08] bg-white/[0.02] text-cream/55 hover:border-white/[0.15] hover:text-cream/85"
+                filter === a ? "border-transparent bg-[color-mix(in_srgb,var(--color-cream)_10%,transparent)] text-cream" : "border-transparent bg-[var(--surface-2)] text-cream/55 shadow-[var(--highlight-top)] hover:text-cream/85"
               )}
             >
               {a}
@@ -122,7 +122,7 @@ export default function Operations() {
                       <span className="text-[11.5px] text-cream/50">{s.k}</span>
                       <span className="num text-[12.5px] font-semibold">{s.v}</span>
                     </div>
-                    <div className="mt-1.5 h-[3px] overflow-hidden rounded-full bg-white/[0.06]">
+                    <div className="mt-1.5 h-[3px] overflow-hidden rounded-full bg-[var(--surface-3)]">
                       <div className="h-full rounded-full bg-champagne-500/70 transition-all duration-1000" style={{ width: `${s.pct}%` }} />
                     </div>
                   </div>
@@ -140,11 +140,11 @@ export default function Operations() {
                       <span className={cn("h-[7px] w-[7px] rounded-full", a.status === "Opérationnel" ? "bg-jade pulse-dot" : "bg-saffron/80")} />
                       <span className="text-[12.5px] font-medium">{a.name}</span>
                     </span>
-                    <span className="num text-[11px] text-cream/45"><AnimatedNumber value={`${a.actionsToday} actions`} /></span>
+                    <span className="num text-[11px] text-cream/62"><AnimatedNumber value={`${a.actionsToday} actions`} /></span>
                   </li>
                 ))}
               </ul>
-              <p className="num mt-4 border-t border-white/[0.06] pt-3 text-[9.5px] uppercase tracking-[0.12em] text-cream/30">
+              <p className="num mt-4 border-t border-[var(--card-divider)] pt-3 text-[9.5px] uppercase tracking-[0.12em] text-cream/52">
                 Prochaine synchro complète · 10:00
               </p>
             </GlassPanel>

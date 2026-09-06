@@ -37,7 +37,7 @@ export default function Integrations() {
       <Reveal>
         <header>
           <p className="eyebrow">Écosystème</p>
-          <h1 className="mt-2 text-[24px] font-semibold tracking-tight">Intégrations</h1>
+          <h1 className="mt-2 t-title">Intégrations</h1>
           <p className="mt-1.5 text-[13.5px] text-cream/50">Reliez vos outils métier — les données circulent dans les deux sens.</p>
         </header>
       </Reveal>
@@ -49,7 +49,7 @@ export default function Integrations() {
               key={f} onClick={() => setFilter(f)}
               className={cn(
                 "h-9 shrink-0 rounded-full border px-4 text-xs font-medium transition-all duration-200",
-                filter === f ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-white/[0.08] bg-white/[0.02] text-cream/55 hover:border-white/[0.15] hover:text-cream/85"
+                filter === f ? "border-cream/30 bg-cream/[0.08] text-cream" : "border-[var(--hairline)] bg-[var(--surface-2)] text-cream/55 hover:border-[var(--hairline-strong)] hover:text-cream/85"
               )}
             >
               {f}
@@ -72,16 +72,16 @@ export default function Integrations() {
             <Reveal key={it.id} delay={0.04 * i}>
               <GlassSurface sweep className="group flex h-full flex-col p-5">
                 <div className="flex items-start justify-between gap-3">
-                  <span className="grid h-10 w-10 place-items-center rounded-[11px] border border-white/[0.09] bg-ink-950/60">
+                  <span className="grid h-10 w-10 place-items-center rounded-[11px] border border-[var(--hairline)] bg-ink-950/60">
                     <span className="num text-[11px] font-semibold tracking-tight text-cream/75">{it.monogram}</span>
                   </span>
                   <GlassBadge tone={statusTone(it.status)} dot pulse={it.status === "Synchronisation"}>{it.status}</GlassBadge>
                 </div>
                 <p className="mt-3.5 text-[14px] font-semibold tracking-tight">{it.name}</p>
-                <p className="num mt-0.5 text-[9px] uppercase tracking-[0.12em] text-cream/35">{it.category}</p>
+                <p className="num mt-0.5 text-[9px] uppercase tracking-[0.12em] text-cream/56">{it.category}</p>
                 <p className="mt-1.5 text-xs leading-relaxed text-cream/50">{it.description}</p>
-                <div className="mt-3.5 flex items-center justify-between border-t border-white/[0.06] pt-3">
-                  <span className="num text-[10px] text-cream/40">
+                <div className="mt-3.5 flex items-center justify-between border-t border-[var(--card-divider)] pt-3">
+                  <span className="num text-[10px] text-cream/60">
                     {it.records > 0 ? `${fmtInt(it.records)} données` : "Aucune donnée"} · {it.lastSync}
                   </span>
                 </div>
@@ -131,7 +131,7 @@ export default function Integrations() {
               { k: "Mode", v: "Bidirectionnel" },
             ].map((row) => (
               <div key={row.k} className="flex items-center justify-between gap-3">
-                <span className="text-xs text-cream/45">{row.k}</span>
+                <span className="text-xs text-cream/62">{row.k}</span>
                 <span className="num text-xs font-medium text-cream/80">{row.v}</span>
               </div>
             ))}
@@ -141,7 +141,7 @@ export default function Integrations() {
             {configTarget.status === "Erreur"
               ? "Le jeton d'accès a expiré. Relancez l'autorisation sécurisée pour rétablir la synchronisation."
               : "Autorisez DATA OS à accéder à vos données. Aucune information n'est partagée en dehors de votre organisation."}
-            <span className="mt-2 block text-[10.5px] text-cream/35">Environnement de démonstration — connexion simulée.</span>
+            <span className="mt-2 block text-[10.5px] text-cream/56">Environnement de démonstration — connexion simulée.</span>
           </p>
         ))}
       </GlassModal>

@@ -2,7 +2,7 @@
  * Composants transverses : reveal, skeletons, états vides/erreur,
  * toggles, avatars, timeline, nombres animés, statuts d'agents…
  */
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { memo, useEffect, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, Inbox } from "lucide-react";
 import { cn } from "../lib/services";
@@ -33,17 +33,14 @@ export function FadeSwitch({ k, children, className }: { k: string; children: Re
 }
 
 /* ————— Révélation au scroll ————— */
-export function Reveal({ children, delay = 0, y = 8, className }: { children: ReactNode; delay?: number; y?: number; className?: string }) {
+export function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; y?: number; className?: string }) {
+  // Rendu direct : la visibilité du contenu ne dépend d'AUCUNE animation.
+  // Un fondu d'entrée purement CSS (classe .reveal-in) qui, s'il ne s'exécute
+  // pas, laisse le contenu à opacity:1 — jamais masqué.
   return (
-    <motion.div
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
-      transition={{ duration: 0.5, delay, ease: EASE }}
-      className={className}
-    >
+    <div className={["reveal-in", className].filter(Boolean).join(" ")} style={delay ? { animationDelay: `${delay}s` } : undefined}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -145,7 +142,7 @@ export function EmptyState({ icon, title, desc, action, className }: {
 }) {
   return (
     <div className={cn("flex flex-col items-center px-6 py-14 text-center", className)}>
-      <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-white/[0.08] bg-white/[0.03] text-cream/40">
+      <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-[var(--hairline)] bg-[var(--surface-2)] text-cream/60">
         {icon ?? <Inbox size={18} strokeWidth={1.5} />}
       </span>
       <p className="mt-4 text-[15px] font-semibold">{title}</p>
@@ -160,7 +157,7 @@ export function ErrorState({ title, desc, onRetry, className }: {
 }) {
   return (
     <div className={cn("flex flex-col items-center px-6 py-14 text-center", className)}>
-      <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-ember/25 bg-ember/10 text-[#e28d85]">
+      <span className="grid h-11 w-11 place-items-center rounded-[12px] border border-ember/25 bg-ember/10 text-ember">
         <AlertTriangle size={18} strokeWidth={1.5} />
       </span>
       <p className="mt-4 text-[15px] font-semibold">{title}</p>
@@ -176,7 +173,7 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
     <button
       type="button" role="switch" aria-checked={checked} aria-label={label}
       onClick={() => onChange(!checked)}
-      className={cn("relative h-[22px] w-10 shrink-0 rounded-full border transition-colors duration-300", checked ? "border-jade/40 bg-jade/35" : "border-white/[0.1] bg-white/[0.06]")}
+      className={cn("relative h-[22px] w-10 shrink-0 rounded-full border transition-colors duration-300", checked ? "border-jade/40 bg-jade/35" : "border-[var(--hairline-strong)] bg-[var(--surface-3)]")}
     >
       <span className={cn("absolute top-1/2 h-[16px] w-[16px] -translate-y-1/2 rounded-full transition-all duration-300", checked ? "left-[21px] bg-jade" : "left-[3px] bg-cream/45")} />
     </button>
@@ -188,10 +185,10 @@ const avatarPalette = [
   "bg-champagne-500/15 text-champagne-300 border-champagne-500/25",
   "bg-jade/12 text-jade border-jade/25",
   "bg-saffron/12 text-saffron border-saffron/25",
-  "bg-ink-600/40 text-cream/70 border-white/10",
-  "bg-ember/12 text-[#e28d85] border-ember/25",
+  "bg-ink-600/40 text-cream/70 border-[var(--hairline)]",
+  "bg-ember/12 text-ember border-ember/25",
 ];
-export function Avatar({ initials, name = "", size = 32, className }: { initials: string; name?: string; size?: number; className?: string }) {
+export const Avatar = memo(function Avatar({ initials, name = "", size = 32, className }: { initials: string; name?: string; size?: number; className?: string }) {
   const idx = Math.abs([...name].reduce((acc, c) => acc + c.charCodeAt(0), 0)) % avatarPalette.length;
   return (
     <span
@@ -202,25 +199,28 @@ export function Avatar({ initials, name = "", size = 32, className }: { initials
       {initials}
     </span>
   );
-}
+});
 
 /* ————— Badges métier ————— */
 const statusTone: Record<RequestStatus, Tone> = {
   "En recherche": "gold", "À valider": "warning", "En attente client": "neutral",
   "Confirmée": "success", "En retard": "danger", "Traitée": "neutral",
 };
-export function StatusBadge({ status, pulse }: { status: RequestStatus; pulse?: boolean }) {
+export const StatusBadge = memo(function StatusBadge({ status, pulse }: { status: RequestStatus; pulse?: boolean }) {
+  // Repli sûr : un statut hors de l'ensemble attendu retombe sur "neutral"
+  // (jamais de crash / de tone undefined).
+  const tone = statusTone[status] ?? "neutral";
   return (
-    <GlassBadge tone={statusTone[status]} dot pulse={pulse && (status === "En recherche" || status === "En retard")}>
+    <GlassBadge tone={tone} dot pulse={pulse && (status === "En recherche" || status === "En retard")}>
       {status}
     </GlassBadge>
   );
-}
+});
 
 const priorityTone: Record<Priority, Tone> = { Critique: "danger", Haute: "warning", Normale: "neutral", Basse: "neutral" };
-export function PriorityBadge({ priority }: { priority: Priority }) {
+export const PriorityBadge = memo(function PriorityBadge({ priority }: { priority: Priority }) {
   return <GlassBadge tone={priorityTone[priority]}>{priority}</GlassBadge>;
-}
+});
 
 /* ————— Statuts d'agents ————— */
 const agentStatusMeta: Record<AgentStatus, { tone: Tone; symbol: string; label: string }> = {
@@ -230,7 +230,7 @@ const agentStatusMeta: Record<AgentStatus, { tone: Tone; symbol: string; label: 
   "En attente": { tone: "warning", symbol: "○", label: "En attente" },
   "Erreur": { tone: "danger", symbol: "!", label: "Attention" },
 };
-export function AgentStatusBadge({ status, withSymbol = true }: { status: AgentStatus; withSymbol?: boolean }) {
+export const AgentStatusBadge = memo(function AgentStatusBadge({ status, withSymbol = true }: { status: AgentStatus; withSymbol?: boolean }) {
   const m = agentStatusMeta[status];
   return (
     <GlassBadge tone={m.tone} dot={status === "Opérationnel"} pulse={status === "Opérationnel"}>
@@ -238,7 +238,7 @@ export function AgentStatusBadge({ status, withSymbol = true }: { status: AgentS
       {m.label}
     </GlassBadge>
   );
-}
+});
 
 /* ————— Segmented control ————— */
 export function SegmentedControl<T extends string>({ options, value, onChange, className, size = "md" }: {
@@ -246,7 +246,7 @@ export function SegmentedControl<T extends string>({ options, value, onChange, c
   className?: string; size?: "sm" | "md";
 }) {
   return (
-    <div role="tablist" className={cn("inline-flex items-center gap-0.5 rounded-[12px] border border-white/[0.07] bg-white/[0.03] p-1", className)}>
+    <div role="tablist" className={cn("inline-flex items-center gap-0.5 rounded-[12px] border border-[var(--hairline)] bg-[var(--surface-2)] p-1", className)}>
       {options.map((o) => {
         const active = o.value === value;
         return (
@@ -255,7 +255,7 @@ export function SegmentedControl<T extends string>({ options, value, onChange, c
             className={cn(
               "inline-flex items-center gap-1.5 rounded-[9px] font-medium transition-all duration-200",
               size === "sm" ? "h-7 px-2.5 text-[11px]" : "h-8 px-3 text-xs",
-              active ? "bg-cream text-ink-950 shadow-[0_2px_10px_rgba(0,0,0,0.15)]" : "text-cream/45 hover:text-cream/80"
+              active ? "bg-cream text-ink-950 shadow-[0_2px_10px_rgba(0,0,0,0.15)]" : "text-cream/62 hover:text-cream/80"
             )}
           >
             {o.icon}
@@ -273,23 +273,23 @@ export function ActivityFeed({ events, className }: { events: ActivityEvent[]; c
     <ol className={cn("space-y-0", className)}>
       {events.map((e, i) => (
         <li key={e.id} className="grid grid-cols-[52px_14px_1fr] gap-x-1">
-          <span className={cn("num pt-[3px] text-right text-[10.5px] leading-5", e.live ? "text-jade" : "text-cream/40")}>{e.time}</span>
+          <span className={cn("num pt-[3px] text-right text-[10.5px] leading-5", e.live ? "text-jade" : "text-cream/60")}>{e.time}</span>
           <span className="relative flex justify-center">
             <span
               className={cn(
                 "z-10 mt-[7px] h-[7px] w-[7px] rounded-full border",
-                e.live ? "border-jade/60 bg-jade pulse-dot" : e.agent ? "border-champagne-500/50 bg-champagne-500/25" : "border-white/20 bg-white/[0.07]"
+                e.live ? "border-jade/60 bg-jade pulse-dot" : e.agent ? "border-champagne-500/50 bg-champagne-500/25" : "border-white/20 bg-[var(--surface-3)]"
               )}
             />
-            {i < events.length - 1 && <span className="absolute top-0 bottom-0 w-px bg-white/[0.07]" aria-hidden />}
+            {i < events.length - 1 && <span className="absolute top-0 bottom-0 w-px bg-[var(--surface-3)]" aria-hidden />}
           </span>
           <span className={cn("block", i < events.length - 1 ? "pb-4" : "pb-0.5")}>
             <span className={cn("block text-[13px] font-medium leading-5", e.live && "text-cream")}>
               {e.title}
               {e.live && <span className="num ml-2 align-middle text-[9px] uppercase tracking-[0.14em] text-jade/80">direct</span>}
             </span>
-            {e.desc && <span className="mt-0.5 block text-xs leading-relaxed text-cream/45">{e.desc}</span>}
-            {e.agent && <span className="num mt-1 block text-[9.5px] uppercase tracking-[0.12em] text-cream/30">{e.agent}</span>}
+            {e.desc && <span className="mt-0.5 block text-xs leading-relaxed text-cream/62">{e.desc}</span>}
+            {e.agent && <span className="num mt-1 block text-[9.5px] uppercase tracking-[0.12em] text-cream/52">{e.agent}</span>}
           </span>
         </li>
       ))}

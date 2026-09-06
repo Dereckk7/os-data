@@ -12,7 +12,7 @@ import { prefersReducedMotion, useTheme } from "../lib/theme";
 type Preset = Partial<DotFieldProps>;
 
 const PRESETS: Record<string, Preset> = {
-  calm:       { dotSpacing: 26, bulgeStrength: 44, cursorRadius: 340, sparkle: false, waveAmplitude: 0,   opacity: 1 },
+  calm:       { dotSpacing: 26, bulgeStrength: 44, cursorRadius: 340, sparkle: false, waveAmplitude: 0,   opacity: 0.7 },
   structured: { dotSpacing: 22, bulgeStrength: 52, cursorRadius: 320, sparkle: false, waveAmplitude: 0,   opacity: 1 },
   dynamic:    { dotSpacing: 24, bulgeStrength: 58, cursorRadius: 360, sparkle: true,  waveAmplitude: 0,   opacity: 1 },
   quiet:      { dotSpacing: 30, bulgeStrength: 30, cursorRadius: 300, sparkle: false, waveAmplitude: 0,   opacity: 0.8 },
@@ -77,8 +77,8 @@ export default function AmbientDataBackground() {
   const isLight = resolved === "light";
   const preset = PRESETS[mode] ?? PRESETS.calm;
   const colors = isLight
-    ? { gradientFrom: "rgba(15,23,42,0.10)", gradientTo: "rgba(140,111,46,0.045)", glowColor: "rgba(140,111,46,0.07)" }
-    : { gradientFrom: "rgba(244,241,232,0.13)", gradientTo: "rgba(201,178,124,0.04)", glowColor: "rgba(201,178,124,0.07)" };
+    ? { gradientFrom: "rgba(28,26,22,0.07)", gradientTo: "rgba(168,138,99,0.05)", glowColor: "rgba(168,138,99,0.06)" }
+    : { gradientFrom: "rgba(244,242,236,0.12)", gradientTo: "rgba(196,168,130,0.04)", glowColor: "rgba(196,168,130,0.07)" };
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">

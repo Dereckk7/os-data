@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, type ReactNode } from "react";
 import { HashRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import {
   AuthProvider, ApprovalsProvider, getOnboarded, SourcesProvider, useAuth,
@@ -8,27 +8,39 @@ import { Toaster } from "./components/toast";
 import AmbientDataBackground from "./components/background";
 import { AppShell } from "./components/navigation";
 
-import Login from "./pages/Login";
-import Onboarding from "./pages/Onboarding";
-import Dashboard from "./pages/Dashboard";
-import Requests from "./pages/Requests";
-import RequestDetail from "./pages/RequestDetail";
-import Clients from "./pages/Clients";
-import ClientDetail from "./pages/ClientDetail";
-import Agents from "./pages/Agents";
-import AgentDetail from "./pages/AgentDetail";
-import Operations from "./pages/Operations";
-import Insights from "./pages/Insights";
-import Reports from "./pages/Reports";
-import Sources from "./pages/Sources";
-import Integrations from "./pages/Integrations";
-import Documents from "./pages/Documents";
-import Activity from "./pages/Activity";
-import Cowork from "./pages/Cowork";
-import Tasks from "./pages/Tasks";
-import Planning from "./pages/Planning";
-import Validation from "./pages/Validation";
-import Settings from "./pages/Settings";
+/* Code-splitting : chaque page devient un chunk chargé à la demande, ce qui
+   allège le bundle initial. Les routes et la logique sont inchangées ;
+   Suspense affiche un repli le temps du chargement du chunk. */
+const Login = lazy(() => import("./pages/Login"));
+const Onboarding = lazy(() => import("./pages/Onboarding"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Requests = lazy(() => import("./pages/Requests"));
+const RequestDetail = lazy(() => import("./pages/RequestDetail"));
+const Clients = lazy(() => import("./pages/Clients"));
+const ClientDetail = lazy(() => import("./pages/ClientDetail"));
+const Agents = lazy(() => import("./pages/Agents"));
+const AgentDetail = lazy(() => import("./pages/AgentDetail"));
+const Operations = lazy(() => import("./pages/Operations"));
+const Insights = lazy(() => import("./pages/Insights"));
+const Reports = lazy(() => import("./pages/Reports"));
+const Sources = lazy(() => import("./pages/Sources"));
+const Integrations = lazy(() => import("./pages/Integrations"));
+const Documents = lazy(() => import("./pages/Documents"));
+const Activity = lazy(() => import("./pages/Activity"));
+const Cowork = lazy(() => import("./pages/Cowork"));
+const Tasks = lazy(() => import("./pages/Tasks"));
+const Planning = lazy(() => import("./pages/Planning"));
+const Validation = lazy(() => import("./pages/Validation"));
+const Settings = lazy(() => import("./pages/Settings"));
+
+/* Repli plein écran (routes hors coquille : Login / Onboarding). */
+function RouteFallback() {
+  return (
+    <div className="relative z-10 grid min-h-screen place-items-center">
+      <span className="pulse-dot num text-[10px] uppercase tracking-[0.24em] text-cream/50">Chargement…</span>
+    </div>
+  );
+}
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { user, booting } = useAuth();
@@ -70,6 +82,7 @@ export default function App() {
               <HashRouter>
                 <AmbientDataBackground />
                 <Toaster />
+                <Suspense fallback={<RouteFallback />}>
                 <Routes>
                   <Route path="/login" element={<Login />} />
                   <Route
@@ -110,6 +123,7 @@ export default function App() {
                   </Route>
                   <Route path="*" element={<Navigate to="/dashboard" replace />} />
                 </Routes>
+                </Suspense>
               </HashRouter>
             </ApprovalsProvider>
           </SourcesProvider>

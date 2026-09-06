@@ -6,11 +6,11 @@
 export type BgMode = "calm" | "structured" | "dynamic" | "quiet" | "still" | "lively";
 
 const ROUTE_MODES: Record<string, BgMode> = {
-  "/dashboard": "calm",
+  "/dashboard": "calm",     // Overview — très calme, texture quasi invisible
   "/operations": "structured",
   "/agents": "dynamic",
-  "/insights": "quiet",
-  "/reports": "still",
+  "/insights": "structured", // Insights — un peu plus « analytique »
+  "/reports": "still",       // Rapports — calme maximal, lisibilité prioritaire
   "/settings": "still",
   "/cowork": "lively",
 };
