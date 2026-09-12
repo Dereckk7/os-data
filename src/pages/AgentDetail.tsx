@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Pause, Play } from "lucide-react";
-import { mockAgents } from "../lib/mock";
 import { cn, useAgents } from "../lib/services";
 import type { AgentStatus } from "../lib/types";
 import { GlassBadge, GlassButton, GlassPanel, GlassSelect, GlassSurface } from "../components/glass";
@@ -19,7 +18,7 @@ export default function AgentDetail() {
   const { id } = useParams<{ id: string }>();
   const agentsQ = useAgents(400);
   const navigate = useNavigate();
-  const agent = useMemo(() => mockAgents.find((a) => a.id === id), [id]);
+  const agent = useMemo(() => agentsQ.data.find((a) => a.id === id), [agentsQ.data, id]);
   const [tab, setTab] = useState<Tab>("Vue d'ensemble");
   const [statusOverride, setStatusOverride] = useState<AgentStatus | null>(null);
   const [enabled, setEnabled] = useState(true);

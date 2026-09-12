@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, Mail, MessageCircle, Phone, Sparkles, Users } from "lucide-react";
-import { mockClients, mockRequests } from "../lib/mock";
-import { cn, fmtMoney, useClients } from "../lib/services";
+import { cn, fmtMoney, useClients, useRequests } from "../lib/services";
 import type { Segment, Tone } from "../lib/types";
 import { GlassBadge, GlassButton, GlassPanel, GlassSurface } from "../components/glass";
 import { ActivityFeed, Avatar, ErrorState, Reveal, Skeleton, StatusBadge } from "../components/ui";
@@ -14,10 +13,11 @@ const channelIcon = { WhatsApp: MessageCircle, Email: Mail, Appel: Phone, "Réun
 export default function ClientDetail() {
   const { id } = useParams<{ id: string }>();
   const clientsQ = useClients(400);
+  const requestsQ = useRequests(400);
   const navigate = useNavigate();
   const [acted, setActed] = useState<Record<string, boolean>>({});
-  const client = useMemo(() => mockClients.find((c) => c.id === id), [id]);
-  const clientRequests = useMemo(() => mockRequests.filter((r) => r.clientId === id), [id]);
+  const client = useMemo(() => clientsQ.data.find((c) => c.id === id), [clientsQ.data, id]);
+  const clientRequests = useMemo(() => requestsQ.data.filter((r) => r.clientId === id), [requestsQ.data, id]);
 
   if (clientsQ.loading) {
     return (

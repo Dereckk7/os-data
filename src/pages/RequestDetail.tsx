@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, Check, MessageCircle } from "lucide-react";
-import { mockRequests } from "../lib/mock";
 import { cn, useRequests } from "../lib/services";
 import { GlassBadge, GlassButton, GlassPanel, GlassSurface } from "../components/glass";
 import { TypeIcon } from "../components/icons";
@@ -12,7 +11,7 @@ export default function RequestDetail() {
   const { id } = useParams<{ id: string }>();
   const requestsQ = useRequests(450);
   const navigate = useNavigate();
-  const request = useMemo(() => mockRequests.find((r) => r.id === id), [id]);
+  const request = useMemo(() => requestsQ.data.find((r) => r.id === id), [requestsQ.data, id]);
   const [selected, setSelected] = useState<string | null>(null);
   const [approved, setApproved] = useState(false);
 
