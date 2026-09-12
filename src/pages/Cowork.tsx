@@ -450,9 +450,9 @@ export default function Cowork() {
         </aside>
 
         <div className="flex min-h-0 flex-col">
-          <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto pb-3 pr-0.5">
+          <div ref={scrollRef} className="min-h-[50vh] flex-1 overflow-y-auto pb-3 pr-0.5">
             {!started ? (
-              <div className="flex h-full flex-col items-center justify-center px-4 text-center">
+              <div className="flex h-full min-h-[60vh] flex-col items-center justify-center px-4 text-center">
                 <span className="grid h-12 w-12 place-items-center rounded-md border border-[var(--hairline)] bg-[var(--surface-2)] text-cream shadow-[var(--highlight-top)]">
                   <LogoMark size={24} />
                 </span>
