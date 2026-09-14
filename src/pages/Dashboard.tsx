@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, ChevronRight, Sparkles } from "lucide-react";
-import { attentionItems, executiveKpis, mockAgents } from "../lib/mock";
-import { cn, todayLabel, useAuth, useInsights, useOperations } from "../lib/services";
+import { attentionItems, executiveKpis } from "../lib/mock";
+import { cn, todayLabel, useAuth, useInsights, useOperations, useAgents } from "../lib/services";
 import type { Kpi } from "../lib/types";
 import { GlassButton } from "../components/glass";
 import { AgentGlyph } from "../components/icons";
@@ -19,12 +19,13 @@ export default function Dashboard() {
   const { user } = useAuth();
   const insightsQ = useInsights(650);
   const operationsQ = useOperations(850);
+  const agentsQ = useAgents(850);
   const navigate = useNavigate();
 
   const firstName = user?.name?.split(" ")[0] ?? "";
   const opportunity = insightsQ.data.find((i) => i.type === "opportunity");
   const recommendation = insightsQ.data.find((i) => i.type === "recommendation");
-  const activeAgents = mockAgents.slice(0, 4);
+  const activeAgents = agentsQ.data.slice(0, 4);
 
   return (
     <div className="space-y-5">

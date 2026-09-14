@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CalendarDays, ChevronRight, Columns, Layers, List, Plus, Search } from "lucide-react";
-import { mockAgents, mockClients } from "../lib/mock";
-import { cn, useRequests } from "../lib/services";
+import { cn, useRequests, useClients, useAgents } from "../lib/services";
 import type { DataRequest, RequestStatus, RequestType } from "../lib/types";
 import { GlassButton, GlassInput, GlassModal, GlassSelect, GlassSurface } from "../components/glass";
 import { TypeIcon } from "../components/icons";
@@ -18,6 +17,8 @@ const BOARD_COLUMNS: RequestStatus[] = ["En recherche", "À valider", "En attent
 
 export default function Requests() {
   const requestsQ = useRequests(600);
+  const clientsQ = useClients(600);
+  const agentsQ = useAgents(600);
   const [added, setAdded] = useState<DataRequest[]>([]);
   const [view, setView] = useState<View>("liste");
   const [filter, setFilter] = useState<Filter>("Tous");
@@ -26,7 +27,7 @@ export default function Requests() {
   const [seq, setSeq] = useState(0);
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({ client: mockClients[0].name, type: "Transfert" as RequestType, desc: "", priority: "Normale" });
+  const [form, setForm] = useState({ client: "", type: "Transfert" as RequestType, desc: "", priority: "Normale" });
 
   const list = useMemo(() => [...added, ...requestsQ.data], [added, requestsQ.data]);
 
@@ -46,7 +47,7 @@ export default function Requests() {
   const validateCount = list.filter((r) => r.status === "À valider").length;
 
   const createRequest = () => {
-    const client = mockClients.find((c) => c.name === form.client);
+    const client = clientsQ.data.find((c) => c.name === form.client);
     const now = new Date();
     const req: DataRequest = {
       id: `req-${Date.now()}`,
@@ -69,7 +70,7 @@ export default function Requests() {
     setAdded((prev) => [req, ...prev]);
     setSeq((s) => s + 1);
     setModalOpen(false);
-    setForm({ client: mockClients[0].name, type: "Transfert", desc: "", priority: "Normale" });
+    setForm({ client: "", type: "Transfert", desc: "", priority: "Normale" });
     toast.gold(`Demande ${req.ref} créée`, {
       description: "Attribuée à l'Agent Réservation — recherche d'options en cours.",
       action: { label: "Ouvrir", onClick: () => navigate(`/requests/${req.id}`) },
@@ -273,7 +274,7 @@ export default function Requests() {
             {filtered.map((r, idx) => {
               const tone: WorkTone = r.status === "En retard" || r.priority === "Critique" ? "ember" : r.status === "À valider" ? "orange" : "blue";
               const progress = ({ "En recherche": 35, "À valider": 65, "En attente client": 50, "Confirmée": 92, "En retard": 45, "Traitée": 100 } as Record<string, number>)[r.status] ?? 40;
-              const agent = mockAgents.find((a) => a.name === r.agent);
+              const agent = agentsQ.data.find((a) => a.name === r.agent);
               return (
                 <Reveal key={r.id} delay={0.04 * idx}>
                   <WorkCard
@@ -378,7 +379,7 @@ export default function Requests() {
         <div className="space-y-3.5">
           <GlassSelect
             label="Client" value={form.client} onChange={(v) => setForm((f) => ({ ...f, client: v }))}
-            options={mockClients.map((c) => ({ value: c.name, label: `${c.name} — ${c.segment}` }))}
+            options={clientsQ.data.map((c) => ({ value: c.name, label: `${c.name} — ${c.segment}` }))}
           />
           <GlassSelect
             label="Type de demande" value={form.type} onChange={(v) => setForm((f) => ({ ...f, type: v as RequestType }))}
