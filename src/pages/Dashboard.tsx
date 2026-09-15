@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, ChevronRight, Sparkles } from "lucide-react";
-import { attentionItems, executiveKpis } from "../lib/mock";
-import { cn, todayLabel, useAuth, useInsights, useOperations, useAgents } from "../lib/services";
+import { cn, todayLabel, useAuth, useInsights, useOperations, useAgents, useKpis, useApprovals } from "../lib/services";
 import type { Kpi } from "../lib/types";
 import { GlassButton } from "../components/glass";
 import { AgentGlyph } from "../components/icons";
@@ -20,6 +19,11 @@ export default function Dashboard() {
   const insightsQ = useInsights(650);
   const operationsQ = useOperations(850);
   const agentsQ = useAgents(850);
+  const kpisQ = useKpis(650);
+  const { pending } = useApprovals();
+  const attentionData = pending.slice(0, 5).map((a) => ({
+    id: a.id, title: a.title, desc: a.why, value: a.impact, agent: a.agent, priority: "Haute" as const,
+  }));
   const navigate = useNavigate();
 
   const firstName = user?.name?.split(" ")[0] ?? "";
@@ -55,7 +59,7 @@ export default function Dashboard() {
             </Link>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4">
-            {executiveKpis.map((k, i) => (
+            {kpisQ.data.map((k, i) => (
               <div
                 key={k.label}
                 className={cn(
@@ -170,7 +174,7 @@ export default function Dashboard() {
                 </Link>
               </div>
               <ul className="mt-2">
-                {attentionItems.map((item, i) => (
+                {attentionData.map((item, i) => (
                   <motion.li
                     key={item.id}
                     initial={{ opacity: 0, y: 6 }}
@@ -179,7 +183,7 @@ export default function Dashboard() {
                     transition={{ duration: 0.4, delay: 0.08 * i, ease: EASE }}
                   >
                     <button
-                      onClick={() => navigate(`/requests/${item.requestId}`)}
+                      onClick={() => navigate("/validation")}
                       className="agent-row row-hover group flex w-full items-center gap-3 px-2 py-3.5 text-left sm:gap-4 sm:px-3"
                     >
                       <PriorityBadge priority={item.priority} />

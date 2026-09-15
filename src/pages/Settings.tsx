@@ -4,7 +4,7 @@ import {
   ArrowUpRight, Bell, Building2, Check, Copy, CreditCard, Database, Eye, EyeOff, KeyRound,
   LayoutTemplate, Plug, Plus, ScrollText, Shield, ShieldCheck, User as UserIcon, Users, Workflow,
 } from "lucide-react";
-import { cn, copyText, fmtInt, useAgents, useAuth, useSourcesState } from "../lib/services";
+import { cn, copyText, fmtInt, useAgents, useAuth, useSourcesState, useMembers } from "../lib/services";
 import { mockOrganization } from "../lib/mock";
 import { usePrefs, useTheme, type ContrastPref, type DensityPref, type FontPref, type MotionPref, type ThemeMode } from "../lib/theme";
 import { GlassBadge, GlassButton, GlassInput, GlassModal, GlassSelect, GlassSurface } from "../components/glass";
@@ -67,6 +67,7 @@ export default function Settings() {
   const [section, setSection] = useState<SectionId>("compte");
   const { user } = useAuth();
   const agentsQ = useAgents(300);
+  const membersQ = useMembers(600);
   const { sources } = useSourcesState();
   const { mode, setMode } = useTheme();
   const prefs = usePrefs();
@@ -158,7 +159,7 @@ export default function Settings() {
                 <div className="flex items-center justify-between rounded-[12px] border border-champagne-500/15 bg-champagne-500/[0.04] px-4 py-3.5">
                   <div>
                     <p className="text-[13px] font-medium">Plan Enterprise</p>
-                    <p className="num mt-0.5 text-[10.5px] text-cream/60">{mockOrganization.members.length} membres · agents illimités · support dédié</p>
+                    <p className="num mt-0.5 text-[10.5px] text-cream/60">{membersQ.data.length} membres · agents illimités · support dédié</p>
                   </div>
                   <GlassBadge tone="gold" dot>Actif</GlassBadge>
                 </div>
@@ -206,7 +207,7 @@ export default function Settings() {
             {section === "utilisateurs" && (
               <div>
                 <div className="divide-y divide-[var(--card-divider)]">
-                  {mockOrganization.members.map((m) => (
+                  {membersQ.data.map((m) => (
                     <div key={m.id} className="flex items-center gap-3 py-3">
                       <Avatar initials={(m.name ?? "").split(" ").map((p) => p[0]).join("")} name={m.name} size={32} />
                       <div className="min-w-0 flex-1">

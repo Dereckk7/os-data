@@ -9,12 +9,12 @@ import { supabase, isSupabaseConfigured } from "./supabase/client";
 import {
   mockActivity, mockAgents, mockApprovals, mockClients, mockDocuments, mockInsights,
   mockIntegrations, mockNotifications, mockOperations, mockRequests, mockReports,
-  mockSources, mockTasks, mockUser,
+  mockSources, mockTasks, mockUser, executiveKpis,
 } from "./mock";
 import type {
   ActivityEntry, Agent, AgentStatus, AppNotification, Approval, ApprovalStatus, ApprovalCategory,
   Client, ClientState, DataRequest, DataSource, DocumentItem, Insight, InsightType, Integration, Operation, Segment,
-  Priority, Report, RequestOption, RequestStatus, RequestType, SourceKey, TaskItem, User,
+  Priority, Report, RequestOption, RequestStatus, RequestType, SourceKey, TaskItem, User, Kpi, Member, Tone,
 } from "./types";
 
 /* ————————————————— Utilitaires ————————————————— */
@@ -386,6 +386,25 @@ export const useInsights = (_ms?: number) => useSupabaseData<Insight[]>(async (c
     cta: "Examiner", agent: "COPILOT", time: "à l'instant", impact: impactOf(i.gravite), status: "Nouveau",
   }));
 }, mockInsights);
+
+/* — KPI d'en-tête (réels) — */
+export const useKpis = (_ms?: number) => useSupabaseData<Kpi[]>(async (ctx) => {
+  const { data } = await supabase!.schema("core").rpc("cowork_kpis", { p_tenant: ctx.tenantId });
+  return ((data as any[]) ?? []).map((k): Kpi => ({
+    label: k.label, value: String(k.value), deltaText: k.deltaText ?? "",
+    deltaTone: (k.deltaTone ?? "neutral") as Tone,
+    spark: Array.isArray(k.spark) ? k.spark.map(Number) : [],
+  }));
+}, executiveKpis);
+
+/* — Membres (réels) — */
+export const useMembers = (_ms?: number) => useSupabaseData<Member[]>(async (ctx) => {
+  const { data } = await supabase!.schema("core").rpc("cowork_members", { p_tenant: ctx.tenantId });
+  return ((data as any[]) ?? []).map((m): Member => ({
+    id: m.id, name: m.name, email: m.email, role: m.role,
+    status: m.status === "Invité" ? "Invité" : "Actif",
+  }));
+}, []);
 
 /* — Tâches — */
 export const useTasks = (_ms?: number) => useSupabaseData<TaskItem[]>(async (ctx) => {
