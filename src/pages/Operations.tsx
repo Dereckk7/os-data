@@ -1,43 +1,35 @@
-import { useEffect, useMemo, useState } from "react";
-import { mockAgents, mockOpsCards, operationsPool } from "../lib/mock";
-import { cn, useOperations } from "../lib/services";
-import type { Operation } from "../lib/types";
+import { useMemo, useState } from "react";
+import { cn, useOperations, useRequests, useAgents } from "../lib/services";
 import { GlassBadge, GlassPanel, GlassSurface } from "../components/glass";
 import { ActivityFeed, AnimatedNumber, Reveal, Skeleton } from "../components/ui";
 import { WorkCard } from "../components/workcard";
 import { toast } from "../components/toast";
-import { emitPulse } from "../lib/background";
+import { useNavigate } from "react-router-dom";
 
 export default function Operations() {
   const operationsQ = useOperations(600);
-  const [live, setLive] = useState<Operation[]>([]);
+  const requestsQ = useRequests(600);
+  const agentsQ = useAgents(600);
+  const navigate = useNavigate();
   const [filter, setFilter] = useState<string>("Tous");
 
-  /* Simulation temps réel : un nouvel événement toutes les 8 s */
-  useEffect(() => {
-    let i = 0;
-    const t = window.setInterval(() => {
-      if (i >= operationsPool.length) { window.clearInterval(t); return; }
-      const ev = operationsPool[i];
-      setLive((prev) => [{ ...ev, id: `${ev.id}-${Date.now()}` }, ...prev]);
-      emitPulse(0.4);
-      i += 1;
-    }, 8000);
-    return () => window.clearInterval(t);
-  }, []);
-
-  const all = useMemo(() => [...live, ...operationsQ.data], [live, operationsQ.data]);
+  const all = operationsQ.data;
+  const progressByStatus: Record<string, number> = { "En recherche": 35, "À valider": 65, "En attente client": 50, "Confirmée": 92, "En retard": 45, "Traitée": 100 };
+  const inProgress = requestsQ.data.filter((r) => r.status !== "Traitée").slice(0, 6);
   const agentNames = useMemo(
     () => ["Tous", ...Array.from(new Set(operationsQ.data.filter((o) => o.agent).map((o) => o.agent as string)))],
     [operationsQ.data]
   );
   const filtered = filter === "Tous" ? all : all.filter((o) => o.agent === filter);
 
+  const incidents = requestsQ.data.filter((r) => r.status === "En retard").length;
+  const inProgressTotal = requestsQ.data.filter((r) => r.status !== "Traitée").length;
+  const slaPct = inProgressTotal > 0 ? Math.round((100 * (inProgressTotal - incidents)) / inProgressTotal) : 100;
   const summary = [
-    { k: "Actions agents", v: "30", pct: 78 },
-    { k: "Demandes créées", v: "12", pct: 48 },
-    { k: "Incidents actifs", v: "1", pct: 8 },
-    { k: "SLA respecté", v: "94%", pct: 94 },
+    { k: "Actions agents", v: String(operationsQ.data.length), pct: Math.min(100, operationsQ.data.length * 5) },
+    { k: "Demandes créées", v: String(requestsQ.data.length), pct: Math.min(100, requestsQ.data.length * 10) },
+    { k: "Incidents actifs", v: String(incidents), pct: Math.min(100, incidents * 25) },
+    { k: "SLA respecté", v: `${slaPct}%`, pct: slaPct },
   ];
 
   return (
@@ -57,24 +49,26 @@ export default function Operations() {
         <section aria-label="Opérations en cours">
           <div className="mb-3 flex items-center justify-between gap-3">
             <h2 className="text-[15px] font-semibold tracking-tight">Opérations en cours</h2>
-            <span className="num text-[9.5px] uppercase tracking-[0.14em] text-cream/52">{mockOpsCards.length} chantiers · mise à jour en direct</span>
+            <span className="num text-[9.5px] uppercase tracking-[0.14em] text-cream/52">{inProgress.length} demande(s) en cours</span>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {mockOpsCards.map((c, i) => {
-              const cardAgents = c.agentIds
-                .map((aid) => mockAgents.find((a) => a.id === aid))
-                .filter(Boolean)
-                .map((a) => ({ id: a!.id, name: a!.name, tint: a!.tint, working: c.workingIds.includes(a!.id) }));
+            {inProgress.map((r, i) => {
+              const tone = r.status === "En retard" || r.priority === "Critique" ? "ember" : r.status === "À valider" ? "orange" : "blue";
+              const cardAgents = agentsQ.data
+                .filter((a) => a.name === r.agent)
+                .map((a) => ({ id: a.id, name: a.name, tint: a.tint, working: true }));
               return (
-                <Reveal key={c.id} delay={0.04 * i}>
+                <Reveal key={r.id} delay={0.04 * i}>
                   <WorkCard
-                    tone={c.tone} eyebrow={c.eyebrow} title={c.title} desc={c.desc} when={c.when}
-                    progress={c.progress} steps={c.steps} agents={cardAgents} dueIn={c.dueIn} urgent={c.urgent}
+                    tone={tone} eyebrow={(r.ref || r.type).toUpperCase()} title={r.title}
+                    desc={`${r.client}${r.vip ? " · VIP" : ""}`} when={r.time}
+                    progress={progressByStatus[r.status] ?? 40} agents={cardAgents}
+                    urgent={r.status === "En retard" || r.priority === "Critique"}
                     menu={[
-                      { label: "Voir le détail", onClick: () => toast.neutral("Détail de l'opération", { description: c.title }) },
+                      { label: "Voir le détail", onClick: () => navigate(`/requests/${r.id}`) },
                       { label: "Notifier le client", onClick: () => toast.neutral("Notification préparée", { description: "Brouillon ajouté à la file." }) },
                     ]}
-                    onQuickAdd={() => toast("Étape ajoutée", { description: `${c.title} — nouvelle étape transmise aux agents.` })}
+                    onQuickAdd={() => toast("Note ajoutée", { description: `${r.title} — transmise aux agents.` })}
                   />
                 </Reveal>
               );
@@ -134,10 +128,10 @@ export default function Operations() {
           <Reveal delay={0.18}>
             <GlassPanel eyebrow="Agents en ligne" title="Disponibilité">
               <ul className="space-y-3">
-                {mockAgents.slice(0, 5).map((a) => (
+                {agentsQ.data.slice(0, 5).map((a) => (
                   <li key={a.id} className="flex items-center justify-between gap-3">
                     <span className="flex items-center gap-2.5">
-                      <span className={cn("h-[7px] w-[7px] rounded-full", a.status === "Opérationnel" ? "bg-jade pulse-dot" : "bg-saffron/80")} />
+                      <span className={cn("h-[7px] w-[7px] rounded-full", !/attente|erreur|error|pause|hors/i.test(a.status) ? "bg-jade pulse-dot" : "bg-saffron/80")} />
                       <span className="text-[12.5px] font-medium">{a.name}</span>
                     </span>
                     <span className="num text-[11px] text-cream/62"><AnimatedNumber value={`${a.actionsToday} actions`} /></span>

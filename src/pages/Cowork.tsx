@@ -2,8 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowUp, Check, Database, MessageSquare, PanelRightClose, PanelRightOpen, ShieldCheck, Sparkles, Users, X } from "lucide-react";
-import { mockClients, mockRequests } from "../lib/mock";
-import { cn, fmtInt, fmtMoney, coworkAsk } from "../lib/services";
+import { cn, fmtInt, fmtMoney, coworkAsk, useRequests, useClients } from "../lib/services";
 import type { CoworkKind, CoworkMessage } from "../lib/types";
 import { GlassBadge } from "../components/glass";
 import { Sparkline } from "../components/charts";
@@ -61,7 +60,8 @@ function AnalysisBlock() {
 }
 
 function LateBlock({ onOpen }: { onOpen: (id: string) => void }) {
-  const late = mockRequests.filter((r) => r.status === "En retard");
+  const requestsQ = useRequests(400);
+  const late = requestsQ.data.filter((r) => r.status === "En retard");
   return (
     <div className="mt-3 space-y-1.5">
       {late.map((r) => (
@@ -84,7 +84,8 @@ function LateBlock({ onOpen }: { onOpen: (id: string) => void }) {
 }
 
 function ClientsBlock({ onOpen }: { onOpen: (id: string) => void }) {
-  const top = [...mockClients].sort((a, b) => b.value - a.value).slice(0, 3);
+  const clientsQ = useClients(400);
+  const top = [...clientsQ.data].sort((a, b) => b.value - a.value).slice(0, 3);
   return (
     <div className="mt-3 space-y-1.5">
       {top.map((c, i) => (
