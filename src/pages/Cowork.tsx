@@ -13,6 +13,11 @@ import { LogoMark } from "../components/icons";
 
 const now = () => new Intl.DateTimeFormat("fr-FR", { hour: "2-digit", minute: "2-digit" }).format(new Date());
 
+/* Délai maximal d'attente de l'Edge Function cowork-ask. Au-delà, on bascule
+   sur la synthèse locale : l'indicateur « réflexion » ne reste jamais figé si
+   la fonction est lente, injoignable ou sans clé API configurée. */
+const COWORK_TIMEOUT_MS = 12000;
+
 const SUGGESTIONS: { kind: CoworkKind; label: string; prompt: string }[] = [
   { kind: "analysis", label: "Analyse", prompt: "Analyse mes demandes des 30 derniers jours" },
   { kind: "report", label: "Rapport", prompt: "Prépare un rapport mensuel" },
@@ -334,12 +339,21 @@ export default function Cowork() {
   const [panelOpen, setPanelOpen] = useState(true);
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const mountedRef = useRef(true);
+  const fallbackTimer = useRef<number | null>(null);
   const started = messages.length > 0 || thinking;
   const reportsCount = useMemo(() => messages.filter((m) => m.role === "os" && m.kind === "report").length, [messages]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, thinking]);
+
+  /* Nettoyage : si l'on quitte la page pendant une requête, on ne déclenche
+     pas de setState après démontage et on annule le repli en attente. */
+  useEffect(() => () => {
+    mountedRef.current = false;
+    if (fallbackTimer.current) window.clearTimeout(fallbackTimer.current);
+  }, []);
 
   const addTrace = (t: Omit<Trace, "id">) =>
     setTraces((prev) => [{ id: `tr-${Date.now()}-${prev.length}`, ...t }, ...prev].slice(0, 12));
@@ -358,7 +372,15 @@ export default function Cowork() {
     if (mapped) addTrace({ label: `${agentForTool(mapped.tool)} consulté`, status: "done", agent: agentForTool(mapped.tool) });
 
     // Appel réel au Data OS (Edge Function cowork-ask, outils bornés + traçabilité).
-    const res = mapped ? await coworkAsk({ tool: mapped.tool, params: mapped.params }) : await coworkAsk({ question: clean });
+    // On borne l'attente : au-delà de COWORK_TIMEOUT_MS on considère l'appel
+    // comme non résolu et on bascule sur le repli local (jamais figé sur « … »).
+    const ask = mapped ? coworkAsk({ tool: mapped.tool, params: mapped.params }) : coworkAsk({ question: clean });
+    const res = await Promise.race([
+      ask,
+      new Promise<null>((resolve) => window.setTimeout(() => resolve(null), COWORK_TIMEOUT_MS)),
+    ]);
+    if (!mountedRef.current) return;
+
     if (res && res.resolved && res.data !== undefined) {
       const count = Array.isArray(res.data) ? res.data.length : 0;
       addTrace({ label: count > 0 ? `✓ ${fmtInt(count)} enregistrements analysés` : "✓ Résultat calculé", status: "done", source: res.source });
@@ -372,7 +394,8 @@ export default function Cowork() {
     // Repli : démonstration locale si le back n'est pas joignable / question non couverte.
     const reply = replyFor(clean);
     addTrace({ label: "Synthèse locale préparée", status: "done" });
-    window.setTimeout(() => {
+    fallbackTimer.current = window.setTimeout(() => {
+      if (!mountedRef.current) return;
       setMessages((m) => [...m, { id: `os-${Date.now()}`, role: "os", kind: reply.kind, text: reply.text, at: now() }]);
       setThinking(false);
       emitPulse(0.5);
