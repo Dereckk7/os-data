@@ -138,7 +138,7 @@
    ══════════════════════════════════════════════════════════════════════ */
 :root[data-theme="light"] {
   /* Échelle ink-* réinterprétée pour le clair (canvas chaud → surfaces claires). */
-  --color-ink-950: #f4f3ef; /* Surface 0 — canvas chaud */
+  --color-ink-950: #edeae2; /* Surface 0 — canvas chaud */
   --color-ink-900: #fbfaf7; /* Surface 1 */
   --color-ink-850: #ffffff; /* Surface 2 */
   --color-ink-800: #efece5; /* fonds sourds */
@@ -161,14 +161,14 @@
   --color-white: #17130d; /* “bg-white” = CTA sombre sur fond clair */
 
   /* Material — surfaces claires chaudes. */
-  --surface-0: #f4f3ef;
+  --surface-0: #edeae2;
   --surface-1: #fbfaf7;
   --surface-2: #ffffff;
   --surface-3: #ffffff;
   --surface-4: #ffffff;
 
-  --hairline: rgba(28, 22, 12, 0.08);
-  --hairline-strong: rgba(28, 22, 12, 0.14);
+  --hairline: rgba(28, 22, 12, 0.12);
+  --hairline-strong: rgba(28, 22, 12, 0.17);
 
   --shadow-1: 0 1px 2px rgba(40, 33, 20, 0.05);
   --shadow-2: 0 4px 16px -4px rgba(40, 33, 20, 0.09);
@@ -179,7 +179,7 @@
   --card-bg: #ffffff;
   --card-border: var(--hairline);
   --card-title: #6b6558;
-  --card-divider: rgba(28, 22, 12, 0.07);
+  --card-divider: rgba(28, 22, 12, 0.11);
 
   --delta-up-bg: #e9f3ea;
   --delta-up-fg: #2f7d3f;
