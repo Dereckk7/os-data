@@ -618,22 +618,28 @@ export function AppShell() {
 
       <SidebarInset>
         <InsetHeader onSearch={() => setPaletteOpen(true)} />
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.main
-            key={location.pathname}
-            initial={pageAnim.initial}
-            animate={pageAnim.animate}
-            exit={pageAnim.exit}
-            transition={pageAnim.transition}
-            className="mx-auto w-full max-w-[1160px] flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-8 lg:pb-16"
-          >
-            <PageErrorBoundary key={location.pathname}>
-              <Suspense fallback={<ContentFallback />}>
+        {/* Suspense hors de l'AnimatePresence : le fallback de chargement d'un
+            chunk lazy ne doit pas être un enfant suivi par AnimatePresence
+            mode="wait" — sinon la coordination exit/enter peut se bloquer et la
+            page entrante n'est jamais révélée (panneau central vide, entête et
+            composer visibles). Le fallback couvre alors toute la zone, puis la
+            page s'anime normalement une fois le chunk chargé. */}
+        <Suspense fallback={<ContentFallback />}>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.main
+              key={location.pathname}
+              initial={pageAnim.initial}
+              animate={pageAnim.animate}
+              exit={pageAnim.exit}
+              transition={pageAnim.transition}
+              className="mx-auto w-full max-w-[1160px] flex-1 px-4 pb-28 pt-6 sm:px-6 lg:px-8 lg:pb-16"
+            >
+              <PageErrorBoundary key={location.pathname}>
                 <Outlet />
-              </Suspense>
-            </PageErrorBoundary>
-          </motion.main>
-        </AnimatePresence>
+              </PageErrorBoundary>
+            </motion.main>
+          </AnimatePresence>
+        </Suspense>
       </SidebarInset>
 
       {isMobile && <MobileNav onMenu={openMobileMenu} />}
