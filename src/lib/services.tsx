@@ -14,7 +14,7 @@ import {
 import type {
   ActivityEntry, Agent, AgentStatus, AppNotification, Approval, ApprovalStatus, ApprovalCategory,
   Client, ClientState, DataRequest, DataSource, DocumentItem, Insight, InsightType, Integration, Operation, Segment,
-  Priority, Report, RequestOption, RequestStatus, RequestType, SourceKey, TaskItem, User, Kpi, Member, Tone,
+  Priority, Report, RequestOption, RequestStatus, RequestType, SourceKey, TaskItem, User, Kpi, Member, Tone, CoworkKind, CoworkMessage,
 } from "./types";
 
 /* ————————————————— Utilitaires ————————————————— */
@@ -491,6 +491,74 @@ export async function coworkAsk(payload: { tool?: string; params?: Record<string
     if (error) return null;
     return data as CoworkResult;
   } catch { return null; }
+}
+
+/* — Historique Cowork (core.copilot_conversations / copilot_messages) —
+   Conversations privées à l'utilisateur dans son tenant (RLS : is_member +
+   user_id = auth.uid()). Sans Supabase configuré : historique vide. */
+export interface CoworkConversation { id: string; title: string; updatedAt: string; }
+
+export async function coworkListConversations(limit = 20): Promise<CoworkConversation[]> {
+  if (!isSupabaseConfigured || !supabase) return [];
+  try {
+    const ctx = await getContext();
+    if (!ctx) return [];
+    const { data, error } = await supabase.schema("core").from("copilot_conversations")
+      .select("id, title, updated_at").eq("tenant_id", ctx.tenantId).eq("status", "active")
+      .order("updated_at", { ascending: false }).limit(limit);
+    if (error) return [];
+    return (data ?? []).map((c: any) => ({ id: c.id, title: c.title || "Sans titre", updatedAt: c.updated_at }));
+  } catch { return []; }
+}
+
+export async function coworkCreateConversation(title: string): Promise<string | null> {
+  if (!isSupabaseConfigured || !supabase) return null;
+  try {
+    const ctx = await getContext();
+    const { data: u } = await supabase.auth.getUser();
+    if (!ctx || !u?.user) return null;
+    const { data, error } = await supabase.schema("core").from("copilot_conversations")
+      .insert({ tenant_id: ctx.tenantId, user_id: u.user.id, channel: "app", title: title.slice(0, 120) })
+      .select("id").single();
+    if (error) return null;
+    return data.id as string;
+  } catch { return null; }
+}
+
+export async function coworkAppendMessage(conversationId: string, seq: number, msg: CoworkMessage): Promise<void> {
+  if (!isSupabaseConfigured || !supabase) return;
+  try {
+    const ctx = await getContext();
+    if (!ctx) return;
+    await supabase.schema("core").from("copilot_messages").insert({
+      tenant_id: ctx.tenantId, conversation_id: conversationId, seq,
+      role: msg.role === "user" ? "user" : "assistant",
+      content: msg.text,
+      tool_calls: [{ kind: msg.kind, data: msg.data ?? null }],
+      citations: msg.source ? [{ source: msg.source }] : [],
+    });
+    await supabase.schema("core").from("copilot_conversations")
+      .update({ updated_at: new Date().toISOString() }).eq("id", conversationId);
+  } catch { /* best-effort : l'historique ne bloque jamais Cowork */ }
+}
+
+export async function coworkLoadConversation(conversationId: string): Promise<CoworkMessage[]> {
+  if (!isSupabaseConfigured || !supabase) return [];
+  try {
+    const { data, error } = await supabase.schema("core").from("copilot_messages")
+      .select("id, role, content, tool_calls, citations, created_at")
+      .eq("conversation_id", conversationId).order("seq", { ascending: true });
+    if (error) return [];
+    return (data ?? []).map((m: any): CoworkMessage => {
+      const call = Array.isArray(m.tool_calls) ? m.tool_calls[0] ?? {} : {};
+      const src = Array.isArray(m.citations) ? m.citations[0]?.source : undefined;
+      return {
+        id: m.id, role: m.role === "user" ? "user" : "os",
+        kind: (call.kind ?? "text") as CoworkKind, text: m.content ?? "",
+        at: hhmm(m.created_at), data: call.data ?? undefined, source: src,
+      };
+    });
+  } catch { return []; }
 }
 
 

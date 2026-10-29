@@ -2,7 +2,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowUp, Check, Database, MessageSquare, PanelRightClose, PanelRightOpen, ShieldCheck, Sparkles, Users, X } from "lucide-react";
-import { cn, fmtInt, fmtMoney, coworkAsk, useRequests, useClients } from "../lib/services";
+import {
+  cn, fmtInt, fmtMoney, coworkAsk, useRequests, useClients,
+  coworkListConversations, coworkCreateConversation, coworkAppendMessage, coworkLoadConversation,
+  type CoworkConversation,
+} from "../lib/services";
 import type { CoworkKind, CoworkMessage } from "../lib/types";
 import { GlassBadge } from "../components/glass";
 import { Sparkline } from "../components/charts";
@@ -25,10 +29,18 @@ const SUGGESTIONS: { kind: CoworkKind; label: string; prompt: string }[] = [
   { kind: "clients", label: "Clients", prompt: "Quels sont mes meilleurs clients ?" },
 ];
 
-const HISTORY = [
-  { group: "Aujourd'hui", items: ["Analyse des demandes", "Rapport mensuel", "Clients VIP"] },
-  { group: "Hier", items: ["Performance opérations", "Analyse satisfaction"] },
-];
+/* Historique réel (core.copilot_conversations), groupé par jour. */
+function groupHistory(list: CoworkConversation[]): { group: string; items: CoworkConversation[] }[] {
+  const day = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const today = day(new Date());
+  const groups: Record<string, CoworkConversation[]> = { "Aujourd'hui": [], "Hier": [], "Plus tôt": [] };
+  for (const c of list) {
+    const t = new Date(c.updatedAt);
+    const diff = Number.isFinite(t.getTime()) ? Math.round((today - day(t)) / 86_400_000) : 99;
+    groups[diff <= 0 ? "Aujourd'hui" : diff === 1 ? "Hier" : "Plus tôt"].push(c);
+  }
+  return Object.entries(groups).filter(([, items]) => items.length > 0).map(([group, items]) => ({ group, items }));
+}
 
 function replyFor(prompt: string): { kind: CoworkKind; text: string } {
   const p = prompt.toLowerCase();
@@ -341,6 +353,36 @@ export default function Cowork() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const mountedRef = useRef(true);
   const fallbackTimer = useRef<number | null>(null);
+  const [history, setHistory] = useState<CoworkConversation[]>([]);
+  const convIdRef = useRef<string | null>(null);
+  const seqRef = useRef(0);
+  const persistChain = useRef<Promise<void>>(Promise.resolve());
+
+  const refreshHistory = () => { coworkListConversations().then((h) => { if (mountedRef.current) setHistory(h); }); };
+  useEffect(() => { refreshHistory(); }, []);
+
+  /* Enregistre un message dans la conversation courante (créée au premier
+     message). Chaîné pour garder l'ordre et ne créer qu'une conversation. */
+  const persist = (msg: CoworkMessage) => {
+    persistChain.current = persistChain.current.then(async () => {
+      if (!convIdRef.current) {
+        const id = await coworkCreateConversation(msg.text || "Nouveau travail");
+        if (!id) return;
+        convIdRef.current = id; seqRef.current = 0;
+        if (mountedRef.current) setActiveItem(id);
+      }
+      await coworkAppendMessage(convIdRef.current, seqRef.current++, msg);
+      refreshHistory();
+    });
+  };
+
+  const openConversation = async (id: string) => {
+    if (thinking || id === convIdRef.current) return;
+    const msgs = await coworkLoadConversation(id);
+    if (!mountedRef.current) return;
+    convIdRef.current = id; seqRef.current = msgs.length;
+    setMessages(msgs); setTraces([]); setActiveItem(id);
+  };
   const started = messages.length > 0 || thinking;
   const reportsCount = useMemo(() => messages.filter((m) => m.role === "os" && m.kind === "report").length, [messages]);
 
@@ -350,20 +392,24 @@ export default function Cowork() {
 
   /* Nettoyage : si l'on quitte la page pendant une requête, on ne déclenche
      pas de setState après démontage et on annule le repli en attente. */
-  useEffect(() => () => {
-    mountedRef.current = false;
-    if (fallbackTimer.current) window.clearTimeout(fallbackTimer.current);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      if (fallbackTimer.current) window.clearTimeout(fallbackTimer.current);
+    };
   }, []);
 
   const addTrace = (t: Omit<Trace, "id">) =>
     setTraces((prev) => [{ id: `tr-${Date.now()}-${prev.length}`, ...t }, ...prev].slice(0, 12));
 
-  const send = async (text: string, fromHistory = false) => {
+  const send = async (text: string) => {
     const clean = text.trim();
     if (!clean || thinking) return;
-    if (fromHistory) setActiveItem(text);
     setInput("");
-    setMessages((m) => [...m, { id: `u-${Date.now()}`, role: "user", kind: "text", text: clean, at: now() }]);
+    const userMsg: CoworkMessage = { id: `u-${Date.now()}`, role: "user", kind: "text", text: clean, at: now() };
+    setMessages((m) => [...m, userMsg]);
+    persist(userMsg);
     setThinking(true);
 
     // Traçabilité (habillage) — le système montre son travail, sans en changer la logique.
@@ -385,7 +431,9 @@ export default function Cowork() {
       const count = Array.isArray(res.data) ? res.data.length : 0;
       addTrace({ label: count > 0 ? `✓ ${fmtInt(count)} enregistrements analysés` : "✓ Résultat calculé", status: "done", source: res.source });
       if (res.answer) addTrace({ label: "Génération de la recommandation", status: "done" });
-      setMessages((m) => [...m, { id: `os-${Date.now()}`, role: "os", kind: "data", text: res.answer || "Voici ce que le Data OS a trouvé :", data: res.data, source: res.source, at: now() }]);
+      const osMsg: CoworkMessage = { id: `os-${Date.now()}`, role: "os", kind: "data", text: res.answer || "Voici ce que le Data OS a trouvé :", data: res.data, source: res.source, at: now() };
+      setMessages((m) => [...m, osMsg]);
+      persist(osMsg);
       setThinking(false);
       emitPulse(0.5);
       return;
@@ -396,7 +444,9 @@ export default function Cowork() {
     addTrace({ label: "Synthèse locale préparée", status: "done" });
     fallbackTimer.current = window.setTimeout(() => {
       if (!mountedRef.current) return;
-      setMessages((m) => [...m, { id: `os-${Date.now()}`, role: "os", kind: reply.kind, text: reply.text, at: now() }]);
+      const osMsg: CoworkMessage = { id: `os-${Date.now()}`, role: "os", kind: reply.kind, text: reply.text, at: now() };
+      setMessages((m) => [...m, osMsg]);
+      persist(osMsg);
       setThinking(false);
       emitPulse(0.5);
     }, 700);
@@ -419,7 +469,7 @@ export default function Cowork() {
     });
   };
 
-  const newWork = () => { setMessages([]); setActiveItem(null); setTraces([]); };
+  const newWork = () => { convIdRef.current = null; seqRef.current = 0; setMessages([]); setActiveItem(null); setTraces([]); };
 
   return (
     <div className="flex h-[calc(100vh-7.5rem)] flex-col lg:h-[calc(100vh-8.5rem)]">
@@ -455,17 +505,23 @@ export default function Cowork() {
         <aside className="hidden lg:block">
           <div className="lcard sticky top-0 h-full overflow-y-auto p-3">
             <p className="card-eyebrow px-2 py-1">Historique</p>
-            {HISTORY.map((h) => (
+            {history.length === 0 && (
+              <p className="px-3 py-2 text-[11.5px] leading-relaxed text-cream/50">
+                Aucun travail enregistré. Vos échanges avec le Data OS apparaîtront ici.
+              </p>
+            )}
+            {groupHistory(history).map((h) => (
               <div key={h.group} className="mb-3">
                 <p className="px-3 pb-1 text-[10px] font-[590] uppercase tracking-[0.12em] text-cream/52">{h.group}</p>
-                {h.items.map((it) => (
+                {h.items.map((c) => (
                   <button
-                    key={it}
-                    data-active={activeItem === it}
-                    onClick={() => send(it, true)}
+                    key={c.id}
+                    data-active={activeItem === c.id}
+                    onClick={() => openConversation(c.id)}
+                    title={c.title}
                     className="hist-item block w-full truncate text-left text-xs text-cream/60"
                   >
-                    {it}
+                    {c.title}
                   </button>
                 ))}
               </div>
