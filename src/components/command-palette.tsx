@@ -149,7 +149,12 @@ export function CommandPalette({
   }, [active, open]);
 
   let cursor = 0;
-  if (!mounted) return null;
+  // Fermée, la palette ne rend rien : sinon son overlay plein écran
+  // (fixed inset-0 z-[100] avec backdrop-filter + will-change) reste monté et
+  // forme une couche de composition qui masque le contenu de base non
+  // positionné derrière elle. Le raccourci ⌘K/Échap reste actif : son écouteur
+  // est enregistré dans un effet, au-dessus de ce retour.
+  if (!mounted || !open) return null;
 
   return createPortal(
     <div aria-hidden={!open} className={cn("fixed inset-0 z-[100]", open ? "pointer-events-auto" : "pointer-events-none")}>
