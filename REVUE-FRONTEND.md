@@ -1,5 +1,32 @@
 # DATA OS — Revue complète du front-end
 
+> ## ⚠️ MISE À JOUR (parcours runtime avec compte de test) — cause racine P1 corrigée
+>
+> La première version de ce rapport (mergée via PR #8) attribuait le panneau
+> Cowork vide à l'interaction `AnimatePresence mode="wait"` + `Suspense`.
+> **Le parcours authentifié au runtime (Chromium, build de prod, compte de
+> test fourni) a infirmé cette hypothèse** : le changement de Suspense ne
+> corrige PAS le vrai défaut. La vraie cause est un **problème d'ordre de
+> peinture (stacking context)** :
+> 1. L'accueil Cowork est du contenu de base **non positionné** ; l'arrière-plan
+>    `AmbientDataBackground` (`fixed inset-0 z-0`, remplissage opaque) se peint
+>    **au-dessus** de lui → l'accueil passait derrière (d'où le vide, entête et
+>    composer restant visibles). Les autres pages y échappent car leur contenu
+>    est dans des cartes positionnées.
+> 2. La palette ⌘K, toujours montée, gardait fermée un overlay `fixed inset-0
+>    z-[100]` (backdrop-filter) formant une couche de composition masquante.
+>
+> **Correctif livré sur `fix/cowork-stacking`** (commit `f3796e2`) :
+> `motion.main` reçoit `relative z-10` (contenu au-dessus du fond) ; la palette
+> fermée ne rend plus rien (⌘K/Échap restent actifs). **Vérifié visuellement :
+> l'accueil Cowork s'affiche en clair ET sombre, desktop (1280px) ET mobile
+> (390px) ; ⌘K ouvre toujours la palette ; aucun débordement horizontal.**
+> Les sections C (thèmes) et D (responsive) ci-dessous sont donc **confirmées
+> au runtime** pour Cowork/Dashboard/Requests/Settings.
+>
+> Honnêteté : le compte de test m'ayant été donné *après* le merge de PR #8,
+> le correctif de stacking n'était pas dans ce merge. Il arrive en suivi.
+
 **Branche :** `review/frontend` (partie de `main` @ `a57aaa6`)
 **Périmètre :** durcissement et correction — **pas** de refonte, pas de nouvelle dépendance, pas de changement d'architecture/routes, pas de modification de la logique data (`services.tsx` / `supabase/*` / `types.ts` / `mock.ts`).
 **Validation :** chaque commit passe `npx tsc --noEmit` (0 erreur) + `npx vite build` (réussi).
